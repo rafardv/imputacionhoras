@@ -3,9 +3,8 @@ import React, { createContext, useState } from "react";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
 
-  u;
   console.log("useContext", user);
 
   return (
