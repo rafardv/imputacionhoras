@@ -3,14 +3,14 @@ export const styles = {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center", // Change from "flex-start" to "center"
-    height: "70%",
-    width: "94%",
+    height: "100%",
+    width: "100%",
     borderRadius: 20,
     shadowColor: "black",
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 20,
-    position: "absolute", // Add position property
+  
   },
   btnImputar: {
     alignItems: "center",
@@ -22,13 +22,18 @@ export const styles = {
     backgroundColor: "#abf5b3",
     width: "70%",
     margin: "auto",
+    fontWeight: "bold"
   },
 
   title: {
     margin: 20,
-    fontSize: 20,
+    marginTop: 0,
+    fontSize: 26,
     fontWeight: "bold",
-  },
+    fontFamily: "Bush Script MT, cursive",
+  }
+  
+  ,
   defaultImage: {
     width: 80,
     height: 80,
@@ -45,7 +50,7 @@ export const styles = {
     maxHeight: 140,
     minHeight: 50,
     marginVertical: 10,
-    width: "90%",
+    width: "99%",
   },
   itemContainer: {
     margin: 2,
@@ -87,5 +92,22 @@ export const styles = {
   btnText: {
     color: "black",
     fontSize: 16,
+  },
+  searchInput: {
+    width: "70%",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    borderRadius: 8,
+    backgroundColor: "#F0F0F0",
+    color: "#333",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    
   },
 };

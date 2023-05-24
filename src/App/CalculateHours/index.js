@@ -8,14 +8,23 @@ import {
   View,
   ScrollView,
   Image,
+  TextInput,
 } from "react-native";
 import { styles } from "./styles";
 import { getProjectCall, getProjectsCall } from "../Service";
 import { UserContext } from "../UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
+  const navigation = useNavigation();
+
+  const [isTextInputOpen, setIsTextInputOpen] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({ title: "IMPUTAR" });
+  }, [navigation]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,8 +53,18 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       });
 
       setSelectedProject(fetchedProject);
+      setIsTextInputOpen(false); // Reset the search input state
     } catch (error) {
       console.log("Error fetching project:", error);
+    }
+  };
+
+  const handleTitlePress = () => {
+    if(isTextInputOpen){
+      setIsTextInputOpen(false)
+    }
+    if(!isTextInputOpen){
+    setIsTextInputOpen(true);
     }
   };
 
@@ -64,7 +83,20 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>IMPUTAR FECHAS</Text>
+      <Pressable onPress={handleTitlePress}>
+        <Text style={styles.title}>
+          {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
+        </Text>
+      </Pressable>
+      {isTextInputOpen && (
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search for an item"
+          onChangeText={(text) => {
+            // Handle the search logic here
+          }}
+        />
+      )}
       <ScrollView
         horizontal
         contentContainerStyle={styles.sliderContent}
@@ -91,14 +123,14 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
                   />
                 )}
               </View>
-              <Text style={styles.itemText}>{shortenName(project.title)}</Text>
+              <Text style={styles.itemText}>
+                {shortenName(project.title)}
+              </Text>
             </Pressable>
           </View>
         ))}
       </ScrollView>
-      <Text style={styles.selectedItemText}>
-        {selectedProject ? selectedProject.title : "   "}
-      </Text>
+
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
         {fechaInicial} || {fechaFinal}
       </Text>
@@ -110,6 +142,8 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       >
         <Text style={styles.btnText}>CONFIRMAR</Text>
       </Pressable>
+
+      
     </View>
   );
 };
