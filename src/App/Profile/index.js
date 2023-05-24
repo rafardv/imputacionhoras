@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { getUserByPK } from "../Service";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
 
 const ProfileComponent = () => {
@@ -36,26 +37,22 @@ const ProfileComponent = () => {
 
   const cerrarSesion = () => {
     setUser({ remember: false });
-    localStorage.setItem("rememberAccount", "false");
+    AsyncStorage.setItem("rememberAccount", "false");
   };
-
-  console.log(user);
 
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="gray" /> // Mostrar el icono de carga
       ) : (
-        <View style={styles.containerInfo}>
+        <View>
           <Image
             style={styles.photo}
             source={{
               uri: "https://www.asofiduciarias.org.co/wp-content/uploads/2018/06/sin-foto.png",
             }}
           />
-          <Text
-            style={styles.name}
-          >{`${dataUser.name} ${dataUser.surname}`}</Text>
+          <Text style={styles.name}>{dataUser?.name}</Text>
           <Text style={styles.email}>{dataUser?.username}</Text>
           <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
             <Text style={styles.buttonText}>Cerrar sesión</Text>
