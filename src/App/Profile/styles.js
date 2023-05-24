@@ -4,6 +4,9 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
+  containerInfo: {
+    alignItems: "center",
+  },
   photo: {
     width: 200,
     height: 200,
