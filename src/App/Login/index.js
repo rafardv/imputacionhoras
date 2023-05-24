@@ -7,13 +7,11 @@ import { Switch } from "react-native";
 
 const LoginComponent = () => {
   const { user, setUser } = useContext(UserContext);
-
+  const [rememberAccount, setRememberAccount] = useState(false);
   const [userA, setUserA] = useState({
     email: "",
     password: "",
   });
-
-  const [rememberAccount, setRememberAccount] = useState(false);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -21,15 +19,19 @@ const LoginComponent = () => {
     const storedRememberAccount = localStorage.getItem("rememberAccount");
 
     if (storedEmail && storedPassword && storedRememberAccount === "true") {
-      setUserA({ email: storedEmail, password: storedPassword });
-      setRememberAccount(true);
-      login(); // Lanzar la petición automáticamente al cargar el componente
+      if (storedEmail !== "" && storedPassword !== "") {
+        setUserA({ email: storedEmail, password: storedPassword });
+        setRememberAccount(true);
+        performLogin(); // Lanzar la petición automáticamente al cargar el componente
+      }
     }
-  }, []);
+  }, [rememberAccount]);
 
-  console.log(userA);
-
-  const login = async () => {
+  const performLogin = async () => {
+    if (!userA.email || !userA.password) {
+      console.log("Por favor, ingresa un correo y una contraseña válidos");
+      return;
+    }
     try {
       const response = await accessBilldinCall({
         username: userA.email,
@@ -41,6 +43,7 @@ const LoginComponent = () => {
           email: userA.email,
           jwtToken: response.jwtToken,
           pk: response.payload.PK,
+          remember: rememberAccount,
         });
 
         if (rememberAccount) {
@@ -63,6 +66,15 @@ const LoginComponent = () => {
     } catch (error) {
       console.log("Error de inicio de sesión:", error);
     }
+  };
+
+  const login = () => {
+    if (!userA.email || !userA.password) {
+      console.log("Por favor, ingresa un correo y una contraseña válidos");
+      return;
+    }
+
+    performLogin();
   };
 
   return (
