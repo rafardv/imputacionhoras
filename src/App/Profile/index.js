@@ -35,8 +35,11 @@ const ProfileComponent = () => {
   }, []);
 
   const cerrarSesion = () => {
-    setUser(null);
+    setUser({ remember: false });
+    localStorage.setItem("rememberAccount", "false");
   };
+
+  console.log(user);
 
   return (
     <View style={styles.container}>
@@ -51,11 +54,9 @@ const ProfileComponent = () => {
             }}
           />
           <Text style={styles.name}>{dataUser?.name}</Text>
-          <Text style={styles.email}>correo@gmail.com</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText} onPress={cerrarSesion}>
-              Cerrar sesión
-            </Text>
+          <Text style={styles.email}>{dataUser?.username}</Text>
+          <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
+            <Text style={styles.buttonText}>Cerrar sesión</Text>
           </TouchableOpacity>
         </View>
       )}
