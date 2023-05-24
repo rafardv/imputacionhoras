@@ -8,12 +8,14 @@ const ProfileComponent = () => {
   const { user } = useContext(UserContext);
   const [dataUser, setDataUser] = useState(null);
 
-  console.log(user);
-
   useEffect(() => {
     const data = async () => {
       try {
-        const importUser = await getUserByPK(user.pk, user.jwtToken);
+        const importUser = await getUserByPK({
+          userPK: user.pk,
+          jwtToken: user.jwtToken,
+        });
+
         setDataUser(importUser);
       } catch (error) {
         console.log(error);

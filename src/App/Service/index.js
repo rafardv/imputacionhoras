@@ -81,15 +81,12 @@ export const updateProjectByPropertyCall = async ({ PK, workspacePK }) => {
 export const getUserByPK = async ({ userPK, jwtToken }) => {
   const userUrl = `${baseUrl}users/by-pk?userPK=${userPK}`;
 
-  const body = {
-    userPK: userPK,
-    jwtToken: jwtToken,
-  };
-
   return fetch(userUrl, {
-    headers: { ...headers, Authorization: jwtToken },
+    headers: {
+      ...headers,
+      Authorization: jwtToken,
+    },
     method: "GET",
-    body: JSON.stringify(body),
   })
     .then((res) => res.json())
     .catch((error) => {
