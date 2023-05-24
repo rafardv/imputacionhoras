@@ -9,7 +9,7 @@ const ContentMain = () => {
   const { user } = useContext(UserContext);
   return (
     <View style={styles.container}>
-      {user === null ? <NavigationComponent /> : <LoginComponent />}
+      {user === null ? <LoginComponent /> : <NavigationComponent />}
     </View>
   );
 };
