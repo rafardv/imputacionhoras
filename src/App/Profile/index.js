@@ -1,22 +1,38 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./styles";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { UserContext } from "../UserContext";
+import { getUserByPK } from "../Service";
 
 const ProfileComponent = () => {
+  const { user } = useContext(UserContext);
+  const [dataUser, setDataUser] = useState();
+
+  useEffect(() => {
+    const data = async () => {
+      try {
+        const user1 = await getUserByPK(user.pk);
+        setDataUser(user1);
+      } catch {}
+    };
+    data();
+  }, []);
+
+  console.log(dataUser);
   return (
-    <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.profileContainer}>
+    <View>
+      <View>
+        <View>
           <Image
             source={{
               uri: "https://www.asofiduciarias.org.co/wp-content/uploads/2018/06/sin-foto.png",
             }}
-            style={styles.photo}
           />
-          <Text style={styles.name}>Victor Bisquert</Text>
-          <Text style={styles.email}>correo@gmail.com</Text>
+          <Text></Text>
+          <Text>correo@gmail.com</Text>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Cerrar sesión</Text>
+        <TouchableOpacity>
+          <Text>Cerrar sesión</Text>
         </TouchableOpacity>
       </View>
     </View>
