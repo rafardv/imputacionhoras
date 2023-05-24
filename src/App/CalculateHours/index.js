@@ -5,7 +5,7 @@ import { styles } from "./styles";
 import { getProjectCall, getProjectsCall } from "../Service";
 import { UserContext } from "../UserContext";
 
-const MAX_NAME_LENGTH = 14;
+
 
 const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
   const [projects, setProjects] = useState([]);
@@ -50,8 +50,8 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
   };
 
   const shortenName = (name) => {
-    if (name.length > MAX_NAME_LENGTH) {
-      return name.substring(0, MAX_NAME_LENGTH) + "...";
+    if (name.length > 14) {
+      return name.substring(0, 14) + "...";
     }
     return name;
   };
@@ -86,7 +86,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       ))}
       
       </ScrollView>
-      <Text style={styles.selectedItemText}>{selectedProject ? selectedProject.title : "..."}</Text>
+      <Text style={styles.selectedItemText}>{selectedProject ? selectedProject.title : "   "}</Text>
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
         {fechaInicial} || {fechaFinal}
       </Text>
