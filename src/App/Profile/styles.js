@@ -7,6 +7,9 @@ const styles = {
   containerInfo: {
     alignItems: "center",
   },
+  containerImg: {
+    alignItems: "center",
+  },
   photo: {
     width: 200,
     height: 200,

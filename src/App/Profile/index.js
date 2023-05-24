@@ -45,14 +45,16 @@ const ProfileComponent = () => {
       {loading ? (
         <ActivityIndicator size="large" color="gray" /> // Mostrar el icono de carga
       ) : (
-        <View>
+        <View style={styles.containerImg}>
           <Image
             style={styles.photo}
             source={{
               uri: "https://www.asofiduciarias.org.co/wp-content/uploads/2018/06/sin-foto.png",
             }}
           />
-          <Text style={styles.name}>{dataUser?.name}</Text>
+          <Text
+            style={styles.name}
+          >{`${dataUser.name} ${dataUser.surname}`}</Text>
           <Text style={styles.email}>{dataUser?.username}</Text>
           <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
             <Text style={styles.buttonText}>Cerrar sesión</Text>
