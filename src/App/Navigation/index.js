@@ -27,6 +27,13 @@ const Tabs = ({ user }) => {
   return (
     <Tab.Navigator>
       <Tab.Screen
+        name="Imputación horas"
+        component={ImputationsHoursComponent}
+        options={{
+          tabBarLabel: "Imputación",
+        }}
+      />
+      <Tab.Screen
         name="Perfil"
         component={ProfileComponent}
         options={{
@@ -34,13 +41,6 @@ const Tabs = ({ user }) => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-sharp" color={color} size={size} />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="Imputación horas"
-        component={ImputationsHoursComponent}
-        options={{
-          tabBarLabel: "Imputación",
         }}
       />
     </Tab.Navigator>

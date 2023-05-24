@@ -21,11 +21,14 @@ export const accessBilldinCall = async ({ username, password }) => {
     });
 };
 
-export const getProjectsCall = async () => {
+export const getProjectsCall = async ({ jwtToken }) => {
   const projectsUrl = `${baseUrl}projects/userProjectsAndWorkspaceProjects`;
 
   return fetch(projectsUrl, {
-    headers: headers,
+    headers: {
+      ...headers,
+      Authorization: jwtToken,
+    },
     method: "GET",
   })
     .then((res) => res.json())
@@ -37,18 +40,15 @@ export const getProjectsCall = async () => {
     });
 };
 
-export const getProjectCall = async ({ projectPK, workspacePK }) => {
+export const getProjectCall = async ({ projectPK, workspacePK, jwtToken }) => {
   const projectUrl = `${baseUrl}projects?projectId=${projectPK}&workspacePK=${workspacePK}`;
 
-  const body = {
-    projectPK: projectPK,
-    workspacePK: workspacePK,
-  };
-
   return fetch(projectUrl, {
-    headers: headers,
+    headers: {
+      ...headers,
+      Authorization: jwtToken,
+    },
     method: "GET",
-    body: JSON.stringify(body),
   })
     .then((res) => res.json())
     .catch((error) => {
@@ -59,13 +59,20 @@ export const getProjectCall = async ({ projectPK, workspacePK }) => {
     });
 };
 
-export const updateProjectByPropertyCall = async ({ PK, workspacePK }) => {
+export const updateProjectByPropertyCall = async ({
+  PK,
+  workspacePK,
+  jwtToken,
+}) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
   const body = { PK, workspacePK, propertyToUpdate: { name, value } };
 
   return fetch(updateProjectUrl, {
-    headers: headers,
+    headers: {
+      ...headers,
+      Authorization: jwtToken,
+    },
     method: "PATCH",
     body: JSON.stringify(body),
   })

@@ -1,6 +1,5 @@
-import React, { useState, useContext } from "react";
-import { TextInput, View, Text } from "react-native";
-import { Button } from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { TextInput, View, Text, Button } from "react-native";
 import { UserContext } from "../UserContext";
 import { accessBilldinCall } from "../Service";
 import styles from "./styles";
@@ -12,10 +11,23 @@ const LoginComponent = () => {
   const [userA, setUserA] = useState({
     email: "",
     password: "",
-    rememberMe: false,
   });
 
   const [rememberAccount, setRememberAccount] = useState(false);
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    const storedPassword = localStorage.getItem("password");
+    const storedRememberAccount = localStorage.getItem("rememberAccount");
+
+    if (storedEmail && storedPassword && storedRememberAccount === "true") {
+      setUserA({ email: storedEmail, password: storedPassword });
+      setRememberAccount(true);
+      login(); // Lanzar la petición automáticamente al cargar el componente
+    }
+  }, []);
+
+  console.log(userA);
 
   const login = async () => {
     try {
@@ -31,10 +43,19 @@ const LoginComponent = () => {
           pk: response.payload.PK,
         });
 
+        if (rememberAccount) {
+          localStorage.setItem("email", userA.email);
+          localStorage.setItem("password", userA.password);
+          localStorage.setItem("rememberAccount", "true");
+        } else {
+          localStorage.removeItem("email");
+          localStorage.removeItem("password");
+          localStorage.removeItem("rememberAccount");
+        }
+
         setUserA({
           email: "",
           password: "",
-          rememberMe: userA.rememberMe, // Mantener el estado del radio button
         });
       } else {
         console.log("Error de inicio de sesión:", response.error);

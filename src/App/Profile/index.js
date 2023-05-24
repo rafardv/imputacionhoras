@@ -1,15 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { UserContext } from "../UserContext";
 import { getUserByPK } from "../Service";
 import styles from "./styles";
 
 const ProfileComponent = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [dataUser, setDataUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const data = async () => {
+    const fetchData = async () => {
       try {
         const importUser = await getUserByPK({
           userPK: user.pk,
@@ -17,29 +24,41 @@ const ProfileComponent = () => {
         });
 
         setDataUser(importUser);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     };
-    data();
+
+    fetchData();
   }, []);
 
-  console.log(dataUser);
+  const cerrarSesion = () => {
+    setUser(null);
+  };
+
   return (
     <View style={styles.container}>
-      <View>
-        <Image
-          style={styles.photo}
-          source={{
-            uri: "https://www.asofiduciarias.org.co/wp-content/uploads/2018/06/sin-foto.png",
-          }}
-        />
-        <Text style={styles.name}>Victor bisquert</Text>
-        <Text style={styles.email}>correo@gmail.com</Text>
-      </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Cerrar sesión</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="gray" /> // Mostrar el icono de carga
+      ) : (
+        <View>
+          <Image
+            style={styles.photo}
+            source={{
+              uri: "https://www.asofiduciarias.org.co/wp-content/uploads/2018/06/sin-foto.png",
+            }}
+          />
+          <Text style={styles.name}>{dataUser?.name}</Text>
+          <Text style={styles.email}>correo@gmail.com</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText} onPress={cerrarSesion}>
+              Cerrar sesión
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
