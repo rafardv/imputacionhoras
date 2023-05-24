@@ -6,14 +6,18 @@ import styles from "./styles";
 
 const ProfileComponent = () => {
   const { user } = useContext(UserContext);
-  const [dataUser, setDataUser] = useState();
+  const [dataUser, setDataUser] = useState(null);
+
+  console.log(user);
 
   useEffect(() => {
     const data = async () => {
       try {
-        const importUser = await getUserByPK(user.pk);
+        const importUser = await getUserByPK(user.pk, user.jwtToken);
         setDataUser(importUser);
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
     };
     data();
   }, []);
