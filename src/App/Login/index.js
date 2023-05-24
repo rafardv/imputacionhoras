@@ -57,6 +57,7 @@ const LoginComponent = () => {
       <TextInput
         placeholder="Contraseña"
         value={userA.password}
+        secureTextEntry
         onChangeText={(text) => setUserA({ ...userA, password: text })}
         style={styles.input}
       />
