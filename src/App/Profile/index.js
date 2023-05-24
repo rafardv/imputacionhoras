@@ -35,9 +35,9 @@ const ProfileComponent = () => {
     fetchData();
   }, []);
 
-  const cerrarSesion = () => {
-    setUser({ remember: false });
-    AsyncStorage.setItem("rememberAccount", "false");
+  const cerrarSesion = async () => {
+    await AsyncStorage.setItem("rememberAccount", "false"); // Actualizar el valor de rememberAccount en AsyncStorage
+    setUser(null); // Establecer el usuario en null en el UserContext
   };
 
   return (

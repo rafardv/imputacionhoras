@@ -11,11 +11,7 @@ const ContentMain = () => {
   console.log(user);
   return (
     <View style={styles.container}>
-      {user === null || user.remember === false ? (
-        <LoginComponent />
-      ) : (
-        <NavigationComponent />
-      )}
+      {user === null ? <LoginComponent /> : <NavigationComponent />}
     </View>
   );
 };
