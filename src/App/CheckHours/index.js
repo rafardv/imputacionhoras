@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { View, Button } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-
-// Resto del código del componente
+import { useNavigation } from "@react-navigation/native";
 
 const CheckHoursComponent = () => {
+  const navigation = useNavigation();
   const [selectedMonth, setSelectedMonth] = useState(null);
 
-  const monthChange = (month) => {
-    setSelectedMonth(month);
-  };
+  const monthChange = (month) => setSelectedMonth(month);
+
+  const openCalculateHours = () =>
+    navigation.navigate("ImputationsHoursComponent");
 
   return (
     <View style={{ flex: 0, justifyContent: "center", alignItems: "center" }}>
@@ -22,6 +23,7 @@ const CheckHoursComponent = () => {
         <Picker.Item label="Febrero" value="Febrero" />
         <Picker.Item label="Marzo" value="Marzo" />
       </Picker>
+      <Button title="A" onPress={openCalculateHours} />
     </View>
   );
 };

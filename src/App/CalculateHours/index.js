@@ -1,11 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, Pressable, StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+} from "react-native";
 import { styles } from "./styles";
 import { getProjectCall, getProjectsCall } from "../Service";
 import { UserContext } from "../UserContext";
-
-
 
 const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
   const [projects, setProjects] = useState([]);
@@ -15,7 +21,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
     const fetchData = async () => {
       try {
         const importedProjects = await getProjectsCall({
-          jwtToken: user.jwtToken
+          jwtToken: user.jwtToken,
         });
 
         setProjects(importedProjects);
@@ -34,7 +40,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
         workspacePK: project.workspace.workspacePK,
-        jwtToken: user.jwtToken
+        jwtToken: user.jwtToken,
       });
 
       setSelectedProject(fetchedProject);
@@ -65,28 +71,34 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         showsHorizontalScrollIndicator={false}
         style={styles.contenedorScroll}
       >
-      {projects.map((project, index) => (
-        <View key={index} style={styles.itemContainer}>
-          <Pressable onPress={() => handleProjectClick(project)} style={styles.itemContainer}>
-            <View style={styles.itemImageContainer}>
-              {project.image ? (
-                <Image source={project.image} style={styles.itemImage} />
-              ) : (
-                <View
-                  style={[
-                    styles.defaultImage,
-                    selectedProject && selectedProject.PK === project.PK && styles.selectedItemContainer
-                  ]}
-                />
-              )}
-            </View>
-            <Text style={styles.itemText}>{shortenName(project.title)}</Text>
-          </Pressable>
-        </View>
-      ))}
-      
+        {projects.map((project, index) => (
+          <View key={index} style={styles.itemContainer}>
+            <Pressable
+              onPress={() => handleProjectClick(project)}
+              style={styles.itemContainer}
+            >
+              <View style={styles.itemImageContainer}>
+                {project.image ? (
+                  <Image source={project.image} style={styles.itemImage} />
+                ) : (
+                  <View
+                    style={[
+                      styles.defaultImage,
+                      selectedProject &&
+                        selectedProject.PK === project.PK &&
+                        styles.selectedItemContainer,
+                    ]}
+                  />
+                )}
+              </View>
+              <Text style={styles.itemText}>{shortenName(project.title)}</Text>
+            </Pressable>
+          </View>
+        ))}
       </ScrollView>
-      <Text style={styles.selectedItemText}>{selectedProject ? selectedProject.title : "   "}</Text>
+      <Text style={styles.selectedItemText}>
+        {selectedProject ? selectedProject.title : "   "}
+      </Text>
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
         {fechaInicial} || {fechaFinal}
       </Text>
