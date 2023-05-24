@@ -4,6 +4,7 @@ import { Button } from "react-native";
 import { UserContext } from "../UserContext";
 import { accessBilldinCall } from "../Service";
 import styles from "./styles";
+import { Switch } from "react-native";
 
 const LoginComponent = () => {
   const { user, setUser } = useContext(UserContext);
@@ -11,7 +12,10 @@ const LoginComponent = () => {
   const [userA, setUserA] = useState({
     email: "",
     password: "",
+    rememberMe: false,
   });
+
+  const [rememberAccount, setRememberAccount] = useState(false);
 
   const login = async () => {
     try {
@@ -30,6 +34,7 @@ const LoginComponent = () => {
         setUserA({
           email: "",
           password: "",
+          rememberMe: userA.rememberMe, // Mantener el estado del radio button
         });
       } else {
         console.log("Error de inicio de sesión:", response.error);
@@ -55,6 +60,13 @@ const LoginComponent = () => {
         onChangeText={(text) => setUserA({ ...userA, password: text })}
         style={styles.input}
       />
+      <View style={styles.rememberContainer}>
+        <Switch
+          value={rememberAccount}
+          onValueChange={(value) => setRememberAccount(value)}
+        />
+        <Text style={styles.rememberText}>Recordar cuenta</Text>
+      </View>
       <Button title="Entrar" onPress={login} />
     </View>
   );
