@@ -21,6 +21,8 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
   const navigation = useNavigation();
 
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState([]);
 
   useEffect(() => {
     navigation.setOptions({ title: "IMPUTAR" });
@@ -51,20 +53,23 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         workspacePK: project.workspace.workspacePK,
         jwtToken: user.jwtToken,
       });
-
+  
       setSelectedProject(fetchedProject);
       setIsTextInputOpen(false); // Reset the search input state
+      setSearchText(""); // Clear the search text
+      setFilteredProjects(projects); // Reset the filtered projects
     } catch (error) {
       console.log("Error fetching project:", error);
     }
   };
 
   const handleTitlePress = () => {
-    if(isTextInputOpen){
-      setIsTextInputOpen(false)
-    }
-    if(!isTextInputOpen){
-    setIsTextInputOpen(true);
+    if (isTextInputOpen) {
+      setIsTextInputOpen(false);
+    } else {
+      setIsTextInputOpen(true);
+      setSearchText(""); // Clear the search text when opening the input
+      setFilteredProjects(projects); // Reset the filtered projects
     }
   };
 
@@ -81,6 +86,14 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
     return name;
   };
 
+  useEffect(() => {
+    // Filter the projects based on the search text
+    const filtered = projects.filter((project) =>
+      project.title.toLowerCase().startsWith(searchText.toLowerCase())
+    );
+    setFilteredProjects(filtered);
+  }, [searchText, projects]);
+
   return (
     <View style={styles.container}>
       <Pressable onPress={handleTitlePress}>
@@ -92,9 +105,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search for an item"
-          onChangeText={(text) => {
-            // Handle the search logic here
-          }}
+          onChangeText={(text) => setSearchText(text)}
         />
       )}
       <ScrollView
@@ -103,7 +114,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         showsHorizontalScrollIndicator={false}
         style={styles.contenedorScroll}
       >
-        {projects.map((project, index) => (
+        {filteredProjects.map((project, index) => (
           <View key={index} style={styles.itemContainer}>
             <Pressable
               onPress={() => handleProjectClick(project)}
@@ -142,8 +153,6 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       >
         <Text style={styles.btnText}>CONFIRMAR</Text>
       </Pressable>
-
-      
     </View>
   );
 };

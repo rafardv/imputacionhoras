@@ -30,7 +30,7 @@ export const styles = {
     marginTop: 0,
     fontSize: 26,
     fontWeight: "bold",
-    fontFamily: "Bush Script MT, cursive",
+ 
   }
   
   ,
