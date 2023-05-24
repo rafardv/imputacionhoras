@@ -91,7 +91,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
             </View>
           ))}
         </ScrollView>
-        <Text style={styles.selectedItemText}>{selectedItem}</Text>
+        <Text style={styles.selectedItemText}> {selectedItem}</Text>
         <Text style={[styles.selectedItemText, styles.fechasItem]}>
           {fechaInicial} || {fechaFinal}
         </Text>
@@ -103,6 +103,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         >
           <Text style={styles.btnText}>CONFIRMAR</Text>
         </Pressable>
+        
       </View>
     );
 };

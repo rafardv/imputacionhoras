@@ -2,7 +2,7 @@ export const styles = {
     container: {
       backgroundColor: "#fff",
       alignItems: "center",
-      justifyContent: "flex-start",
+      justifyContent: "center", // Change from "flex-start" to "center"
       height: "70%",
       width: "94%",
       borderRadius: 20,
@@ -10,6 +10,10 @@ export const styles = {
       shadowOffset: { width: -2, height: 4 },
       shadowOpacity: 0.4,
       shadowRadius: 20,
+      position: "absolute", // Add position property
+      top: "50%", // Set top position to 50% (vertical center)
+      left: "50%", // Set left position to 50% (horizontal center)
+      transform: [{ translateX: "-50%" }, { translateY: "-50%" }],
     },
     btnImputar: {
       alignItems: "center",
@@ -19,9 +23,10 @@ export const styles = {
       borderRadius: 4,
       elevation: 3,
       backgroundColor: "#abf5b3",
-      margin: "auto",
-      width: "70%"
+      width: "70%",
+      margin: "auto", 
     },
+    
     title: {
       margin: 20,
       fontSize: 20,
