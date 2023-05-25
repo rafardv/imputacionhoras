@@ -81,4 +81,6 @@ const CheckHoursComponent = () => {
   );
 };
 
+//{ height: 50, width: 200 }
+
 export default CheckHoursComponent;
