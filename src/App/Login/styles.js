@@ -1,7 +1,6 @@
 const styles = {
   container: {
     flex: 1,
-    justifyContent: "center",
     paddingHorizontal: 20,
   },
   label: {
@@ -25,6 +24,17 @@ const styles = {
   rememberText: {
     fontSize: 16,
     marginLeft: 10,
+  },
+  logoContainer: {
+    flex: 0,
+    alignItems: "center",
+    marginBottom: 20,
+    marginBottom: 100,
+  },
+  logo: {
+    width: "100%",
+    height: 200,
+    marginTop: 150,
   },
 };
 

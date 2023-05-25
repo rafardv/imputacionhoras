@@ -15,7 +15,8 @@ import { getProjectCall, getProjectsCall } from "../Service";
 import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
-const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
+const ImputationsHoursComponent = ({ route }) => {
+  const { fechaInicial, fechaFinal } = route.params;
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
