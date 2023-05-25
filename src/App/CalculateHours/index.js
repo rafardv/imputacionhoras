@@ -67,6 +67,7 @@ const ImputationsHoursComponent = ({ route }) => {
       setIsTextInputOpen(false); 
       setSearchText(""); 
       setFilteredProjects(projects); 
+      console.log(fetchedProject)
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -87,6 +88,21 @@ const ImputationsHoursComponent = ({ route }) => {
       console.log("Selected project:", selectedProject.title);
       console.log("Hora: ",fechaInicial, "-",fechaFinal)
   
+
+      console.log("token: ",user.jwtToken)
+      console.log("workspace: ",selectedProject.workspacePK)
+      console.log("PK", selectedProject.PK)
+
+      const updatedProject = await updateProjectByPropertyCall({
+        PK: selectedProject.PK,
+        workspacePK: selectedProject.workspacePK,
+        jwtToken: user.jwtToken,
+        
+      })
+
+      console.log(updatedProject)
+
+
     }
   };
 

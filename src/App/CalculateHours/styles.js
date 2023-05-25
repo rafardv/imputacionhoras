@@ -2,7 +2,7 @@ export const styles = {
   container: {
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center", // Change from "flex-start" to "center"
+    justifyContent: "center", 
     height: "100%",
     width: "100%",
     
@@ -19,7 +19,8 @@ export const styles = {
     backgroundColor: "#abf5b3",
     width: "70%",
     margin: "auto",
-    fontWeight: "bold"
+    fontWeight: "bold",
+   
   },
 
   title: {
