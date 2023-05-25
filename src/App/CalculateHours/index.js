@@ -9,9 +9,10 @@ import {
   ScrollView,
   Image,
   TextInput,
+  Keyboard
 } from "react-native";
 import { styles } from "./styles";
-import { getProjectCall, getProjectsCall } from "../Service";
+import { getProjectCall, getProjectsCall, updateProjectByPropertyCall } from "../Service";
 import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
@@ -54,6 +55,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleProjectClick = async (project) => {
+   
     try {
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
@@ -62,9 +64,9 @@ const ImputationsHoursComponent = ({ route }) => {
       });
   
       setSelectedProject(fetchedProject);
-      setIsTextInputOpen(false); // Reset the search input state
-      setSearchText(""); // Clear the search text
-      setFilteredProjects(projects); // Reset the filtered projects
+      setIsTextInputOpen(false); 
+      setSearchText(""); 
+      setFilteredProjects(projects); 
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -75,14 +77,16 @@ const ImputationsHoursComponent = ({ route }) => {
       setIsTextInputOpen(false);
     } else {
       setIsTextInputOpen(true);
-      setSearchText(""); // Clear the search text when opening the input
-      setFilteredProjects(projects); // Reset the filtered projects
+      setSearchText(""); 
+      setFilteredProjects(projects); 
     }
   };
 
-  const botonClick = () => {
+  const botonClick = async () => {
     if (selectedProject) {
       console.log("Selected project:", selectedProject.title);
+      console.log("Hora: ",fechaInicial, "-",fechaFinal)
+  
     }
   };
 
@@ -94,7 +98,7 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   useEffect(() => {
-    // Filter the projects based on the search text
+   
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().startsWith(searchText.toLowerCase())
     );

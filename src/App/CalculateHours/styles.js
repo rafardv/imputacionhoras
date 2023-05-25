@@ -5,11 +5,8 @@ export const styles = {
     justifyContent: "center", // Change from "flex-start" to "center"
     height: "100%",
     width: "100%",
-    borderRadius: 20,
-    shadowColor: "black",
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
+    
+    
   
   },
   btnImputar: {
