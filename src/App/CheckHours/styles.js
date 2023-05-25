@@ -2,6 +2,7 @@ const styles = {
   container: {
     flex: 1,
     padding: 10,
+    flexDirection: "column",
   },
   pickerContainer: {
     flexDirection: "row",
@@ -10,6 +11,7 @@ const styles = {
   },
   picker: {
     flex: 1,
+    width: 100,
     height: 50,
     marginRight: 10,
   },

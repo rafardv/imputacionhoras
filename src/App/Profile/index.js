@@ -43,7 +43,9 @@ const ProfileComponent = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" color="gray" /> // Mostrar el icono de carga
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="gray" />
+        </View>
       ) : (
         <View style={styles.containerImg}>
           <Image

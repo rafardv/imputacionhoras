@@ -3,6 +3,11 @@ const styles = {
     flex: 1,
     paddingHorizontal: 20,
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   label: {
     fontSize: 16,
     fontWeight: "bold",

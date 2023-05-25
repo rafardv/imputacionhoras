@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, ScrollView, Text, StyleSheet } from "react-native";
+import { View, Button, ScrollView, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { format, eachDayOfInterval } from "date-fns";
