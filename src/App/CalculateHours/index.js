@@ -9,10 +9,14 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { styles } from "./styles";
-import { getProjectCall, getProjectsCall, updateProjectByPropertyCall } from "../Service";
+import {
+  getProjectCall,
+  getProjectsCall,
+  updateProjectByPropertyCall,
+} from "../Service";
 import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
@@ -37,17 +41,13 @@ const ImputationsHoursComponent = ({ route }) => {
           jwtToken: user.jwtToken,
         });
 
-        console.log(importedProjects)
+        console.log(importedProjects);
 
         setProjects(importedProjects);
-
-        
       } catch (error) {
         console.log("Error fetching projects:", error);
       }
     };
-
-    
 
     fetchData();
   }, []);
@@ -55,27 +55,21 @@ const ImputationsHoursComponent = ({ route }) => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleProjectClick = async (project) => {
-    
-
     try {
-      
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
         workspacePK: project.workspace.workspacePK,
         jwtToken: user.jwtToken,
       });
-    
+
       setSelectedProject(fetchedProject);
-      console.log(fetchedProject)
-      setIsTextInputOpen(false); 
-      setSearchText("");                      // guarar en un usestate
-      setFilteredProjects(projects); 
-      if(selectedProject){
-      if(project.PK == selectedProject.PK){
-        setSelectedProject(null)
+
+      setIsTextInputOpen(false);
+      setSearchText("");
+      setFilteredProjects(projects);
+      if (project.PK == selectedProject.PK) {
+        setSelectedProject(null);
       }
-    }
-     
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -86,21 +80,36 @@ const ImputationsHoursComponent = ({ route }) => {
       setIsTextInputOpen(false);
     } else {
       setIsTextInputOpen(true);
-      setSearchText(""); 
-      setFilteredProjects(projects); 
+      setSearchText("");
+      setFilteredProjects(projects);
     }
   };
 
   const botonClick = async () => {
     if (selectedProject) {
+<<<<<<< HEAD
       const userList = [...selectedProject.userList, ...userListArrayToAdd]; 
+=======
+      console.log("Selected project:", selectedProject.title);
+      console.log("Hora: ", fechaInicial, "-", fechaFinal);
+
+      console.log("token: ", user.jwtToken);
+      console.log("workspace: ", selectedProject.workspacePK);
+      console.log("PK", selectedProject.PK);
+
+>>>>>>> 40d75f47714ab38ea408485dec52fad45c7beb41
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
+<<<<<<< HEAD
         userList: userList, 
       });
       
+=======
+      });
+
+>>>>>>> 40d75f47714ab38ea408485dec52fad45c7beb41
       console.log(updatedProject);
     }
   };
@@ -114,7 +123,6 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   useEffect(() => {
-   
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().startsWith(searchText.toLowerCase())
     );
@@ -123,7 +131,6 @@ const ImputationsHoursComponent = ({ route }) => {
 
   return (
     <View style={styles.container}>
-    
       <Pressable onPress={handleTitlePress}>
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
@@ -141,7 +148,6 @@ const ImputationsHoursComponent = ({ route }) => {
         contentContainerStyle={styles.sliderContent}
         showsHorizontalScrollIndicator={false}
         style={styles.contenedorScroll}
-        
       >
         {filteredProjects.map((project, index) => (
           <View key={index} style={styles.itemContainer}>
@@ -163,9 +169,7 @@ const ImputationsHoursComponent = ({ route }) => {
                   />
                 )}
               </View>
-              <Text style={styles.itemText}>
-                {shortenName(project.title)}
-              </Text>
+              <Text style={styles.itemText}>{shortenName(project.title)}</Text>
             </Pressable>
           </View>
         ))}
