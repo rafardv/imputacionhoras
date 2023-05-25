@@ -7,6 +7,7 @@ const styles = {
   pickerContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 10,
   },
   picker: {
@@ -18,6 +19,23 @@ const styles = {
   selectedDayText: {
     fontSize: 18,
     marginBottom: 5,
+  },
+  contenedorDiasYHoras: {
+    marginBottom: 10,
+    fontSize: 20,
+    flex: 2,
+    flexDirection: "row",
+  },
+  dias: {
+    width: "40%",
+    alignItems: "flex-end",
+  },
+  horas: {
+    width: "60%",
+  },
+  dayText: {
+    marginRight: 10,
+    fontSize: 40,
   },
 };
 
