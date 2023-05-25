@@ -10,6 +10,8 @@ const CheckHoursComponent = () => {
   const navigation = useNavigation();
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   const months = [
     "Enero",
@@ -66,14 +68,16 @@ const CheckHoursComponent = () => {
         </Picker>
         <Button title="A" onPress={openCalculateHours} />
       </View>
-
-      <ScrollView>
-        {daysOfMonth.map((day, index) => (
-          <Text key={index} style={styles.dayText}>
-            {format(day, "EEE d", { locale: es })}
-          </Text>
-        ))}
-      </ScrollView>
+      <View>
+        {/* aqui ponemos los estilos del contenedor padre de dia y horas */}
+        <ScrollView>
+          {daysOfMonth.map((day, index) => (
+            <Text key={index} style={styles.dayText}>
+              {format(day, "EEE d", { locale: es })}
+            </Text>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
