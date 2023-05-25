@@ -63,13 +63,16 @@ const ImputationsHoursComponent = ({ route }) => {
       });
 
       setSelectedProject(fetchedProject);
-
-      setIsTextInputOpen(false);
-      setSearchText("");
-      setFilteredProjects(projects);
-      if (project.PK == selectedProject.PK) {
-        setSelectedProject(null);
+      console.log(fetchedProject)
+      setIsTextInputOpen(false); 
+      setSearchText("");                      // guarar en un usestate
+      setFilteredProjects(projects); 
+      if(selectedProject){
+      if(project.PK == selectedProject.PK){
+        setSelectedProject(null)
       }
+    }
+     
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -87,29 +90,14 @@ const ImputationsHoursComponent = ({ route }) => {
 
   const botonClick = async () => {
     if (selectedProject) {
-<<<<<<< HEAD
       const userList = [...selectedProject.userList, ...userListArrayToAdd]; 
-=======
-      console.log("Selected project:", selectedProject.title);
-      console.log("Hora: ", fechaInicial, "-", fechaFinal);
-
-      console.log("token: ", user.jwtToken);
-      console.log("workspace: ", selectedProject.workspacePK);
-      console.log("PK", selectedProject.PK);
-
->>>>>>> 40d75f47714ab38ea408485dec52fad45c7beb41
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-<<<<<<< HEAD
         userList: userList, 
       });
       
-=======
-      });
-
->>>>>>> 40d75f47714ab38ea408485dec52fad45c7beb41
       console.log(updatedProject);
     }
   };
