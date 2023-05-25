@@ -35,11 +35,17 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
           jwtToken: user.jwtToken,
         });
 
+        console.log(importedProjects)
+
         setProjects(importedProjects);
+
+        
       } catch (error) {
         console.log("Error fetching projects:", error);
       }
     };
+
+    
 
     fetchData();
   }, []);
@@ -96,6 +102,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
 
   return (
     <View style={styles.container}>
+    
       <Pressable onPress={handleTitlePress}>
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
@@ -104,7 +111,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
       {isTextInputOpen && (
         <TextInput
           style={styles.searchInput}
-          placeholder="Search for an item"
+          placeholder="Buscar proyecto..."
           onChangeText={(text) => setSearchText(text)}
         />
       )}
