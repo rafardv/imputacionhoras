@@ -4,6 +4,11 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   containerInfo: {
     alignItems: "center",
   },

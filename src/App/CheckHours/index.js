@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Button, ScrollView, Text, StyleSheet } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import { View, Button, ScrollView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { format, eachDayOfInterval } from "date-fns";
 import { es } from "date-fns/locale";
 import styles from "./styles";
+import SelectDropdown from "react-native-select-dropdown";
 
 const CheckHoursComponent = () => {
   const navigation = useNavigation();
@@ -58,15 +58,12 @@ const CheckHoursComponent = () => {
   return (
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={selectedMonth}
-          onValueChange={(month) => monthChange(month)}
+        <SelectDropdown
+          data={months}
+          onSelect={selectedMonth}
+          onBlur={(month) => monthChange(month)}
           style={styles.picker}
-        >
-          {months.map((month, index) => (
-            <Picker.Item key={index} label={month} value={month} />
-          ))}
-        </Picker>
+        />
         <Button title="A" onPress={openCalculateHours} />
       </View>
 
