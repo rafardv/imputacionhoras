@@ -7,6 +7,7 @@ export const styles = {
     width: "100%",
     
     
+    
   
   },
   btnImputar: {
@@ -29,6 +30,7 @@ export const styles = {
     fontSize: 26,
     fontWeight: "bold",
     
+    
   }
   
   ,
@@ -46,9 +48,10 @@ export const styles = {
   sliderContent: {},
   contenedorScroll: {
     maxHeight: 140,
-    minHeight: 50,
+    minHeight: 100,
     marginVertical: 10,
     width: "99%",
+    
     
   },
   itemContainer: {
@@ -57,6 +60,7 @@ export const styles = {
     justifyContent: "center",
     width: 115,
     height: "100%",
+    
   },
   item: {
     alignItems: "center",
@@ -107,7 +111,7 @@ export const styles = {
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-    
+   
     
     
   },
