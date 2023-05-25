@@ -4,6 +4,7 @@ import ProfileComponent from "../Profile";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import ImputationsHoursComponent from "../CalculateHours";
 import { Ionicons } from "@expo/vector-icons";
 
 const NavigationComponent = () => {
@@ -14,6 +15,10 @@ const NavigationComponent = () => {
         <Stack.Screen name="Tabs" options={{ headerShown: false }}>
           {() => <Tabs />}
         </Stack.Screen>
+        <Stack.Screen
+          name="ImputationsHoursComponent"
+          component={ImputationsHoursComponent}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

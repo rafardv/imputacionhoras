@@ -1,10 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TextInput, View, Text, Button, ActivityIndicator } from "react-native";
+import {
+  TextInput,
+  View,
+  Text,
+  Button,
+  ActivityIndicator,
+  Image,
+  Switch,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
 import { accessBilldinCall } from "../Service";
 import styles from "./styles";
-import { Switch } from "react-native";
+import image from "../assets/billdIN-logo-1.png";
 
 const LoginComponent = () => {
   const { user, setUser } = useContext(UserContext);
@@ -100,6 +108,9 @@ const LoginComponent = () => {
         <ActivityIndicator size="large" color="gray" /> // Mostrar el icono de carga
       ) : (
         <View>
+          <View style={styles.logoContainer}>
+            <Image source={image} style={styles.logo} />
+          </View>
           <Text>Correo electrónico</Text>
           <TextInput
             placeholder="Correo"
