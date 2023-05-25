@@ -55,19 +55,25 @@ const ImputationsHoursComponent = ({ route }) => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleProjectClick = async (project) => {
-   
+    
+
     try {
+      
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
         workspacePK: project.workspace.workspacePK,
         jwtToken: user.jwtToken,
       });
-  
+    
       setSelectedProject(fetchedProject);
+      
       setIsTextInputOpen(false); 
       setSearchText(""); 
       setFilteredProjects(projects); 
-      console.log(fetchedProject)
+      if(project.PK == selectedProject.PK){
+        setSelectedProject(null)
+      }
+     
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -85,13 +91,7 @@ const ImputationsHoursComponent = ({ route }) => {
 
   const botonClick = async () => {
     if (selectedProject) {
-      console.log("Selected project:", selectedProject.title);
-      console.log("Hora: ",fechaInicial, "-",fechaFinal)
-  
-
-      console.log("token: ",user.jwtToken)
-      console.log("workspace: ",selectedProject.workspacePK)
-      console.log("PK", selectedProject.PK)
+      
 
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
@@ -102,7 +102,7 @@ const ImputationsHoursComponent = ({ route }) => {
 
       console.log(updatedProject)
 
-
+      
     }
   };
 
