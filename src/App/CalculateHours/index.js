@@ -13,7 +13,8 @@ import { styles } from "./styles";
 import { getProjectCall, getProjectsCall } from "../Service";
 import { UserContext } from "../UserContext";
 
-const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
+const ImputationsHoursComponent = ({ route }) => {
+  const { fechaInicial, fechaFinal } = route.params;
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
 
