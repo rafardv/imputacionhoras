@@ -63,10 +63,20 @@ export const updateProjectByPropertyCall = async ({
   PK,
   workspacePK,
   jwtToken,
+  userList, 
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
-
-  const body = { PK, workspacePK, propertyToUpdate: { name, value } };
+  console.log("lista:", userList)
+  const body = {
+    PK,
+    workspacePK,
+    propertyToUpdate: {
+      name: "userList",
+      value: [...userList],
+    },
+    
+  };
+  console.log("nombre valores", body)
 
   return fetch(updateProjectUrl, {
     headers: {
@@ -84,6 +94,8 @@ export const updateProjectByPropertyCall = async ({
       return response;
     });
 };
+
+
 
 export const getUserByPK = async ({ userPK, jwtToken }) => {
   const userUrl = `${baseUrl}users/by-pk?userPK=${userPK}`;
