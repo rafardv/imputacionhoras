@@ -113,6 +113,7 @@ const ImputationsHoursComponent = ({ fechaInicial, fechaFinal }) => {
         contentContainerStyle={styles.sliderContent}
         showsHorizontalScrollIndicator={false}
         style={styles.contenedorScroll}
+        
       >
         {filteredProjects.map((project, index) => (
           <View key={index} style={styles.itemContainer}>

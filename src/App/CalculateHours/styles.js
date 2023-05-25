@@ -30,7 +30,7 @@ export const styles = {
     marginTop: 0,
     fontSize: 26,
     fontWeight: "bold",
- 
+    
   }
   
   ,
@@ -51,6 +51,7 @@ export const styles = {
     minHeight: 50,
     marginVertical: 10,
     width: "99%",
+    
   },
   itemContainer: {
     margin: 2,
@@ -108,6 +109,8 @@ export const styles = {
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+    
+    
     
   },
 };
