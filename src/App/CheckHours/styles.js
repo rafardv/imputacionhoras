@@ -17,6 +17,9 @@ const styles = {
     fontSize: 18,
     marginBottom: 5,
   },
+  hora: {
+    marginBottom: 100,
+  },
 };
 
 export default styles;

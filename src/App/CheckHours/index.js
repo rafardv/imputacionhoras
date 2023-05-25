@@ -12,6 +12,7 @@ const CheckHoursComponent = () => {
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [isStart, setIsStart] = useState(true);
 
   const months = [
     "Enero",
@@ -27,6 +28,19 @@ const CheckHoursComponent = () => {
     "Noviembre",
     "Diciembre",
   ];
+
+  const checkClick = () => {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString();
+
+    if (isStart) {
+      setStartTime(formattedTime);
+    } else {
+      setEndTime(formattedTime);
+    }
+
+    setIsStart(!isStart);
+  };
 
   const monthChange = (month) => {
     setSelectedMonth(month);
@@ -76,6 +90,11 @@ const CheckHoursComponent = () => {
               {format(day, "EEE d", { locale: es })}
             </Text>
           ))}
+          <View style={styles.hora}>
+            <Text>Hora de inicio: {startTime}</Text>
+            <Text>Hora de fin: {endTime}</Text>
+            <Button title={isStart ? "Inicio" : "Fin"} onPress={checkClick} />
+          </View>
         </ScrollView>
       </View>
     </View>
