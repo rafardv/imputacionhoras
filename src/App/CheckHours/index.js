@@ -130,10 +130,11 @@ const CheckHoursComponent = () => {
     const monthIndex = months.indexOf(month);
     const firstDayOfMonth = new Date(yearValue, monthIndex, 1);
     const lastDayOfMonth = new Date(yearValue, monthIndex + 1, 0);
+    const currentDate = new Date();
 
     const days = eachDayOfInterval({
       start: firstDayOfMonth,
-      end: lastDayOfMonth,
+      end: currentDate > lastDayOfMonth ? lastDayOfMonth : currentDate,
     });
 
     setDaysOfMonth(days);

@@ -18,6 +18,9 @@
 - [x] Diseño de la ventana cerrar ses.
 - [x] Recoger de la bd la info del user.
 - [x] Funcionalidad para cerrar sesión.
-- [ ] Select de mes en ventana de horas.
-- [ ] Funcionalidad para recoger las horas seleccionadas.
-- [ ] Funcionalidad botón check ventana horas.
+- [x] Select de mes en ventana de horas.
+- [x] Funcionalidad para recoger las horas seleccionadas.
+- [x] Funcionalidad botón check ventana horas.
+- [ ] Subir ImputacionList al AsyncStorage.
+- [ ] Mostrar hasta dia actual.
+- [ ] Hacer scroll en dias.
