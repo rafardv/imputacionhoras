@@ -63,7 +63,7 @@ export const updateProjectByPropertyCall = async ({
   PK,
   workspacePK,
   jwtToken,
-  userList, 
+  userHoras, 
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
   console.log("lista:", userList)
@@ -72,7 +72,7 @@ export const updateProjectByPropertyCall = async ({
     workspacePK,
     propertyToUpdate: {
       name: "imputationList",
-      value: [...userList]
+      value: [...userHoras]
     },
     
   };

@@ -61,14 +61,17 @@ const CheckHoursComponent = () => {
         checkInTime: time,
         // Otras propiedades del objeto
       };
-      console.log(data);
+      console.log(data.checkInTime.getMinutes());
+
+      
       // Guardar en AsyncStorage u otro método de almacenamiento
     } else {
       const data = {
         checkOutTime: time,
         // Otras propiedades del objeto
       };
-      console.log(data);
+
+      console.log(data.checkOutTime.getMinutes());
       // Guardar en AsyncStorage u otro método de almacenamiento
     }
   };
@@ -109,8 +112,7 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  const fechaFinal = "8:45";
-  const fechaInicial = "4:22";
+  
   const openCalculateHours = () => {
     navigation.navigate("ImputationsHoursComponent", {
       fechaInicial,
