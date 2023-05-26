@@ -47,7 +47,7 @@ const CheckHoursComponent = () => {
       setStartTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     } else {
-      //setEndTime({ hour, minutes });
+      setEndTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     }
     setCount(count + 1);
