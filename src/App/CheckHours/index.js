@@ -64,7 +64,7 @@ const CheckHoursComponent = () => {
       };
       saveToStorage(now);
       setStartTime(prueba);
-      setHoursList((prevList) => [...prevList, prueba]);
+      setHoursList([...hoursList, prueba]);
     } else {
       const prueba = {
         year: now.getFullYear(),
@@ -75,7 +75,7 @@ const CheckHoursComponent = () => {
       };
       saveToStorage(now);
       setEndTime(prueba);
-      setHoursList((prevList) => [...prevList, prueba]);
+      setHoursList([...hoursList, prueba]);
     }
     setCount(count + 1);
     setIsStart(!isStart);
