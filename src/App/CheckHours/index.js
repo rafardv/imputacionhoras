@@ -25,6 +25,7 @@ const CheckHoursComponent = () => {
     hour: "",
     minutes: "",
   });
+  const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
   const scrollViewRef = useRef(null);
@@ -65,6 +66,7 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       });
+      setHoursList(startTime);
       saveToStorage(now);
     } else {
       setEndTime({
@@ -74,12 +76,17 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       });
+      setHoursList(endTime);
       saveToStorage(now);
     }
     setCount(count + 1);
 
     setIsStart(!isStart);
   };
+
+  useEffect(() => {
+    console.log(hoursList);
+  });
 
   const saveToStorage = async (time) => {
     //console.log(time.getMinutes());
