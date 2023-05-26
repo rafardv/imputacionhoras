@@ -21,7 +21,7 @@ import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { fechaInicial, fechaFinal } = route.params;
+  const { startTime, endTime } = route.params;
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -96,8 +96,8 @@ const ImputationsHoursComponent = ({ route }) => {
         userHoras: {
         userPK: userPK,
         horas: {
-          fechaInicial: fechaInicial,
-          fechaFinal: fechaFinal,
+          fechaInicial: startTime.hour,
+          fechaFinal: endTime.hour,
         },
       }
       });
@@ -166,7 +166,7 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {fechaInicial} || {fechaFinal}
+        {startTime.hour} || {endTime.hour}
       </Text>
       <Pressable
         onPress={botonClick}
