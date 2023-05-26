@@ -11,8 +11,20 @@ const CheckHoursComponent = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState();
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState({
+    year: "",
+    month: "",
+    day: "",
+    hour: "",
+    minutes: "",
+  });
+  const [endTime, setEndTime] = useState({
+    year: "",
+    month: "",
+    day: "",
+    hour: "",
+    minutes: "",
+  });
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
   const scrollViewRef = useRef(null);
@@ -40,14 +52,28 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
     const hour = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, "0");
 
     if (count % 2 === 0) {
-      setStartTime(`${hour}${":"}${minutes}`);
+      setStartTime({
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate(),
+        hour: now.getHours(),
+        minutes: now.getMinutes().toString().padStart(2, "0"),
+      });
       saveToStorage(now);
     } else {
-      setEndTime(`${hour}${":"}${minutes}`);
+      setEndTime({
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+        day: now.getDate(),
+        hour: now.getHours(),
+        minutes: now.getMinutes().toString().padStart(2, "0"),
+      });
       saveToStorage(now);
     }
     setCount(count + 1);
@@ -56,20 +82,17 @@ const CheckHoursComponent = () => {
   };
 
   const saveToStorage = async (time) => {
+    //console.log(time.getMinutes());
     if (count % 2 === 0) {
       const data = {
         checkInTime: time,
-        // Otras propiedades del objeto
       };
-      console.log(data);
-      // Guardar en AsyncStorage u otro método de almacenamiento
+      console.log(data.checkInTime.getMinutes(), " check in");
     } else {
       const data = {
         checkOutTime: time,
-        // Otras propiedades del objeto
       };
-      console.log(data);
-      // Guardar en AsyncStorage u otro método de almacenamiento
+      console.log(data.checkOutTime.getMinutes(), " check out");
     }
   };
 
@@ -122,8 +145,7 @@ const CheckHoursComponent = () => {
     (new Date().getFullYear() - 1 + index).toString()
   );
 
-  console.log("start", startTime);
-  console.log("end", endTime);
+  //console.log(startTime);
 
   return (
     <View style={styles.container}>
@@ -152,8 +174,8 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {daysOfMonth.map((day, index) => (
-              <View>
-                <View key={index} style={styles.dayContainer}>
+              <View key={index}>
+                <View style={styles.dayContainer}>
                   <Text
                     style={[
                       styles.dayText,
