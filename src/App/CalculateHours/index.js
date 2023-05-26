@@ -25,7 +25,10 @@ const ImputationsHoursComponent = ({ route }) => {
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  const [userListArrayToAdd, setuserListArrayToAdd] = useState(["ejemplo1", "ejemplo2"])
+  const [userListArrayToAdd, setuserListArrayToAdd] = useState([
+    "ejemplo1",
+    "ejemplo2",
+  ]);
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -48,10 +51,6 @@ const ImputationsHoursComponent = ({ route }) => {
         console.log("Error fetching projects:", error);
       }
     };
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/rama-victor
     fetchData();
   }, []);
 
@@ -66,16 +65,15 @@ const ImputationsHoursComponent = ({ route }) => {
       });
 
       setSelectedProject(fetchedProject);
-      console.log(fetchedProject)
-      setIsTextInputOpen(false); 
-      setSearchText("");                      // guarar en un usestate
-      setFilteredProjects(projects); 
-      if(selectedProject){
-      if(project.PK == selectedProject.PK){
-        setSelectedProject(null)
+      console.log(fetchedProject);
+      setIsTextInputOpen(false);
+      setSearchText(""); // guarar en un usestate
+      setFilteredProjects(projects);
+      if (selectedProject) {
+        if (project.PK == selectedProject.PK) {
+          setSelectedProject(null);
+        }
       }
-    }
-     
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -93,18 +91,17 @@ const ImputationsHoursComponent = ({ route }) => {
 
   const botonClick = async () => {
     if (selectedProject) {
-      const userList = [...selectedProject.userList, ...userListArrayToAdd]; 
+      const userList = [...selectedProject.userList, ...userListArrayToAdd];
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userList: userList, 
+        userList: userList,
       });
-      
+
       console.log(updatedProject);
     }
   };
-  
 
   const shortenName = (name) => {
     if (name.length > 14) {
