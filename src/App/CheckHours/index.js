@@ -51,23 +51,20 @@ const CheckHoursComponent = () => {
       saveToStorage(now);
     }
     setCount(count + 1);
+    setIsStart(!isStart);
   };
 
   const saveToStorage = async (time) => {
     if (count % 2 === 0) {
       const data = {
         checkInTime: time,
-        // Otras propiedades del objeto
       };
       console.log(data);
-      // Guardar en AsyncStorage u otro método de almacenamiento
     } else {
       const data = {
         checkOutTime: time,
-        // Otras propiedades del objeto
       };
       console.log(data);
-      // Guardar en AsyncStorage u otro método de almacenamiento
     }
   };
 
