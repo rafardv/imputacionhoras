@@ -25,7 +25,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  const [userListArrayToAdd, setuserListArrayToAdd] = useState(["ejemplo1", "ejemplo2"])
+  const [userListArrayToAdd, setuserListArrayToAdd] = useState([])
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -89,18 +89,28 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
+    
     if (selectedProject) {
-      const userList = [...selectedProject.userList, ...userListArrayToAdd]; 
+      const userList = [...selectedProject.userList, ...userListArrayToAdd];
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userList: userList, 
+        userList: userList,
       });
-      
+  
       console.log(updatedProject);
-    }
+      
+    
+
+    
+  }
+
+    
   };
+  
+  
+  
   
 
   const shortenName = (name) => {
@@ -124,13 +134,13 @@ const ImputationsHoursComponent = ({ route }) => {
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
       </Pressable>
-      {isTextInputOpen && (
+      
         <TextInput
           style={styles.searchInput}
           placeholder="Buscar proyecto..."
           onChangeText={(text) => setSearchText(text)}
         />
-      )}
+      
       <ScrollView
         horizontal
         contentContainerStyle={styles.sliderContent}

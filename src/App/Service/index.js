@@ -71,8 +71,8 @@ export const updateProjectByPropertyCall = async ({
     PK,
     workspacePK,
     propertyToUpdate: {
-      name: "userList",
-      value: [...userList],
+      name: "imputationList",
+      value: [...userList]
     },
     
   };
@@ -85,6 +85,7 @@ export const updateProjectByPropertyCall = async ({
     },
     method: "PATCH",
     body: JSON.stringify(body),
+    
   })
     .then((res) => res.json())
     .catch((error) => {
@@ -93,6 +94,8 @@ export const updateProjectByPropertyCall = async ({
     .then((response) => {
       return response;
     });
+
+    
 };
 
 
