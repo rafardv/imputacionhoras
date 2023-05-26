@@ -28,8 +28,7 @@ const styles = {
     flexDirection: "row",
   },
   dias: {
-    width: "40%",
-    alignItems: "flex-end",
+    width: "100%",
   },
   horas: {
     width: "60%",
