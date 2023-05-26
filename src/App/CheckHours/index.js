@@ -36,7 +36,6 @@ const CheckHoursComponent = () => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
   const [count, setCount] = useState(0);
-  //nos traemos cuando clickamos toda la fecha (año/mes/dia/hora/minuto/segundo)
 
   const months = [
     "Enero",
@@ -89,7 +88,6 @@ const CheckHoursComponent = () => {
   });
 
   const saveToStorage = async (time) => {
-    //console.log(time.getMinutes());
     if (count % 2 === 0) {
       const data = {
         checkInTime: time,
@@ -150,8 +148,6 @@ const CheckHoursComponent = () => {
     (new Date().getFullYear() - 1 + index).toString()
   );
 
-  //console.log(startTime);
-
   return (
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
@@ -178,9 +174,16 @@ const CheckHoursComponent = () => {
       >
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
-            {daysOfMonth.map((day, index) => (
-              <View key={index}>
-                <View style={styles.dayContainer}>
+            {daysOfMonth.map((day, index) => {
+              const dayHours = hoursList.filter(
+                (hour) =>
+                  hour.year === day.getFullYear() &&
+                  hour.month === day.getMonth() + 1 &&
+                  hour.day === day.getDate()
+              );
+
+              return (
+                <View key={index} style={styles.dayContainer}>
                   <Text
                     style={[
                       styles.dayText,
@@ -190,17 +193,20 @@ const CheckHoursComponent = () => {
                     {capitalize(format(day, "EEE d", { locale: es }))}
                   </Text>
                   <View style={styles.dot} />
+                  <ScrollView
+                    horizontal
+                    contentContainerStyle={styles.horasContainer}
+                    showsHorizontalScrollIndicator={false}
+                  >
+                    {dayHours.map((hour, hourIndex) => (
+                      <Text key={hourIndex} style={styles.hourText}>
+                        {hour.hour}:{hour.minutes}
+                      </Text>
+                    ))}
+                  </ScrollView>
                 </View>
-                <View style={styles.horas}>
-                  <Text>
-                    {startTime.hour} {startTime.minutes}
-                  </Text>
-                  <Text>
-                    {endTime.hour} {endTime.minutes}
-                  </Text>
-                </View>
-              </View>
-            ))}
+              );
+            })}
           </View>
         </View>
       </ScrollView>
