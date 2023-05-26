@@ -25,6 +25,7 @@ const CheckHoursComponent = () => {
     hour: "",
     minutes: "",
   });
+  const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
   const scrollViewRef = useRef(null);
@@ -52,34 +53,37 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const hour = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, "0");
 
     if (count % 2 === 0) {
-      setStartTime({
+      const prueba = {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
-      });
+      };
       saveToStorage(now);
+      setStartTime(prueba);
+      setHoursList([...hoursList, prueba]);
     } else {
-      setEndTime({
+      const prueba = {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
-      });
+      };
       saveToStorage(now);
+      setEndTime(prueba);
+      setHoursList([...hoursList, prueba]);
     }
     setCount(count + 1);
-
     setIsStart(!isStart);
   };
+
+  useEffect(() => {
+    console.log(hoursList);
+  });
 
   const saveToStorage = async (time) => {
     //console.log(time.getMinutes());
@@ -132,11 +136,10 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  
   const openCalculateHours = () => {
     navigation.navigate("ImputationsHoursComponent", {
       startTime,
-      endTime
+      endTime,
     });
   };
 
