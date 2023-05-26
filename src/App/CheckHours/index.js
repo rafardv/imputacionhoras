@@ -53,34 +53,31 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const hour = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, "0");
 
     if (count % 2 === 0) {
-      setStartTime({
+      const prueba = {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
-      });
-      setHoursList(startTime);
+      };
       saveToStorage(now);
+      setStartTime(prueba);
+      setHoursList((prevList) => [...prevList, prueba]);
     } else {
-      setEndTime({
+      const prueba = {
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
-      });
-      setHoursList(endTime);
+      };
       saveToStorage(now);
+      setEndTime(prueba);
+      setHoursList((prevList) => [...prevList, prueba]);
     }
     setCount(count + 1);
-
     setIsStart(!isStart);
   };
 
@@ -139,11 +136,10 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  
   const openCalculateHours = () => {
     navigation.navigate("ImputationsHoursComponent", {
       startTime,
-      endTime
+      endTime,
     });
   };
 
