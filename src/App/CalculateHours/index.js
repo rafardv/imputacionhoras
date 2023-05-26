@@ -87,19 +87,22 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
+      const userHoras= {
+          userPk: user.pk,
+          horas:{
+            fechaInicial: startTime.minute,
+            fechaFinal: endTime.minute,
+          }
+      }
+
+
     if (selectedProject) {
       const userList = [...selectedProject.userList, ...userListArrayToAdd];
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userHoras: {
-        userPK: userPK,
-        horas: {
-          fechaInicial: startTime.hour,
-          fechaFinal: endTime.hour,
-        },
-      }
+        userHoras: userHoras
       });
       console.log(updatedProject);
     }
