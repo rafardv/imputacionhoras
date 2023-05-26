@@ -20,6 +20,8 @@ const CheckHoursComponent = () => {
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+  const [count, setCount] = useState(0);
+  //nos traemos cuando clickamos toda la fecha (año/mes/dia/hora/minuto/segundo)
 
   const months = [
     "Enero",
@@ -41,7 +43,7 @@ const CheckHoursComponent = () => {
     const hour = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, "0");
 
-    if (isStart) {
+    if (count % 2 === 0) {
       setStartTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     } else {
@@ -54,16 +56,20 @@ const CheckHoursComponent = () => {
   };
 
   const saveToStorage = async (time) => {
-    if (isStart) {
+    if (count % 2 === 0) {
       const data = {
         checkInTime: time,
+        // Otras propiedades del objeto
       };
       console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
     } else {
       const data = {
         checkOutTime: time,
+        // Otras propiedades del objeto
       };
       console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
     }
   };
 
@@ -116,6 +122,9 @@ const CheckHoursComponent = () => {
     (new Date().getFullYear() - 1 + index).toString()
   );
 
+  console.log("start", startTime);
+  console.log("end", endTime);
+
   return (
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
@@ -143,37 +152,24 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {daysOfMonth.map((day, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => setCurrentDay(day.getDate())}
-                style={[
-                  styles.dayContainer,
-                  isSameDay(day, new Date()) && styles.currentDayContainer,
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.dayText,
-                    isSameDay(day, new Date()) && styles.currentDayText,
-                  ]}
-                >
-                  {capitalize(format(day, "EEE d", { locale: es }))}
-                </Text>
-                <View style={styles.dot} />
-              </TouchableOpacity>
-            ))}
-          </View>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horasContainer}
-          >
-            {daysOfMonth.map((_, index) => (
-              <View key={index} style={styles.horas}>
-                <Text>{startTime}</Text>
+              <View>
+                <View key={index} style={styles.dayContainer}>
+                  <Text
+                    style={[
+                      styles.dayText,
+                      isSameDay(day, new Date()) && styles.currentDayText,
+                    ]}
+                  >
+                    {capitalize(format(day, "EEE d", { locale: es }))}
+                  </Text>
+                  <View style={styles.dot} />
+                </View>
+                <View style={styles.horas}>
+                  <Text>{startTime}</Text>
+                </View>
               </View>
             ))}
-          </ScrollView>
+          </View>
         </View>
       </ScrollView>
       <TouchableOpacity onPress={checkClick} style={styles.btn}>
