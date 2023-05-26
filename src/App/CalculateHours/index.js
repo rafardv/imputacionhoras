@@ -48,7 +48,6 @@ const ImputationsHoursComponent = ({ route }) => {
         console.log("Error fetching projects:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -63,16 +62,15 @@ const ImputationsHoursComponent = ({ route }) => {
       });
 
       setSelectedProject(fetchedProject);
-      console.log(fetchedProject)
-      setIsTextInputOpen(false); 
-      setSearchText("");                      // guarar en un usestate
-      setFilteredProjects(projects); 
-      if(selectedProject){
-      if(project.PK == selectedProject.PK){
-        setSelectedProject(null)
+      console.log(fetchedProject);
+      setIsTextInputOpen(false);
+      setSearchText(""); // guarar en un usestate
+      setFilteredProjects(projects);
+      if (selectedProject) {
+        if (project.PK == selectedProject.PK) {
+          setSelectedProject(null);
+        }
       }
-    }
-     
     } catch (error) {
       console.log("Error fetching project:", error);
     }
@@ -98,7 +96,6 @@ const ImputationsHoursComponent = ({ route }) => {
         jwtToken: user.jwtToken,
         userList: userList,
       });
-  
       console.log(updatedProject);
       
     
@@ -108,10 +105,6 @@ const ImputationsHoursComponent = ({ route }) => {
 
     
   };
-  
-  
-  
-  
 
   const shortenName = (name) => {
     if (name.length > 14) {
