@@ -12,6 +12,7 @@ const CheckHoursComponent = () => {
   const [selectedMonth, setSelectedMonth] = useState();
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [startTime, setStartTime] = useState({
+    type: "",
     year: "",
     month: "",
     day: "",
@@ -19,6 +20,7 @@ const CheckHoursComponent = () => {
     minutes: "",
   });
   const [endTime, setEndTime] = useState({
+    type: "",
     year: "",
     month: "",
     day: "",
@@ -53,9 +55,9 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
-
     if (count % 2 === 0) {
       const prueba = {
+        type: "checkIn",
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
@@ -67,6 +69,7 @@ const CheckHoursComponent = () => {
       setHoursList([...hoursList, prueba]);
     } else {
       const prueba = {
+        type: "checkOut",
         year: now.getFullYear(),
         month: now.getMonth() + 1,
         day: now.getDate(),
