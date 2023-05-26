@@ -11,7 +11,7 @@ const CheckHoursComponent = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState();
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState({});
   const [endTime, setEndTime] = useState(null);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
@@ -20,6 +20,8 @@ const CheckHoursComponent = () => {
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
+  const [count, setCount] = useState(0);
+  //nos traemos cuando clickamos toda la fecha (año/mes/dia/hora/minuto/segundo)
 
   const months = [
     "Enero",
@@ -38,15 +40,35 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
-    const formattedTime = now.toLocaleTimeString();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
 
-    if (isStart) {
-      setStartTime(formattedTime);
+    if (count % 2 === 0) {
+      //setStartTime({ hour, minutes });
+      saveToStorage(now);
     } else {
-      setEndTime(formattedTime);
+      //setEndTime({ hour, minutes });
+      saveToStorage(now);
     }
+    setCount(count + 1);
+  };
 
-    setIsStart(!isStart);
+  const saveToStorage = async (time) => {
+    if (count % 2 === 0) {
+      const data = {
+        checkInTime: time,
+        // Otras propiedades del objeto
+      };
+      console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
+    } else {
+      const data = {
+        checkOutTime: time,
+        // Otras propiedades del objeto
+      };
+      console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
+    }
   };
 
   useEffect(() => {
@@ -138,15 +160,10 @@ const CheckHoursComponent = () => {
               </View>
             ))}
           </View>
-
-          <View style={styles.horas}>
-            <Text>Hora de inicio: {startTime}</Text>
-            <Text>Hora de fin: {endTime}</Text>
-          </View>
         </View>
       </ScrollView>
       <TouchableOpacity onPress={checkClick} style={styles.btn}>
-        <Text>{isStart ? "Inicio" : "Fin"}</Text>
+        <Text>{isStart ? "Check in" : "Check out"}</Text>
       </TouchableOpacity>
     </View>
   );
