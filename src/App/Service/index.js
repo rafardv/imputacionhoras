@@ -58,45 +58,54 @@ export const getProjectCall = async ({ projectPK, workspacePK, jwtToken }) => {
       return response;
     });
 };
-
 export const updateProjectByPropertyCall = async ({
   PK,
   workspacePK,
   jwtToken,
-  userHoras, 
+  userHoras,
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
-  console.log("lista:", userList)
+
   const body = {
     PK,
     workspacePK,
     propertyToUpdate: {
       name: "imputationList",
-      value: [...userHoras]
+      value: [], 
     },
-    
   };
-  console.log("nombre valores", body)
 
-  return fetch(updateProjectUrl, {
-    headers: {
-      ...headers,
-      Authorization: jwtToken,
-    },
-    method: "PATCH",
-    body: JSON.stringify(body),
-    
-  })
-    .then((res) => res.json())
-    .catch((error) => {
-      return { error: error };
-    })
-    .then((response) => {
-      return response;
+ 
+  body.propertyToUpdate.value.push(userHoras);
+
+  console.log("nombre valores", body);
+
+  try {
+    const response = await fetch(updateProjectUrl, {
+      headers: {
+        ...headers,
+        Authorization: jwtToken,
+      },
+      method: "PATCH",
+      body: JSON.stringify(body),
     });
 
-    
+    if (!response.ok) {
+      throw new Error("Failed to update project");
+    }
+
+    return response.json();
+  } catch (error) {
+    return { error: error.message };
+  }
 };
+
+
+
+
+
+
+
 
 
 
