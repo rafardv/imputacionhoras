@@ -21,11 +21,11 @@ import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { fechaInicial, fechaFinal } = route.params;
+  const { startTime, endTime } = route.params;
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  const [userListArrayToAdd, setuserListArrayToAdd] = useState([])
+  const [userListArrayToAdd, setuserListArrayToAdd] = useState([]);
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -87,23 +87,22 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
-    
     if (selectedProject) {
       const userList = [...selectedProject.userList, ...userListArrayToAdd];
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userList: userList,
+        userHoras: {
+        userPK: userPK,
+        horas: {
+          fechaInicial: startTime.hour,
+          fechaFinal: endTime.hour,
+        },
+      }
       });
       console.log(updatedProject);
-      
-    
-
-    
-  }
-
-    
+    }
   };
 
   const shortenName = (name) => {
@@ -127,13 +126,13 @@ const ImputationsHoursComponent = ({ route }) => {
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
       </Pressable>
-      
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar proyecto..."
-          onChangeText={(text) => setSearchText(text)}
-        />
-      
+
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar proyecto..."
+        onChangeText={(text) => setSearchText(text)}
+      />
+
       <ScrollView
         horizontal
         contentContainerStyle={styles.sliderContent}
@@ -167,7 +166,7 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {fechaInicial} || {fechaFinal}
+        {startTime.hour} || {endTime.hour}
       </Text>
       <Pressable
         onPress={botonClick}

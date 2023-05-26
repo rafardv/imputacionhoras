@@ -139,12 +139,11 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  const fechaFinal = "8:45";
-  const fechaInicial = "4:22";
+  
   const openCalculateHours = () => {
     navigation.navigate("ImputationsHoursComponent", {
-      fechaInicial,
-      fechaFinal,
+      startTime,
+      endTime
     });
   };
 
