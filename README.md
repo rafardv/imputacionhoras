@@ -7,10 +7,10 @@
 - [x] Funcionalidad navegacion entre tabs y ventanas
 ## Tareas  Javi:
 
-- [ ] Diseño ventana imputar
-- [ ] Funcionalidad llamadas API
+- [x] Diseño ventana imputar
+- [x] Funcionalidad llamadas API
 - [ ] Imputacion proyecto
-- [ ] Buscador de proyectos
+- [x] Buscador de proyectos
 
 
 
