@@ -3,6 +3,7 @@ const styles = {
     flex: 1,
     padding: 10,
     flexDirection: "column",
+    marginTop: "15%",
   },
   pickerContainer: {
     flexDirection: "row",
@@ -35,7 +36,25 @@ const styles = {
   },
   dayText: {
     marginRight: 10,
-    fontSize: 40,
+    fontSize: 35,
+  },
+  dayContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "black",
+    marginRight: 8,
+  },
+  btn: {
+    backgroundColor: "#82C1C6",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    borderRadius: 5,
   },
 };
 

@@ -3,6 +3,7 @@ const styles = {
     flex: 0.6,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: "15%",
   },
   loading: {
     flex: 1,

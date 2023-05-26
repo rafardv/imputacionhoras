@@ -8,7 +8,6 @@ import styles from "./styles";
 const ContentMain = () => {
   const { user } = useContext(UserContext);
 
-  console.log(user);
   return (
     <View style={styles.container}>
       {user === null ? <LoginComponent /> : <NavigationComponent />}

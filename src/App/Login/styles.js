@@ -41,6 +41,13 @@ const styles = {
     height: 200,
     marginTop: 150,
   },
+  btn: {
+    backgroundColor: "#82C1C6",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    borderRadius: 5,
+  },
 };
 
 export default styles;

@@ -12,12 +12,15 @@ const NavigationComponent = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Tabs" options={{ headerShown: false }}>
-          {() => <Tabs />}
-        </Stack.Screen>
+        <Stack.Screen
+          name="Tabs"
+          component={Tabs}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="ImputationsHoursComponent"
           component={ImputationsHoursComponent}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -28,7 +31,14 @@ const Tabs = () => {
   const Tab = createBottomTabNavigator();
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarVisible: false,
+        headerShown: false,
+        tabBarActiveTintColor: "#82C1C6",
+        tabBarInactiveTintColor: "gray",
+      }}
+    >
       <Tab.Screen
         name="Imputación horas"
         component={CheckHoursComponent}

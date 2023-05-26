@@ -4,7 +4,7 @@
 - [x] Diseño ventana Login
 - [x] Funcionalidad inputs login y contraseña
 - [x] Funcionalidad para recordar login
-- [ ] Funcionalidad navegacion entre tabs y ventanas
+- [x] Funcionalidad navegacion entre tabs y ventanas
 ## Tareas  Javi:
 
 - [ ] Diseño ventana imputar
