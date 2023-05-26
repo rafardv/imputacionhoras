@@ -20,8 +20,6 @@ const CheckHoursComponent = () => {
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
-  const [count, setCount] = useState(0);
-  //nos traemos cuando clickamos toda la fecha (año/mes/dia/hora/minuto/segundo)
 
   const months = [
     "Enero",
@@ -43,18 +41,19 @@ const CheckHoursComponent = () => {
     const hour = now.getHours();
     const minutes = now.getMinutes().toString().padStart(2, "0");
 
-    if (count % 2 === 0) {
+    if (isStart) {
       setStartTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     } else {
       setEndTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     }
-    setCount(count + 1);
+
+    setIsStart(!isStart);
   };
 
   const saveToStorage = async (time) => {
-    if (count % 2 === 0) {
+    if (isStart) {
       const data = {
         checkInTime: time,
         // Otras propiedades del objeto
@@ -120,8 +119,6 @@ const CheckHoursComponent = () => {
     (new Date().getFullYear() - 1 + index).toString()
   );
 
-  console.log(startTime);
-
   return (
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
@@ -149,7 +146,14 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {daysOfMonth.map((day, index) => (
-              <View key={index} style={styles.dayContainer}>
+              <TouchableOpacity
+                key={index}
+                onPress={() => setCurrentDay(day.getDate())}
+                style={[
+                  styles.dayContainer,
+                  isSameDay(day, new Date()) && styles.currentDayContainer,
+                ]}
+              >
                 <Text
                   style={[
                     styles.dayText,
@@ -159,9 +163,20 @@ const CheckHoursComponent = () => {
                   {capitalize(format(day, "EEE d", { locale: es }))}
                 </Text>
                 <View style={styles.dot} />
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.horasContainer}
+          >
+            {daysOfMonth.map((_, index) => (
+              <View key={index} style={styles.horas}>
+                <Text>{startTime}</Text>
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </ScrollView>
       <TouchableOpacity onPress={checkClick} style={styles.btn}>
