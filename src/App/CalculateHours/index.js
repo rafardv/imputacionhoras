@@ -36,18 +36,13 @@ const ImputationsHoursComponent = ({ route }) => {
           jwtToken: user.jwtToken,
         });
 
-        console.log(importedProjects)
+        console.log(importedProjects);
 
         setProjects(importedProjects);
-
-        
       } catch (error) {
         console.log("Error fetching projects:", error);
       }
     };
-
-    
-
     fetchData();
   }, []);
 
@@ -60,7 +55,7 @@ const ImputationsHoursComponent = ({ route }) => {
         workspacePK: project.workspace.workspacePK,
         jwtToken: user.jwtToken,
       });
-  
+
       setSelectedProject(fetchedProject);
       setIsTextInputOpen(false); // Reset the search input state
       setSearchText(""); // Clear the search text
@@ -103,7 +98,6 @@ const ImputationsHoursComponent = ({ route }) => {
 
   return (
     <View style={styles.container}>
-    
       <Pressable onPress={handleTitlePress}>
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
@@ -121,7 +115,6 @@ const ImputationsHoursComponent = ({ route }) => {
         contentContainerStyle={styles.sliderContent}
         showsHorizontalScrollIndicator={false}
         style={styles.contenedorScroll}
-        
       >
         {filteredProjects.map((project, index) => (
           <View key={index} style={styles.itemContainer}>
@@ -143,9 +136,7 @@ const ImputationsHoursComponent = ({ route }) => {
                   />
                 )}
               </View>
-              <Text style={styles.itemText}>
-                {shortenName(project.title)}
-              </Text>
+              <Text style={styles.itemText}>{shortenName(project.title)}</Text>
             </Pressable>
           </View>
         ))}

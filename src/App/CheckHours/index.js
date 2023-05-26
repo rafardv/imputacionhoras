@@ -10,9 +10,11 @@ const CheckHoursComponent = () => {
   const navigation = useNavigation();
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState({});
   const [endTime, setEndTime] = useState(null);
   const [isStart, setIsStart] = useState(true);
+  const [count, setCount] = useState(0);
+  //nos traemos cuando clickamos toda la fecha (año/mes/dia/hora/minuto/segundo)
 
   const months = [
     "Enero",
@@ -31,15 +33,35 @@ const CheckHoursComponent = () => {
 
   const checkClick = () => {
     const now = new Date();
-    const formattedTime = now.toLocaleTimeString();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
 
-    if (isStart) {
-      setStartTime(formattedTime);
+    if (count % 2 === 0) {
+      //setStartTime({ hour, minutes });
+      saveToStorage(now);
     } else {
-      setEndTime(formattedTime);
+      //setEndTime({ hour, minutes });
+      saveToStorage(now);
     }
+    setCount(count + 1);
+  };
 
-    setIsStart(!isStart);
+  const saveToStorage = async (time) => {
+    if (count % 2 === 0) {
+      const data = {
+        checkInTime: time,
+        // Otras propiedades del objeto
+      };
+      console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
+    } else {
+      const data = {
+        checkOutTime: time,
+        // Otras propiedades del objeto
+      };
+      console.log(data);
+      // Guardar en AsyncStorage u otro método de almacenamiento
+    }
   };
 
   const monthChange = (month) => {
@@ -91,9 +113,12 @@ const CheckHoursComponent = () => {
             </Text>
           ))}
           <View style={styles.hora}>
-            <Text>Hora de inicio: {startTime}</Text>
-            <Text>Hora de fin: {endTime}</Text>
-            <Button title={isStart ? "Inicio" : "Fin"} onPress={checkClick} />
+            <Text>Hora de inicio: {startTime.hour}</Text>
+            <Text>Hora de fin: {endTime.hour}</Text>
+            <Button
+              title={isStart ? "Check in" : "Check out"}
+              onPress={checkClick}
+            />
           </View>
         </ScrollView>
       </View>
