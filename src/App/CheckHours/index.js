@@ -11,7 +11,7 @@ const CheckHoursComponent = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState();
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [startTime, setStartTime] = useState({});
+  const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
@@ -41,10 +41,10 @@ const CheckHoursComponent = () => {
   const checkClick = () => {
     const now = new Date();
     const hour = now.getHours();
-    const minutes = now.getMinutes();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
 
     if (count % 2 === 0) {
-      //setStartTime({ hour, minutes });
+      setStartTime(`${hour}${":"}${minutes}`);
       saveToStorage(now);
     } else {
       //setEndTime({ hour, minutes });
@@ -119,6 +119,8 @@ const CheckHoursComponent = () => {
   const years = Array.from({ length: 2 }, (_, index) =>
     (new Date().getFullYear() - 1 + index).toString()
   );
+
+  console.log(startTime);
 
   return (
     <View style={styles.container}>
