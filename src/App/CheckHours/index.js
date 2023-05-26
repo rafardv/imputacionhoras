@@ -186,7 +186,12 @@ const CheckHoursComponent = () => {
                   <View style={styles.dot} />
                 </View>
                 <View style={styles.horas}>
-                  <Text>{startTime.hour}</Text>
+                  <Text>
+                    {startTime.hour} {startTime.minutes}
+                  </Text>
+                  <Text>
+                    {endTime.hour} {endTime.minutes}
+                  </Text>
                 </View>
               </View>
             ))}
