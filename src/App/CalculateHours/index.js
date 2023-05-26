@@ -102,7 +102,8 @@ const ImputationsHoursComponent = ({ route }) => {
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userHoras: userHoras
+        userHoras: userHoras,
+        imputationList: selectedProject.imputationList
       });
       console.log(updatedProject);
     }

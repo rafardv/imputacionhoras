@@ -63,22 +63,9 @@ export const updateProjectByPropertyCall = async ({
   workspacePK,
   jwtToken,
   userHoras,
+  imputationList,
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
-
-  const body = {
-    PK,
-    workspacePK,
-    propertyToUpdate: {
-      name: "imputationList",
-      value: [], 
-    },
-  };
-
- 
-  body.propertyToUpdate.value.push(userHoras);
-
-  console.log("nombre valores", body);
 
   try {
     const response = await fetch(updateProjectUrl, {
@@ -87,7 +74,14 @@ export const updateProjectByPropertyCall = async ({
         Authorization: jwtToken,
       },
       method: "PATCH",
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        PK,
+        workspacePK,
+        propertyToUpdate: {
+          name: "imputationList",
+          value: [...imputationList, userHoras],
+        },
+      }),
     });
 
     if (!response.ok) {
