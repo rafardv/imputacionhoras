@@ -3,7 +3,7 @@ import {
   TextInput,
   View,
   Text,
-  Button,
+  TouchableOpacity,
   ActivityIndicator,
   Image,
   Switch,
@@ -137,7 +137,9 @@ const LoginComponent = () => {
             />
             <Text style={styles.rememberText}>Recordar cuenta</Text>
           </View>
-          <Button title="Entrar" onPress={login} />
+          <TouchableOpacity style={styles.btn} onPress={login}>
+            <Text>Entrar</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

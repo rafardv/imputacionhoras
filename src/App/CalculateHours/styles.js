@@ -2,13 +2,9 @@ export const styles = {
   container: {
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center", 
+    justifyContent: "center",
     height: "100%",
     width: "100%",
-    
-    
-    
-  
   },
   btnImputar: {
     alignItems: "center",
@@ -21,7 +17,6 @@ export const styles = {
     width: "70%",
     margin: "auto",
     fontWeight: "bold",
-   
   },
 
   title: {
@@ -29,11 +24,8 @@ export const styles = {
     marginTop: 0,
     fontSize: 26,
     fontWeight: "bold",
-    
-    
-  }
-  
-  ,
+  },
+
   defaultImage: {
     width: 80,
     height: 80,
@@ -51,8 +43,6 @@ export const styles = {
     minHeight: 100,
     marginVertical: 10,
     width: "99%",
-    
-    
   },
   itemContainer: {
     margin: 2,
@@ -60,7 +50,6 @@ export const styles = {
     justifyContent: "center",
     width: 115,
     height: "100%",
-    
   },
   item: {
     alignItems: "center",
@@ -111,8 +100,5 @@ export const styles = {
     },
     shadowOpacity: 0.1,
     shadowRadius: 2,
-   
-    
-    
   },
 };
