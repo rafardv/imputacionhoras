@@ -23,7 +23,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
   const [userListArrayToAdd, setuserListArrayToAdd] = useState([]);
-  const [isTextInputOpen, setIsTextInputOpen] = useState(false);
+ 
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
@@ -38,11 +38,11 @@ const ImputationsHoursComponent = ({ route }) => {
           jwtToken: user.jwtToken,
         });
 
-        console.log(importedProjects);
+        
 
         setProjects(importedProjects);
       } catch (error) {
-        console.log("Error fetching projects:", error);
+        
       }
     };
     fetchData();
@@ -73,15 +73,7 @@ const ImputationsHoursComponent = ({ route }) => {
     }
   };
 
-  const handleTitlePress = () => {
-    if (isTextInputOpen) {
-      setIsTextInputOpen(false);
-    } else {
-      setIsTextInputOpen(true);
-      setSearchText("");
-      setFilteredProjects(projects);
-    }
-  };
+  
 
   const botonClick = async () => {
     const userHoras = {
@@ -121,7 +113,7 @@ const ImputationsHoursComponent = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={handleTitlePress}>
+      <Pressable>
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
