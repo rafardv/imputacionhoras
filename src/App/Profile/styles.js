@@ -1,9 +1,8 @@
 const styles = {
   container: {
-    flex: 0.6,
+    flex: 1,
     alignItems: "center",
-    justifyContent: "flex-start",
-    marginTop: "15%",
+    justifyContent: "center",
   },
   loading: {
     flex: 1,

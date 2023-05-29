@@ -38,7 +38,7 @@ const LoginComponent = () => {
           if (storedEmail !== "" && storedPassword !== "") {
             setUserA({ email: storedEmail, password: storedPassword });
             setRememberAccount(true);
-            performLogin(); // Lanzar la petición automáticamente al cargar el componente
+            login(); // Lanzar la petición automáticamente al cargar el componente
           }
         }
       } catch (error) {
@@ -49,7 +49,7 @@ const LoginComponent = () => {
     loadStoredData();
   }, [rememberAccount]);
 
-  const performLogin = async () => {
+  const login = async () => {
     setLoading(true);
 
     if (!userA.email || !userA.password) {
@@ -93,15 +93,6 @@ const LoginComponent = () => {
     }
 
     setLoading(false);
-  };
-
-  const login = () => {
-    if (!userA.email || !userA.password) {
-      console.log("Por favor, ingresa un correo y una contraseña válidos");
-      return;
-    }
-
-    performLogin();
   };
 
   return (
