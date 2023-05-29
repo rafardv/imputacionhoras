@@ -241,7 +241,7 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "green" },
+                                  { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
                                 {checkIn.hour}:{checkIn.minutes}
@@ -249,7 +249,7 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "red" },
+                                  { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
                                 {checkOut.hour}:{checkOut.minutes}
@@ -259,7 +259,7 @@ const CheckHoursComponent = () => {
                             <Text
                               style={[
                                 styles.hourText,
-                                { backgroundColor: "green" },
+                                { backgroundColor: "#c0f5b8" },
                               ]}
                             >
                               {checkIn.hour}:{checkIn.minutes}
