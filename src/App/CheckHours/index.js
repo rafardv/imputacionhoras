@@ -185,7 +185,6 @@ const CheckHoursComponent = () => {
           }}
           defaultValue={selectedYear.toString()}
         />
-        <Button title="A" onPress={openCalculateHours} />
       </View>
       <ScrollView
         ref={scrollViewRef}
