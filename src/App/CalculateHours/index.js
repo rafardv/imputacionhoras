@@ -89,14 +89,17 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
-    
+   
+
+
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkIn.hour,
-        fechaFinal: checkOut.hour,
+        fechaInicial: checkIn.hour + ":" + checkIn.minutes,
+        fechaFinal: checkOut.hour + ":" + checkOut.minutes,
       },
     };
+    
 
     if (selectedProject) {
       const userList = [...selectedProject.userList, ...userListArrayToAdd];
