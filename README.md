@@ -14,6 +14,7 @@
 - [x] Funcionalidad llamadas API
 - [ ] Imputacion proyecto
 - [x] Buscador de proyectos
+- [ ] Modal preview confirmar
 
 ## Tareas Victor:
 - [x] Diseño de la ventana cerrar ses.

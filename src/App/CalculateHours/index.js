@@ -69,7 +69,7 @@ const ImputationsHoursComponent = ({ route }) => {
         }
       }
     } catch (error) {
-      console.log("Error fetching project:", error);
+      
     }
   };
 
