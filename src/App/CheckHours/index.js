@@ -5,6 +5,7 @@ import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { es } from "date-fns/locale";
 import styles from "./styles";
 import SelectDropdown from "react-native-select-dropdown";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CheckHoursComponent = () => {
   const navigation = useNavigation();
@@ -47,7 +48,7 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      saveToStorage(now);
+      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -57,6 +58,7 @@ const CheckHoursComponent = () => {
           checkOut: null,
         };
         setHoursList([...hoursList, hourTwoObjects]);
+        //saveToStorage(hourTwoObjects);
       }
     } else {
       const hourObject = {
@@ -67,33 +69,48 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      saveToStorage(now);
+      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
       if (existingHourObject) {
         existingHourObject.checkOut = hourObject;
+        saveToStorage(existingHourObject);
       }
     }
     setCount(count + 1);
     setIsStart(!isStart);
   };
 
-  useEffect(() => {
-    console.log(hoursList);
-  });
+  const fetchData = async () => {
+    try {
+      const data = await AsyncStorage.getItem("checkTimes");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        const { checkInTime, checkOutTime } = parsedData;
+        const hourTwoObjects = {
+          checkIn: checkInTime,
+          checkOut: checkOutTime,
+        };
+        setHoursList([hourTwoObjects]);
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
 
-  const saveToStorage = async (time) => {
-    if (count % 2 === 0) {
+  const saveToStorage = async (hourTwoObjects) => {
+    console.log(hourTwoObjects);
+    try {
       const data = {
-        checkInTime: time,
+        checkInTime: hourTwoObjects.checkIn,
+        checkOutTime: hourTwoObjects.checkOut,
       };
-      console.log(data.checkInTime.getMinutes(), " check in");
-    } else {
-      const data = {
-        checkOutTime: time,
-      };
-      console.log(data.checkOutTime.getMinutes(), " check out");
+
+      await AsyncStorage.setItem("checkTimes", JSON.stringify(data));
+      console.log("Data saved successfully");
+    } catch (error) {
+      console.log("Error saving data:", error);
     }
   };
 
@@ -101,6 +118,7 @@ const CheckHoursComponent = () => {
     const currentMonth = months[getMonth(new Date())];
     monthChange(currentMonth);
     setCurrentDay(new Date().getDate());
+    fetchData();
   }, []);
 
   useEffect(() => {
