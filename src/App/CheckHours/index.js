@@ -17,7 +17,7 @@ const CheckHoursComponent = () => {
   const [currentDay, setCurrentDay] = useState(null);
   const [count, setCount] = useState(0);
   const scrollViewRef = useRef(null);
-  const reversedDaysOfMonth = [...daysOfMonth.reverse()];
+  const reversedDaysOfMonth = [...daysOfMonth].reverse();
 
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -46,7 +46,7 @@ const CheckHoursComponent = () => {
     if (currentDay && scrollViewRef.current) {
       const dayWidth = 80;
       const scrollOffset = (currentDay - 1) * dayWidth;
-      scrollViewRef.current.scrollTo({ x: scrollOffset, animated: true });
+      scrollViewRef.current.scrollTo({ animated: true });
     }
   }, [currentDay]);
 
