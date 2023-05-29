@@ -207,6 +207,7 @@ const CheckHoursComponent = () => {
 
               return (
                 <View key={index} style={styles.dayContainer}>
+                <View style={styles.daysContainer2}>
                   <Text
                     style={[
                       styles.dayText,
@@ -215,6 +216,7 @@ const CheckHoursComponent = () => {
                   >
                     {capitalize(format(day, "EEE d", { locale: es }))}
                   </Text>
+                  </View>
                   <View style={styles.dot} />
                   <ScrollView
                     horizontal
