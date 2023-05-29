@@ -24,4 +24,4 @@
 - [ ] Subir ImputacionList al AsyncStorage.
 - [x] Mostrar hasta dia actual.
 - [ ] Hacer scroll en dias.
-- [ ] contenedor y colores de las horas.
+- [x] contenedor y colores de las horas.

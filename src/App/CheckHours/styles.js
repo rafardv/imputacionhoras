@@ -55,6 +55,18 @@ const styles = {
     height: 40,
     borderRadius: 5,
   },
+  hourContainer: {
+    marginRight: 10,
+  },
+  hourContainerText: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  hourText: {
+    padding: 3,
+    margin: 2,
+    borderRadius: 7,
+  },
 };
 
 export default styles;

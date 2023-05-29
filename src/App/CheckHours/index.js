@@ -27,6 +27,11 @@ const CheckHoursComponent = () => {
     hour: "",
     minutes: "",
   });
+
+  const [twoChecks, setTwoChecs] = useState({
+    startTime: "",
+    endTime: "",
+  });
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
@@ -55,7 +60,7 @@ const CheckHoursComponent = () => {
   const checkClick = () => {
     const now = new Date();
     if (count % 2 === 0) {
-      const prueba = {
+      const hourObject = {
         type: "checkIn",
         year: now.getFullYear(),
         month: now.getMonth() + 1,
@@ -64,10 +69,19 @@ const CheckHoursComponent = () => {
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
       saveToStorage(now);
-      setStartTime(prueba);
-      setHoursList([...hoursList, prueba]);
+      setStartTime(hourObject);
+      const existingHourObject = hoursList.find(
+        (hour) => hour.checkOut === null
+      );
+      if (!existingHourObject) {
+        const hourTwoObjects = {
+          checkIn: hourObject,
+          checkOut: null,
+        };
+        setHoursList([...hoursList, hourTwoObjects]);
+      }
     } else {
-      const prueba = {
+      const hourObject = {
         type: "checkOut",
         year: now.getFullYear(),
         month: now.getMonth() + 1,
@@ -76,8 +90,13 @@ const CheckHoursComponent = () => {
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
       saveToStorage(now);
-      setEndTime(prueba);
-      setHoursList([...hoursList, prueba]);
+      setEndTime(hourObject);
+      const existingHourObject = hoursList.find(
+        (hour) => hour.checkOut === null
+      );
+      if (existingHourObject) {
+        existingHourObject.checkOut = hourObject;
+      }
     }
     setCount(count + 1);
     setIsStart(!isStart);
@@ -176,12 +195,21 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {daysOfMonth.map((day, index) => {
-              const dayHours = hoursList.filter(
-                (hour) =>
-                  hour.year === day.getFullYear() &&
-                  hour.month === day.getMonth() + 1 &&
-                  hour.day === day.getDate()
-              );
+              const dayHours = hoursList.filter((hour) => {
+                const { checkIn, checkOut } = hour;
+                const checkInDate = new Date(
+                  checkIn.year,
+                  checkIn.month - 1,
+                  checkIn.day
+                );
+                const checkOutDate = checkOut
+                  ? new Date(checkOut.year, checkOut.month - 1, checkOut.day)
+                  : null;
+                return (
+                  isSameDay(day, checkInDate) ||
+                  (checkOutDate && isSameDay(day, checkOutDate))
+                );
+              });
 
               return (
                 <View key={index} style={styles.dayContainer}>
@@ -199,11 +227,47 @@ const CheckHoursComponent = () => {
                     contentContainerStyle={styles.horasContainer}
                     showsHorizontalScrollIndicator={false}
                   >
-                    {dayHours.map((hour, hourIndex) => (
-                      <Text key={hourIndex} style={styles.hourText}>
-                        {hour.hour}:{hour.minutes}
-                      </Text>
-                    ))}
+                    {dayHours.map((check, hourIndex) => {
+                      const { checkIn, checkOut } = check;
+                      const hasCheckOut = checkOut !== null;
+
+                      return (
+                        <TouchableOpacity
+                          key={hourIndex}
+                          style={styles.hourContainer}
+                        >
+                          {hasCheckOut ? (
+                            <View style={styles.hourContainerText}>
+                              <Text
+                                style={[
+                                  styles.hourText,
+                                  { backgroundColor: "green" },
+                                ]}
+                              >
+                                {checkIn.hour}:{checkIn.minutes}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.hourText,
+                                  { backgroundColor: "red" },
+                                ]}
+                              >
+                                {checkOut.hour}:{checkOut.minutes}
+                              </Text>
+                            </View>
+                          ) : (
+                            <Text
+                              style={[
+                                styles.hourText,
+                                { backgroundColor: "green" },
+                              ]}
+                            >
+                              {checkIn.hour}:{checkIn.minutes}
+                            </Text>
+                          )}
+                        </TouchableOpacity>
+                      );
+                    })}
                   </ScrollView>
                 </View>
               );
