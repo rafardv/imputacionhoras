@@ -67,7 +67,13 @@ export const updateProjectByPropertyCall = async ({
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
+  console.log(userHoras.horas)
+
   try {
+    
+    
+
+
     const response = await fetch(updateProjectUrl, {
       headers: {
         ...headers,
@@ -79,16 +85,29 @@ export const updateProjectByPropertyCall = async ({
         workspacePK,
         propertyToUpdate: {
           name: "imputationList",
-          value: [...imputationList, userHoras],
+          value: imputationList ? [...imputationList, userHoras] : [imputationList, userHoras]
         },
       }),
-    });
+      
+    }
+    
+    );
+  
+    
+  
+
+
+    
+
+  
+
 
     if (!response.ok) {
       throw new Error("Failed to update project");
     }
 
     return response.json();
+    
   } catch (error) {
     return { error: error.message };
   }
