@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Button, ScrollView, Text, TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { es } from "date-fns/locale";
@@ -15,12 +15,14 @@ const CheckHoursComponent = () => {
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
+  const [count, setCount] = useState(0);
   const scrollViewRef = useRef(null);
 
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
-  const [count, setCount] = useState(0);
+
+  const currentMonthIndex = new Date().getMonth();
 
   const months = [
     "Enero",
@@ -36,6 +38,40 @@ const CheckHoursComponent = () => {
     "Noviembre",
     "Diciembre",
   ];
+
+  const modifiedMonths = months.slice(0, currentMonthIndex + 1);
+
+  useEffect(() => {
+    if (currentDay && scrollViewRef.current) {
+      const dayWidth = 80;
+      const scrollOffset = (currentDay - 1) * dayWidth;
+      scrollViewRef.current.scrollTo({ x: scrollOffset, animated: true });
+    }
+  }, [currentDay]);
+
+  useEffect(() => {
+    const currentMonth = months[getMonth(new Date())];
+    monthChange(currentMonth);
+    setCurrentDay(new Date().getDate());
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await AsyncStorage.getItem("checkTimes");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        const { checkInTime, checkOutTime } = parsedData;
+        const hourTwoObjects = {
+          checkIn: checkInTime,
+          checkOut: checkOutTime,
+        };
+        setHoursList([hourTwoObjects]);
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  };
 
   const checkClick = () => {
     const now = new Date();
@@ -82,23 +118,6 @@ const CheckHoursComponent = () => {
     setIsStart(!isStart);
   };
 
-  const fetchData = async () => {
-    try {
-      const data = await AsyncStorage.getItem("checkTimes");
-      if (data) {
-        const parsedData = JSON.parse(data);
-        const { checkInTime, checkOutTime } = parsedData;
-        const hourTwoObjects = {
-          checkIn: checkInTime,
-          checkOut: checkOutTime,
-        };
-        setHoursList([hourTwoObjects]);
-      }
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
-  };
-
   const saveToStorage = async (hourTwoObjects) => {
     console.log(hourTwoObjects);
     try {
@@ -113,21 +132,6 @@ const CheckHoursComponent = () => {
       console.log("Error saving data:", error);
     }
   };
-
-  useEffect(() => {
-    const currentMonth = months[getMonth(new Date())];
-    monthChange(currentMonth);
-    setCurrentDay(new Date().getDate());
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (currentDay && scrollViewRef.current) {
-      const dayWidth = 80;
-      const scrollOffset = (currentDay - 1) * dayWidth;
-      scrollViewRef.current.scrollTo({ x: scrollOffset, animated: true });
-    }
-  }, [currentDay]);
 
   const yearChange = (year) => {
     setSelectedYear(year);
@@ -179,7 +183,7 @@ const CheckHoursComponent = () => {
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
         <SelectDropdown
-          data={months}
+          data={modifiedMonths}
           onSelect={(selectedItem) => {
             monthChange(selectedItem);
           }}
