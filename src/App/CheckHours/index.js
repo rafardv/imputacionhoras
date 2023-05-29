@@ -157,10 +157,10 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  const openCalculateHours = () => {
+  const openCalculateHours = (checkIn, checkOut) => {
     navigation.navigate("ImputationsHoursComponent", {
-      startTime,
-      endTime,
+      checkIn,
+      checkOut,
     });
   };
 
@@ -235,6 +235,7 @@ const CheckHoursComponent = () => {
                         <TouchableOpacity
                           key={hourIndex}
                           style={styles.hourContainer}
+                          onPress={() => openCalculateHours(checkIn, checkOut)}
                         >
                           {hasCheckOut ? (
                             <View style={styles.hourContainerText}>

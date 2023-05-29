@@ -66,6 +66,7 @@ const styles = {
     padding: 3,
     margin: 2,
     borderRadius: 7,
+    overflow: "hidden",
   },
 };
 

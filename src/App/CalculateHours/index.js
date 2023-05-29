@@ -21,7 +21,7 @@ import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { startTime, endTime } = route.params;
+  const { checkIn, checkOut } = route.params;
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -29,6 +29,9 @@ const ImputationsHoursComponent = ({ route }) => {
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
+
+  console.log("checkIn", checkIn);
+  console.log("checkOut", checkOut);
 
   useEffect(() => {
     navigation.setOptions({ title: "IMPUTAR" });
@@ -87,14 +90,13 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
-      const userHoras= {
-          userPk: user.pk,
-          horas:{
-            fechaInicial: startTime.minute,
-            fechaFinal: endTime.minute,
-          }
-      }
-
+    const userHoras = {
+      userPk: user.pk,
+      horas: {
+        fechaInicial: checkIn.minute,
+        fechaFinal: checkOut.minute,
+      },
+    };
 
     if (selectedProject) {
       const userList = [...selectedProject.userList, ...userListArrayToAdd];
@@ -103,7 +105,7 @@ const ImputationsHoursComponent = ({ route }) => {
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
         userHoras: userHoras,
-        imputationList: selectedProject.imputationList
+        imputationList: selectedProject.imputationList,
       });
       console.log(updatedProject);
     }
@@ -170,7 +172,7 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {startTime.hour} || {endTime.hour}
+        {checkIn.hour}:{checkIn.minutes} || {checkOut.hour}:{checkOut.minutes}
       </Text>
       <Pressable
         onPress={botonClick}
