@@ -11,27 +11,6 @@ const CheckHoursComponent = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState();
   const [daysOfMonth, setDaysOfMonth] = useState([]);
-  const [startTime, setStartTime] = useState({
-    type: "",
-    year: "",
-    month: "",
-    day: "",
-    hour: "",
-    minutes: "",
-  });
-  const [endTime, setEndTime] = useState({
-    type: "",
-    year: "",
-    month: "",
-    day: "",
-    hour: "",
-    minutes: "",
-  });
-
-  const [twoChecks, setTwoChecs] = useState({
-    startTime: "",
-    endTime: "",
-  });
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
@@ -69,7 +48,6 @@ const CheckHoursComponent = () => {
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
       saveToStorage(now);
-      setStartTime(hourObject);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -90,7 +68,6 @@ const CheckHoursComponent = () => {
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
       saveToStorage(now);
-      setEndTime(hourObject);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -235,6 +212,7 @@ const CheckHoursComponent = () => {
                           key={hourIndex}
                           style={styles.hourContainer}
                           onPress={() => openCalculateHours(checkIn, checkOut)}
+                          disabled={checkOut === null}
                         >
                           {hasCheckOut ? (
                             <View style={styles.hourContainerText}>
