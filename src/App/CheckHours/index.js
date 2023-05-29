@@ -17,6 +17,7 @@ const CheckHoursComponent = () => {
   const [currentDay, setCurrentDay] = useState(null);
   const [count, setCount] = useState(0);
   const scrollViewRef = useRef(null);
+  const reversedDaysOfMonth = [...daysOfMonth.reverse()];
 
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -84,7 +85,6 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -94,7 +94,6 @@ const CheckHoursComponent = () => {
           checkOut: null,
         };
         setHoursList([...hoursList, hourTwoObjects]);
-        //saveToStorage(hourTwoObjects);
       }
     } else {
       const hourObject = {
@@ -105,7 +104,6 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -204,7 +202,7 @@ const CheckHoursComponent = () => {
       >
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
-            {daysOfMonth.map((day, index) => {
+            {reversedDaysOfMonth.map((day, index) => {
               const dayHours = hoursList.filter((hour) => {
                 const { checkIn, checkOut } = hour;
                 const checkInDate = new Date(

@@ -87,8 +87,8 @@ const ImputationsHoursComponent = ({ route }) => {
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkIn.hour,
-        fechaFinal: checkOut.hour,
+        fechaInicial: checkIn.hour + ":" + checkIn.minutes,
+        fechaFinal: checkOut.hour + ":" + checkOut.minutes,
       },
     };
 

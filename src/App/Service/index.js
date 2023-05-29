@@ -71,7 +71,13 @@ export const updateProjectByPropertyCall = async ({
 
   try {
     
-    
+    const objectHours = {
+      horaInicial: userHoras.horas.fechaInicial,
+      horaFinal: userHoras.horas.fechaFinal,
+      userPk: userHoras.userPk
+    }
+
+    console.log("copia : ",objectHours)
 
 
     const response = await fetch(updateProjectUrl, {
@@ -84,8 +90,8 @@ export const updateProjectByPropertyCall = async ({
         PK,
         workspacePK,
         propertyToUpdate: {
-          name: "imputationList",
-          value: imputationList ? [...imputationList, userHoras] : [imputationList, userHoras]
+          name: "imputationList",       // mostrar bien las horas, userHoras.horas funciona
+          value: imputationList ? [...imputationList, objectHours] : [imputationList, objectHours]
         },
       }),
       
@@ -94,12 +100,6 @@ export const updateProjectByPropertyCall = async ({
     );
   
     
-  
-
-
-    
-
-  
 
 
     if (!response.ok) {
