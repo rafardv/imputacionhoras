@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  Button,
   Pressable,
-  StyleSheet,
   Text,
   View,
   ScrollView,
   Image,
   TextInput,
-  Keyboard,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -29,8 +26,6 @@ const ImputationsHoursComponent = ({ route }) => {
   const [isTextInputOpen, setIsTextInputOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
-
-  
 
   useEffect(() => {
     navigation.setOptions({ title: "IMPUTAR" });
@@ -89,9 +84,6 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
-   
-
-
     const userHoras = {
       userPk: user.pk,
       horas: {
@@ -99,7 +91,6 @@ const ImputationsHoursComponent = ({ route }) => {
         fechaFinal: checkOut.hour + ":" + checkOut.minutes,
       },
     };
-    
 
     if (selectedProject) {
       const userList = [...selectedProject.userList, ...userListArrayToAdd];

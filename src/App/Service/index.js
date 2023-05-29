@@ -90,7 +90,7 @@ export const updateProjectByPropertyCall = async ({
         PK,
         workspacePK,
         propertyToUpdate: {
-          name: "imputationList",       // mostrar bien las horas, userHoras.horas funciona
+          name: "imputationList",      
           value: imputationList ? [...imputationList, objectHours] : [imputationList, objectHours]
         },
       }),
