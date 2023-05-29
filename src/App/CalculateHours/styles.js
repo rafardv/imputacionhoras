@@ -37,7 +37,7 @@ export const styles = {
   },
   selectedItemContainer: {
     borderWidth: 6,
-    borderColor: "#82C1C6",
+    borderColor: "#fcca79",
     borderRadius: 30,
   },
   sliderContent: {},
