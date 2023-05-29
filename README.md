@@ -7,6 +7,7 @@
 - [x] Funcionalidad navegacion entre tabs y ventanas
 - [x] Mostrar horas de forma horizontal con scroll.
 - [x] Mostrar dias del mes.
+- [ ] Hacer scroll en dias.
   
 ## Tareas  Javi:
 - [x] Diseño ventana imputar
@@ -16,12 +17,12 @@
 
 ## Tareas Victor:
 - [x] Diseño de la ventana cerrar ses.
-- [x] Recoger de la bd la info del user.
+- [x] Recoger de la bd la info del user en cerrar ses.
 - [x] Funcionalidad para cerrar sesión.
-- [x] Select de mes en ventana de horas.
+- [ ] Select de mes en ventana de horas.
 - [x] Funcionalidad para recoger las horas seleccionadas.
 - [x] Funcionalidad botón check ventana horas.
-- [ ] Subir ImputacionList al AsyncStorage.
+- [x] Subir ImputacionList al AsyncStorage.
+- [x] cargar hoursList al AsyncStorage.
 - [x] Mostrar hasta dia actual.
-- [ ] Hacer scroll en dias.
 - [x] contenedor y colores de las horas.

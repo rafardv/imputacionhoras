@@ -48,7 +48,6 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -58,7 +57,6 @@ const CheckHoursComponent = () => {
           checkOut: null,
         };
         setHoursList([...hoursList, hourTwoObjects]);
-        //saveToStorage(hourTwoObjects);
       }
     } else {
       const hourObject = {
@@ -69,7 +67,6 @@ const CheckHoursComponent = () => {
         hour: now.getHours(),
         minutes: now.getMinutes().toString().padStart(2, "0"),
       };
-      //saveToStorage(now);
       const existingHourObject = hoursList.find(
         (hour) => hour.checkOut === null
       );
@@ -80,6 +77,20 @@ const CheckHoursComponent = () => {
     }
     setCount(count + 1);
     setIsStart(!isStart);
+  };
+
+  const saveToStorage = async (hourTwoObjects) => {
+    try {
+      const data = {
+        checkInTime: hourTwoObjects.checkIn,
+        checkOutTime: hourTwoObjects.checkOut,
+      };
+
+      await AsyncStorage.setItem("checkTimes", JSON.stringify(data));
+      console.log("Datos guardados");
+    } catch (error) {
+      console.log("Error al guardar:", error);
+    }
   };
 
   const fetchData = async () => {
@@ -99,21 +110,6 @@ const CheckHoursComponent = () => {
     }
   };
 
-  const saveToStorage = async (hourTwoObjects) => {
-    console.log(hourTwoObjects);
-    try {
-      const data = {
-        checkInTime: hourTwoObjects.checkIn,
-        checkOutTime: hourTwoObjects.checkOut,
-      };
-
-      await AsyncStorage.setItem("checkTimes", JSON.stringify(data));
-      console.log("Data saved successfully");
-    } catch (error) {
-      console.log("Error saving data:", error);
-    }
-  };
-
   useEffect(() => {
     const currentMonth = months[getMonth(new Date())];
     monthChange(currentMonth);
@@ -125,9 +121,11 @@ const CheckHoursComponent = () => {
     if (currentDay && scrollViewRef.current) {
       const dayWidth = 80;
       const scrollOffset = (currentDay - 1) * dayWidth;
-      scrollViewRef.current.scrollTo({ x: scrollOffset, animated: true });
+      scrollViewRef.current.scrollTo({ animated: true }); //x: scrollOffset,
     }
   }, [currentDay]);
+
+  const reversedDaysOfMonth = [...daysOfMonth].reverse();
 
   const yearChange = (year) => {
     setSelectedYear(year);
@@ -188,7 +186,7 @@ const CheckHoursComponent = () => {
       >
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
-            {daysOfMonth.map((day, index) => {
+            {reversedDaysOfMonth.map((day, index) => {
               const dayHours = hoursList.filter((hour) => {
                 const { checkIn, checkOut } = hour;
                 const checkInDate = new Date(
