@@ -131,6 +131,7 @@ const ImputationsHoursComponent = ({ route }) => {
         style={styles.searchInput}
         placeholder="Buscar proyecto..."
         onChangeText={(text) => setSearchText(text)}
+       
       />
 
       <ScrollView

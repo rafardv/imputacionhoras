@@ -3,8 +3,10 @@ export const styles = {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    height: "100%",
+    height: "90%",
     width: "100%",
+    marginTop: "20%"
+   
   },
   btnImputar: {
     alignItems: "center",
@@ -24,6 +26,7 @@ export const styles = {
     marginTop: 0,
     fontSize: 26,
     fontWeight: "bold",
+    
   },
 
   defaultImage: {

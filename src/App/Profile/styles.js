@@ -2,7 +2,7 @@ const styles = {
   container: {
     flex: 0.6,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginTop: "15%",
   },
   loading: {
