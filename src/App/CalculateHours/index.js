@@ -30,8 +30,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
-  console.log("checkIn", checkIn);
-  console.log("checkOut", checkOut);
+  
 
   useEffect(() => {
     navigation.setOptions({ title: "IMPUTAR" });
@@ -90,11 +89,12 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const botonClick = async () => {
+    
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkIn.minute,
-        fechaFinal: checkOut.minute,
+        fechaInicial: checkIn.hour,
+        fechaFinal: checkOut.hour,
       },
     };
 
