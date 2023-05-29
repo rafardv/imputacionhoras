@@ -79,10 +79,6 @@ const CheckHoursComponent = () => {
     setIsStart(!isStart);
   };
 
-  useEffect(() => {
-    console.log(hoursList);
-  });
-
   const saveToStorage = async (time) => {
     if (count % 2 === 0) {
       const data = {
@@ -122,14 +118,26 @@ const CheckHoursComponent = () => {
 
     const yearValue = parseInt(year, 10);
     const monthIndex = months.indexOf(month);
-    const firstDayOfMonth = new Date(yearValue, monthIndex, 1);
-    const lastDayOfMonth = new Date(yearValue, monthIndex + 1, 0);
     const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    let startMonthIndex = monthIndex - 2;
+    let endMonthIndex = monthIndex + 1;
+    let startYear = yearValue;
+
+    if (startMonthIndex < 0) {
+      startMonthIndex = 0;
+      startYear = yearValue - 1;
+    }
+
+    const firstDayOfStartMonth = new Date(startYear, startMonthIndex, 1);
+    const lastDayOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0);
 
     const days = eachDayOfInterval({
-      start: firstDayOfMonth,
-      end: currentDate > lastDayOfMonth ? lastDayOfMonth : currentDate,
-    });
+      start: firstDayOfStartMonth,
+      end: lastDayOfCurrentMonth,
+    }).filter((day) => isSameDay(day, currentDate) || day < currentDate);
 
     setDaysOfMonth(days);
   };
