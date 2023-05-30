@@ -71,7 +71,7 @@ const ImputationsHoursComponent = ({ route }) => {
      }
       
       setIsTextInputOpen(false);
-      setSearchText(""); // guarar en un usestate
+      setSearchText("");                        // guarar en un usestate
       setFilteredProjects(projects);
       
      
@@ -91,12 +91,15 @@ const ImputationsHoursComponent = ({ route }) => {
       [
         {
           text: "Si",
-          onPress: botonClick
+          onPress: botonClick   // cambiar modal una vez copletado
         },
         {
           text: "No",
         }
-      ]
+      ],
+      {
+        cancelable: true
+      }
     )
   }
 
@@ -106,10 +109,12 @@ const ImputationsHoursComponent = ({ route }) => {
       "ERROR",
       "No has seleccionado ningún proyecto",
       [
-        {
-          text: "Cerrar"
-        }
-      ]
+        
+      ],
+      {
+        cancelable: true
+      }
+    
     )
   }
 
@@ -145,6 +150,9 @@ const ImputationsHoursComponent = ({ route }) => {
     return name;
   };
 
+
+
+   // el filtro buscar
   useEffect(() => {
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().startsWith(searchText.toLowerCase())
