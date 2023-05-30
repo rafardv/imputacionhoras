@@ -66,11 +66,7 @@ const ImputationsHoursComponent = ({ route }) => {
       setIsTextInputOpen(false);
       setSearchText("");                        // guarar en un usestate
       setFilteredProjects(projects);
-      if (selectedProject) {
-        if (project.PK == selectedProject.PK) {
-          setSelectedProject(null);
-        }
-      }
+     
     } catch (error) {}
   };
 
@@ -114,8 +110,8 @@ const ImputationsHoursComponent = ({ route }) => {
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkin.hour + ":" + checkin.minutes,
-        fechaFinal: checkout.hour + ":" + checkout.minutes,
+        fechaInicial: checkin.timestamp,
+        fechaFinal: checkout.timestamp,
       },
     };
 
@@ -196,7 +192,7 @@ const ImputationsHoursComponent = ({ route }) => {
 
       
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {checkin.hour}:{checkin.minutes} || {checkout.hour}:{checkout.minutes}
+        {checkin.timestamp} || {checkout.timestamp}
       </Text>
       <Pressable
         onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
