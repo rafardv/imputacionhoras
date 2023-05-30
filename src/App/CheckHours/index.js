@@ -250,7 +250,7 @@ const CheckHoursComponent = () => {
                       ]}
                       onPress={() => openCalculateHours("prueba 1", "prueba2")}
                     >
-                      {capitalize(format(day, "EEE d MMMM Y", { locale: es }))}
+                      {capitalize(format(day, "EEE d", { locale: es }))}
                     </Text>
                   </View>
                   <View style={styles.dot} />
