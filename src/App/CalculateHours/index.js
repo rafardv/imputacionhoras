@@ -64,48 +64,40 @@ const ImputationsHoursComponent = ({ route }) => {
       }
 
       setIsTextInputOpen(false);
-      setSearchText("");                        // guarar en un usestate
+      setSearchText(""); // guarar en un usestate
       setFilteredProjects(projects);
-     
     } catch (error) {}
   };
 
   const showConfirmAlert = () => {
-    
     return Alert.alert(
-      
       "¿ Estas seguro ?",
-      selectedProject.title+"\n"+"\n"+checkin.timestamp+" - "+checkout.timestamp,
+      selectedProject.title +
+        "\n" +
+        "\n" +
+        checkin.timestamp +
+        " - " +
+        checkout.timestamp,
       [
         {
           text: "Si",
-          onPress: botonClick,   // cambiar modal una vez copletado
-          
+          onPress: botonClick, // cambiar modal una vez copletado
         },
         {
           text: "No",
-        }
+        },
       ],
       {
-        cancelable: true
+        cancelable: true,
       }
-    )
-  }
-
+    );
+  };
 
   const showNoProjectAlert = () => {
-    return Alert.alert(
-      "ERROR",
-      "No has seleccionado ningún proyecto",
-      [
-        
-      ],
-      {
-        cancelable: true
-      }
-    
-    )
-  }
+    return Alert.alert("ERROR", "No has seleccionado ningún proyecto", [], {
+      cancelable: true,
+    });
+  };
 
   const botonClick = async () => {
     const userHoras = {
@@ -135,9 +127,7 @@ const ImputationsHoursComponent = ({ route }) => {
     return name;
   };
 
-
-
-   // el filtro buscar
+  // el filtro buscar
   useEffect(() => {
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().startsWith(searchText.toLowerCase())
@@ -148,7 +138,6 @@ const ImputationsHoursComponent = ({ route }) => {
   return (
     <View style={styles.container}>
       <Pressable>
-      
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
@@ -192,7 +181,6 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
         {checkin.timestamp} || {checkout.timestamp}
       </Text>
