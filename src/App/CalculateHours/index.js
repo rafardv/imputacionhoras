@@ -75,11 +75,12 @@ const ImputationsHoursComponent = ({ route }) => {
     return Alert.alert(
       
       "¿ Estas seguro ?",
-      selectedProject.title+"\n"+"\n"+checkin.hour+":"+checkin.minutes+" - "+checkout.hour+":"+checkout.minutes,
+      selectedProject.title+"\n"+"\n"+checkin.timestamp+" - "+checkout.timestamp,
       [
         {
           text: "Si",
-          onPress: botonClick   // cambiar modal una vez copletado
+          onPress: botonClick,   // cambiar modal una vez copletado
+          
         },
         {
           text: "No",
@@ -147,6 +148,7 @@ const ImputationsHoursComponent = ({ route }) => {
   return (
     <View style={styles.container}>
       <Pressable>
+      
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
