@@ -15,9 +15,9 @@ const CheckHoursComponent = () => {
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
-  const [count, setCount] = useState(0);
   const scrollViewRef = useRef(null);
   const reversedDaysOfMonth = [...daysOfMonth].reverse();
+  const [twoChecksList, setTwoChecksList] = useState([]);
 
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -57,77 +57,54 @@ const CheckHoursComponent = () => {
     fetchData();
   }, []);
 
+  const collectchecks = (checkList) => {
+    const list = [];
+    let currentCheckIn = null;
+    for (const check of checkList) {
+      if (check.label === "check-in") {
+        // Si hay un check-in pendiente sin check-out correspondiente, se descarta
+        if (currentCheckIn && !currentCheckIn.checkout) {
+          continue;
+        }
+        currentCheckIn = { checkin: check, checkout: null };
+        list.push(currentCheckIn);
+      } else if (check.label === "check-out") {
+        // Si no hay un check-in pendiente, se descarta el check-out
+        if (!currentCheckIn) {
+          continue;
+        }
+        currentCheckIn.checkout = check;
+        //list.push(currentCheckIn);
+        currentCheckIn = null;
+      }
+    }
+
+    // Si hay un check-in pendiente sin check-out correspondiente al final, se descarta
+    if (currentCheckIn && !currentCheckIn.checkout) {
+      currentCheckIn = null;
+    }
+
+    setTwoChecksList(list);
+  };
+
+  useEffect(() => {
+    collectchecks(hoursList);
+  }, [hoursList]);
+
+  useEffect(() => {
+    console.log(twoChecksList);
+  });
+
   const fetchData = async () => {
     try {
-      const data = await AsyncStorage.getItem("checkTimes");
-      if (data) {
-        const parsedData = JSON.parse(data);
-        const { checkInTime, checkOutTime } = parsedData;
-        const hourTwoObjects = {
-          checkIn: checkInTime,
-          checkOut: checkOutTime,
-        };
-        setHoursList([hourTwoObjects]);
+      const storageHoursList = await AsyncStorage.getItem("checkHoursList");
+      if (storageHoursList !== null) {
+        const parsedHoursList = JSON.parse(storageHoursList);
+        setHoursList(parsedHoursList);
+        console.log("Lista cargada");
       }
     } catch (error) {
-      console.log("Error fetching data:", error);
-    }
-  };
-
-  const checkClick = () => {
-    const now = new Date();
-    if (count % 2 === 0) {
-      const hourObject = {
-        type: "checkIn",
-        year: now.getFullYear(),
-        month: now.getMonth() + 1,
-        day: now.getDate(),
-        hour: now.getHours(),
-        minutes: now.getMinutes().toString().padStart(2, "0"),
-      };
-      const existingHourObject = hoursList.find(
-        (hour) => hour.checkOut === null
-      );
-      if (!existingHourObject) {
-        const hourTwoObjects = {
-          checkIn: hourObject,
-          checkOut: null,
-        };
-        setHoursList([...hoursList, hourTwoObjects]);
-      }
-    } else {
-      const hourObject = {
-        type: "checkOut",
-        year: now.getFullYear(),
-        month: now.getMonth() + 1,
-        day: now.getDate(),
-        hour: now.getHours(),
-        minutes: now.getMinutes().toString().padStart(2, "0"),
-      };
-      const existingHourObject = hoursList.find(
-        (hour) => hour.checkOut === null
-      );
-      if (existingHourObject) {
-        existingHourObject.checkOut = hourObject;
-        saveToStorage(existingHourObject);
-      }
-    }
-    setCount(count + 1);
-    setIsStart(!isStart);
-  };
-
-  const saveToStorage = async (hourTwoObjects) => {
-    console.log(hourTwoObjects);
-    try {
-      const data = {
-        checkInTime: hourTwoObjects.checkIn,
-        checkOutTime: hourTwoObjects.checkOut,
-      };
-
-      await AsyncStorage.setItem("checkTimes", JSON.stringify(data));
-      console.log("Data saved successfully");
-    } catch (error) {
-      console.log("Error saving data:", error);
+      console.log("Error al cargar la lista:", error);
     }
   };
 
@@ -136,11 +113,6 @@ const CheckHoursComponent = () => {
     const currentMonth = months[getMonth(new Date())];
     monthChange(currentMonth, year);
   };
-
-  
-
-
-
 
   const monthChange = (month, year = selectedYear) => {
     setSelectedMonth(month);
@@ -171,16 +143,56 @@ const CheckHoursComponent = () => {
     setDaysOfMonth(days);
   };
 
-  const openCalculateHours = (checkIn, checkOut) => {
+  const openCalculateHours = (checkin, checkout) => {
+    console.log(checkin);
     navigation.navigate("ImputationsHoursComponent", {
-      checkIn,
-      checkOut,
+      checkin,
+      checkout,
     });
   };
 
   const years = Array.from({ length: 2 }, (_, index) =>
     (new Date().getFullYear() - 1 + index).toString()
   );
+
+  const checkClick = async () => {
+    const currentTime = new Date();
+    const checkTime = {
+      id: currentTime.getTime().toString(), // Genera un ID único utilizando el timestamp para recoger los milisegundos
+      timestamp: currentTime,
+      label: isStart ? "check-in" : "check-out",
+    };
+
+    const updatedHoursList = [...hoursList, checkTime];
+    setHoursList(updatedHoursList);
+    setIsStart(!isStart);
+
+    try {
+      const convertedHoursList = JSON.stringify(updatedHoursList); //convierte en cadena json
+      await AsyncStorage.setItem("checkHoursList", convertedHoursList);
+      await AsyncStorage.setItem("isStart", String(!isStart)); //enviamos el booleano que detecta si es checkin o checkout
+      console.log("Check hours saved successfully.");
+    } catch (error) {
+      console.log("Error saving check hours:", error);
+    }
+
+    collectchecks(updatedHoursList);
+  };
+
+  useEffect(() => {
+    const fetchIsStart = async () => {
+      try {
+        const storageIsStart = await AsyncStorage.getItem("isStart");
+        if (storageIsStart !== null) {
+          setIsStart(storageIsStart === "true");
+        }
+      } catch (error) {
+        console.log("Error al cargar si es checkIn/Out:", error);
+      }
+    };
+
+    fetchIsStart();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -208,15 +220,12 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {reversedDaysOfMonth.map((day, index) => {
-              const dayHours = hoursList.filter((hour) => {
-                const { checkIn, checkOut } = hour;
-                const checkInDate = new Date(
-                  checkIn.year,
-                  checkIn.month - 1,
-                  checkIn.day
-                );
-                const checkOutDate = checkOut
-                  ? new Date(checkOut.year, checkOut.month - 1, checkOut.day)
+              const dayChecks = twoChecksList.filter((check) => {
+                const { checkin, checkout } = check;
+                const checkInDate = new Date(checkin.timestamp);
+
+                const checkOutDate = checkout
+                  ? new Date(checkout.timestamp)
                   : null;
                 return (
                   isSameDay(day, checkInDate) ||
@@ -226,17 +235,15 @@ const CheckHoursComponent = () => {
 
               return (
                 <View key={index} style={styles.dayContainer}>
-                <View style={styles.daysContainer2}>
-                  <Text
-                    style={[
-                      styles.dayText,
-                      isSameDay(day, new Date()) && styles.currentDayText,
-                    ]}
-                    onPress={() => openCalculateHours("prueba 1", "prueba2")}
-                    
-                  >
-                    {capitalize(format(day, "EEE d", { locale: es }))}
-                  </Text>
+                  <View style={styles.daysContainer2}>
+                    <Text
+                      style={[
+                        styles.dayText,
+                        isSameDay(day, new Date()) && styles.currentDayText,
+                      ]}
+                    >
+                      {capitalize(format(day, "EEE d", { locale: es }))}
+                    </Text>
                   </View>
                   <View style={styles.dot} />
                   <ScrollView
@@ -244,16 +251,15 @@ const CheckHoursComponent = () => {
                     contentContainerStyle={styles.horasContainer}
                     showsHorizontalScrollIndicator={false}
                   >
-                    {dayHours.map((check, hourIndex) => {
-                      const { checkIn, checkOut } = check;
-                      const hasCheckOut = checkOut !== null;
-
+                    {dayChecks.map((check, hourIndex) => {
+                      const { checkin, checkout } = check;
+                      const hasCheckOut = checkout !== null;
                       return (
                         <TouchableOpacity
                           key={hourIndex}
                           style={styles.hourContainer}
-                          onPress={() => openCalculateHours(checkIn, checkOut)}
-                          disabled={checkOut === null}
+                          onPress={() => openCalculateHours(checkin, checkout)}
+                          disabled={checkout === null}
                         >
                           {hasCheckOut ? (
                             <View style={styles.hourContainerText}>
@@ -263,7 +269,7 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
-                                {checkIn.hour}:{checkIn.minutes}
+                                {checkin.timestamp}
                               </Text>
                               <Text
                                 style={[
@@ -271,7 +277,7 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
-                                {checkOut.hour}:{checkOut.minutes}
+                                {checkout.timestamp}
                               </Text>
                             </View>
                           ) : (
@@ -281,7 +287,7 @@ const CheckHoursComponent = () => {
                                 { backgroundColor: "#c0f5b8" },
                               ]}
                             >
-                              {checkIn.hour}:{checkIn.minutes}
+                              {checkin.timestamp}
                             </Text>
                           )}
                         </TouchableOpacity>

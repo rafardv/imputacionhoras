@@ -7,7 +7,7 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -19,12 +19,12 @@ import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { checkIn, checkOut } = route.params;
+  const { checkin, checkout } = route.params;
+  console.log(checkin);
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  
- 
+
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
@@ -39,12 +39,8 @@ const ImputationsHoursComponent = ({ route }) => {
           jwtToken: user.jwtToken,
         });
 
-        
-
         setProjects(importedProjects);
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
     fetchData();
   }, []);
@@ -52,7 +48,6 @@ const ImputationsHoursComponent = ({ route }) => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleProjectClick = async (project) => {
-    
     try {
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
@@ -60,68 +55,59 @@ const ImputationsHoursComponent = ({ route }) => {
         jwtToken: user.jwtToken,
       });
 
-     if(selectedProject && selectedProject.PK == project.PK){
-      console.log("es el mismo")
-      setSelectedProject(null)
-     }else{
-      
-      setSelectedProject(fetchedProject);
-      console.log(fetchedProject)
-      
-     }
-      
+      if (selectedProject && selectedProject.PK == project.PK) {
+        console.log("es el mismo");
+        setSelectedProject(null);
+      } else {
+        setSelectedProject(fetchedProject);
+        console.log(fetchedProject);
+      }
+
       setIsTextInputOpen(false);
       setSearchText("");                        // guarar en un usestate
       setFilteredProjects(projects);
-      
-     
-    } catch (error) {
-      
-    }
+      if (selectedProject) {
+        if (project.PK == selectedProject.PK) {
+          setSelectedProject(null);
+        }
+      }
+    } catch (error) {}
   };
 
-
-  
   const showConfirmAlert = () => {
-    
     return Alert.alert(
-      
       "¿ Estas seguro ?",
-      selectedProject.title+"\n"+"\n"+checkIn.hour+":"+checkIn.minutes+" - "+checkOut.hour+":"+checkOut.minutes,
+      selectedProject.title +
+        "\n" +
+        "\n" +
+        checkIn.hour +
+        ":" +
+        checkIn.minutes +
+        " - " +
+        checkOut.hour +
+        ":" +
+        checkOut.minutes,
       [
         {
           text: "Si",
-          onPress: botonClick   // cambiar modal una vez copletado
+          onPress: botonClick,
         },
         {
           text: "No",
-        }
-      ],
-      {
-        cancelable: true
-      }
-    )
-  }
-
+        },
+      ]
+    );
+  };
 
   const showNoProjectAlert = () => {
-    return Alert.alert(
-      "ERROR",
-      "No has seleccionado ningún proyecto",
-      [
-        
-      ],
+    return Alert.alert("ERROR", "No has seleccionado ningún proyecto", [
       {
-        cancelable: true
-      }
-    
-    )
-  }
-
-  
+        text: "Cerrar",
+      },
+    ]);
+  };
 
   const botonClick = async () => {
-    
     const userHoras = {
       userPk: user.pk,
       horas: {
@@ -131,7 +117,6 @@ const ImputationsHoursComponent = ({ route }) => {
     };
 
     if (selectedProject) {
-     
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
@@ -172,7 +157,6 @@ const ImputationsHoursComponent = ({ route }) => {
         style={styles.searchInput}
         placeholder="Buscar proyecto..."
         onChangeText={(text) => setSearchText(text)}
-       
       />
 
       <ScrollView
@@ -207,9 +191,7 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {checkIn.hour}:{checkIn.minutes} || {checkOut.hour}:{checkOut.minutes}
-      </Text>
+      <Text style={[styles.selectedItemText, styles.fechasItem]}></Text>
       <Pressable
         onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
         style={styles.btnImputar}
