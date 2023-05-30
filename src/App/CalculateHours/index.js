@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   TextInput,
+  Alert
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -22,7 +23,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  const [userListArrayToAdd, setuserListArrayToAdd] = useState([]);
+  
  
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -51,6 +52,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const handleProjectClick = async (project) => {
+    
     try {
       const fetchedProject = await getProjectCall({
         projectPK: project.PK,
@@ -58,24 +60,63 @@ const ImputationsHoursComponent = ({ route }) => {
         jwtToken: user.jwtToken,
       });
 
+     if(selectedProject && selectedProject.PK == project.PK){
+      console.log("es el mismo")
+      setSelectedProject(null)
+     }else{
+      
       setSelectedProject(fetchedProject);
-      console.log(fetchedProject);
+      console.log(fetchedProject)
+      
+     }
+      
       setIsTextInputOpen(false);
       setSearchText(""); // guarar en un usestate
       setFilteredProjects(projects);
-      if (selectedProject) {
-        if (project.PK == selectedProject.PK) {
-          setSelectedProject(null);
-        }
-      }
+      
+     
     } catch (error) {
       
     }
   };
 
+
+  
+  const showConfirmAlert = () => {
+    
+    return Alert.alert(
+      
+      "¿ Estas seguro ?",
+      selectedProject.title+"\n"+"\n"+checkIn.hour+":"+checkIn.minutes+" - "+checkOut.hour+":"+checkOut.minutes,
+      [
+        {
+          text: "Si",
+          onPress: botonClick
+        },
+        {
+          text: "No",
+        }
+      ]
+    )
+  }
+
+
+  const showNoProjectAlert = () => {
+    return Alert.alert(
+      "ERROR",
+      "No has seleccionado ningún proyecto",
+      [
+        {
+          text: "Cerrar"
+        }
+      ]
+    )
+  }
+
   
 
   const botonClick = async () => {
+    
     const userHoras = {
       userPk: user.pk,
       horas: {
@@ -85,7 +126,7 @@ const ImputationsHoursComponent = ({ route }) => {
     };
 
     if (selectedProject) {
-      const userList = [...selectedProject.userList, ...userListArrayToAdd];
+     
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
@@ -162,7 +203,7 @@ const ImputationsHoursComponent = ({ route }) => {
         {checkIn.hour}:{checkIn.minutes} || {checkOut.hour}:{checkOut.minutes}
       </Text>
       <Pressable
-        onPress={botonClick}
+        onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
         style={styles.btnImputar}
         title="IMPUTAR"
         accessibilityLabel="boton confirmar"

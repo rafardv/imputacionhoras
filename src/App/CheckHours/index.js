@@ -137,6 +137,8 @@ const CheckHoursComponent = () => {
     monthChange(currentMonth, year);
   };
 
+  
+
 
 
 
@@ -230,7 +232,7 @@ const CheckHoursComponent = () => {
                       styles.dayText,
                       isSameDay(day, new Date()) && styles.currentDayText,
                     ]}
-
+                    onPress={() => openCalculateHours("prueba 1", "prueba2")}
                     
                   >
                     {capitalize(format(day, "EEE d", { locale: es }))}
