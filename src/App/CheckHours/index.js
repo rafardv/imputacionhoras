@@ -158,8 +158,8 @@ const CheckHoursComponent = () => {
   const checkClick = async () => {
     const currentTime = new Date();
     const checkTime = {
-      id: currentTime.getTime().toString(), // Genera un ID único utilizando el timestamp para recoger los milisegundos
-      timestamp: currentTime,
+      id: currentTime.getTime().toString(),
+      timestamp: currentTime.getTime(), // Guarda la fecha completa en milisegundos
       label: isStart ? "check-in" : "check-out",
     };
 
@@ -168,9 +168,9 @@ const CheckHoursComponent = () => {
     setIsStart(!isStart);
 
     try {
-      const convertedHoursList = JSON.stringify(updatedHoursList); //convierte en cadena json
+      const convertedHoursList = JSON.stringify(updatedHoursList);
       await AsyncStorage.setItem("checkHoursList", convertedHoursList);
-      await AsyncStorage.setItem("isStart", String(!isStart)); //enviamos el booleano que detecta si es checkin o checkout
+      await AsyncStorage.setItem("isStart", String(!isStart));
       console.log("Check hours saved successfully.");
     } catch (error) {
       console.log("Error saving check hours:", error);
@@ -240,7 +240,6 @@ const CheckHoursComponent = () => {
                       style={[
                         styles.dayText,
                         isSameDay(day, new Date()) && styles.currentDayText,
-                        
                       ]}
                       onPress={() => openCalculateHours("prueba 1", "prueba2")}
                     >
@@ -271,7 +270,9 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
-                                {checkin.timestamp.toString()}
+                                <Text style={styles.hourText}>
+                                  {format(new Date(checkin.timestamp), "HH:mm")}
+                                </Text>
                               </Text>
                               <Text
                                 style={[
@@ -279,7 +280,12 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
-                                {checkout.timestamp.toString()}
+                                <Text style={styles.hourText}>
+                                  {format(
+                                    new Date(checkout.timestamp),
+                                    "HH:mm"
+                                  )}
+                                </Text>
                               </Text>
                             </View>
                           ) : (
@@ -289,7 +295,9 @@ const CheckHoursComponent = () => {
                                 { backgroundColor: "#c0f5b8" },
                               ]}
                             >
-                              {checkin.timestamp.toString()}
+                              <Text style={styles.hourText}>
+                                {format(new Date(checkin.timestamp), "HH:mm")}
+                              </Text>
                             </Text>
                           )}
                         </TouchableOpacity>
