@@ -64,55 +64,54 @@ const ImputationsHoursComponent = ({ route }) => {
       }
 
       setIsTextInputOpen(false);
-      setSearchText(""); // guarar en un usestate
+      setSearchText("");                        // guarar en un usestate
       setFilteredProjects(projects);
-      if (selectedProject) {
-        if (project.PK == selectedProject.PK) {
-          setSelectedProject(null);
-        }
-      }
+     
     } catch (error) {}
   };
 
   const showConfirmAlert = () => {
+    
     return Alert.alert(
+      
       "¿ Estas seguro ?",
-      selectedProject.title +
-        "\n" +
-        "\n" +
-        checkIn.hour +
-        ":" +
-        checkIn.minutes +
-        " - " +
-        checkOut.hour +
-        ":" +
-        checkOut.minutes,
+      selectedProject.title+"\n"+"\n"+checkin.hour+":"+checkin.minutes+" - "+checkout.hour+":"+checkout.minutes,
       [
         {
           text: "Si",
-          onPress: botonClick,
+          onPress: botonClick   // cambiar modal una vez copletado
         },
         {
           text: "No",
-        },
-      ]
-    );
-  };
+        }
+      ],
+      {
+        cancelable: true
+      }
+    )
+  }
+
 
   const showNoProjectAlert = () => {
-    return Alert.alert("ERROR", "No has seleccionado ningún proyecto", [
+    return Alert.alert(
+      "ERROR",
+      "No has seleccionado ningún proyecto",
+      [
+        
+      ],
       {
-        text: "Cerrar",
-      },
-    ]);
-  };
+        cancelable: true
+      }
+    
+    )
+  }
 
   const botonClick = async () => {
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkIn.hour + ":" + checkIn.minutes,
-        fechaFinal: checkOut.hour + ":" + checkOut.minutes,
+        fechaInicial: checkin.timestamp,
+        fechaFinal: checkout.timestamp,
       },
     };
 
@@ -135,6 +134,9 @@ const ImputationsHoursComponent = ({ route }) => {
     return name;
   };
 
+
+
+   // el filtro buscar
   useEffect(() => {
     const filtered = projects.filter((project) =>
       project.title.toLowerCase().startsWith(searchText.toLowerCase())
@@ -188,7 +190,10 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      <Text style={[styles.selectedItemText, styles.fechasItem]}></Text>
+      
+      <Text style={[styles.selectedItemText, styles.fechasItem]}>
+        {checkin.timestamp} || {checkout.timestamp}
+      </Text>
       <Pressable
         onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
         style={styles.btnImputar}
