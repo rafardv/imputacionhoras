@@ -1,5 +1,10 @@
 # APP IMPUTACION HORAS
 
+
+- [ ] Coger todas las horas al clickar en dia.
+
+
+
 ## Tareas Rafa:
 - [x] Diseño ventana Login
 - [x] Funcionalidad inputs login y contraseña
