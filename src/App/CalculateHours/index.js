@@ -18,7 +18,8 @@ import { UserContext } from "../UserContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { checkIn, checkOut } = route.params;
+  const { checkin, checkout } = route.params;
+  console.log(checkin);
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -68,9 +69,7 @@ const ImputationsHoursComponent = ({ route }) => {
           setSelectedProject(null);
         }
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleTitlePress = () => {
@@ -131,7 +130,6 @@ const ImputationsHoursComponent = ({ route }) => {
         style={styles.searchInput}
         placeholder="Buscar proyecto..."
         onChangeText={(text) => setSearchText(text)}
-       
       />
 
       <ScrollView
@@ -166,9 +164,7 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {checkIn.hour}:{checkIn.minutes} || {checkOut.hour}:{checkOut.minutes}
-      </Text>
+      <Text style={[styles.selectedItemText, styles.fechasItem]}></Text>
       <Pressable
         onPress={botonClick}
         style={styles.btnImputar}

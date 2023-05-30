@@ -27,3 +27,8 @@
 - [x] cargar hoursList al AsyncStorage.
 - [x] Mostrar hasta dia actual.
 - [x] contenedor y colores de las horas.
+
+
+
+poner de tributo en el objeto de loscheck un isImputado que sea bool. cuando le imputemos un proyecto
+tenemos que retornar ese objeto modificado al componente check y sustiruir ese objeto por el mismo pero desactualizado.

@@ -26,13 +26,9 @@ const styles = {
     fontSize: 20,
     flex: 2,
     flexDirection: "row",
-    
-    
   },
   dias: {
     width: "100%",
-    
-    
   },
   horas: {
     width: "60%",
@@ -44,7 +40,6 @@ const styles = {
   dayContainer: {
     flexDirection: "row",
     alignItems: "center",
-  
   },
   dot: {
     width: 6,
@@ -62,28 +57,24 @@ const styles = {
   },
   hourContainer: {
     marginRight: 10,
-  
-  
   },
   hourContainerText: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   hourText: {
     padding: 3,
     margin: 2,
     borderRadius: 7,
     overflow: "hidden",
-   
   },
   daysContainer2: {
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    width: "30%"
-
-  }
+    width: "30%",
+  },
 };
 
 export default styles;
