@@ -75,44 +75,47 @@ const ImputationsHoursComponent = ({ route }) => {
   };
 
   const showConfirmAlert = () => {
+    
     return Alert.alert(
+      
       "¿ Estas seguro ?",
-      selectedProject.title +
-        "\n" +
-        "\n" +
-        checkIn.hour +
-        ":" +
-        checkIn.minutes +
-        " - " +
-        checkOut.hour +
-        ":" +
-        checkOut.minutes,
+      selectedProject.title+"\n"+"\n"+checkin.hour+":"+checkin.minutes+" - "+checkout.hour+":"+checkout.minutes,
       [
         {
           text: "Si",
-          onPress: botonClick,
+          onPress: botonClick   // cambiar modal una vez copletado
         },
         {
           text: "No",
-        },
-      ]
-    );
-  };
+        }
+      ],
+      {
+        cancelable: true
+      }
+    )
+  }
+
 
   const showNoProjectAlert = () => {
-    return Alert.alert("ERROR", "No has seleccionado ningún proyecto", [
+    return Alert.alert(
+      "ERROR",
+      "No has seleccionado ningún proyecto",
+      [
+        
+      ],
       {
-        text: "Cerrar",
-      },
-    ]);
-  };
+        cancelable: true
+      }
+    
+    )
+  }
 
   const botonClick = async () => {
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkIn.hour + ":" + checkIn.minutes,
-        fechaFinal: checkOut.hour + ":" + checkOut.minutes,
+        fechaInicial: checkin.hour + ":" + checkin.minutes,
+        fechaFinal: checkout.hour + ":" + checkout.minutes,
       },
     };
 
@@ -191,7 +194,10 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      <Text style={[styles.selectedItemText, styles.fechasItem]}></Text>
+      
+      <Text style={[styles.selectedItemText, styles.fechasItem]}>
+        {checkin.hour}:{checkin.minutes} || {checkout.hour}:{checkout.minutes}
+      </Text>
       <Pressable
         onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
         style={styles.btnImputar}
