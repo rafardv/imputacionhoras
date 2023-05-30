@@ -16,6 +16,7 @@ import {
   updateProjectByPropertyCall,
 } from "../Service";
 import { UserContext } from "../UserContext";
+import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
@@ -75,9 +76,9 @@ const ImputationsHoursComponent = ({ route }) => {
       selectedProject.title +
         "\n" +
         "\n" +
-        checkin.timestamp +
+        format(new Date(checkin.timestamp), "HH:mm") +
         " - " +
-        checkout.timestamp,
+        format(new Date(checkout.timestamp), "HH:mm"),
       [
         {
           text: "Si",
@@ -103,8 +104,8 @@ const ImputationsHoursComponent = ({ route }) => {
     const userHoras = {
       userPk: user.pk,
       horas: {
-        fechaInicial: checkin.timestamp,
-        fechaFinal: checkout.timestamp,
+        fechaInicial: format(new Date(checkin.timestamp), "HH:mm"),
+        fechaFinal: format(new Date(checkout.timestamp), "HH:mm"),
       },
     };
 
@@ -182,7 +183,8 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {checkin.timestamp} || {checkout.timestamp}
+        {format(new Date(checkin.timestamp), "HH:mm")} ||{" "}
+        {format(new Date(checkout.timestamp), "HH:mm")}
       </Text>
       <Pressable
         onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
