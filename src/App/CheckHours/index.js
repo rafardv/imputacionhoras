@@ -271,7 +271,7 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
-                                {checkin.timestamp}
+                                {checkin.timestamp.toString()}
                               </Text>
                               <Text
                                 style={[
@@ -279,7 +279,7 @@ const CheckHoursComponent = () => {
                                   { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
-                                {checkout.timestamp}
+                                {checkout.timestamp.toString()}
                               </Text>
                             </View>
                           ) : (
@@ -289,7 +289,7 @@ const CheckHoursComponent = () => {
                                 { backgroundColor: "#c0f5b8" },
                               ]}
                             >
-                              {checkin.timestamp}
+                              {checkin.timestamp.toString()}
                             </Text>
                           )}
                         </TouchableOpacity>
