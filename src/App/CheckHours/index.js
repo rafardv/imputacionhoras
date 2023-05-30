@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
+import {
+  format,
+  eachDayOfInterval,
+  getMonth,
+  isSameDay,
+  startOfMonth,
+  endOfMonth,
+  isSameMonth,
+  subMonths,
+} from "date-fns";
 import { es } from "date-fns/locale";
 import styles from "./styles";
 import SelectDropdown from "react-native-select-dropdown";
@@ -74,7 +83,6 @@ const CheckHoursComponent = () => {
           continue;
         }
         currentCheckIn.checkout = check;
-        //list.push(currentCheckIn);
         currentCheckIn = null;
       }
     }
@@ -116,29 +124,25 @@ const CheckHoursComponent = () => {
 
   const monthChange = (month, year = selectedYear) => {
     setSelectedMonth(month);
-
     const yearValue = parseInt(year, 10);
     const monthIndex = months.indexOf(month);
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth();
+    const startDate = startOfMonth(new Date(yearValue, monthIndex));
+    const endDate = endOfMonth(new Date(yearValue, monthIndex));
 
-    let startMonthIndex = monthIndex - 2;
-    let endMonthIndex = monthIndex + 1;
-    let startYear = yearValue;
-
-    if (startMonthIndex < 0) {
-      startMonthIndex = 0;
-      startYear = yearValue - 1;
-    }
-
-    const firstDayOfStartMonth = new Date(startYear, startMonthIndex, 1);
-    const lastDayOfCurrentMonth = new Date(currentYear, currentMonth + 1, 0);
+    // Obtener los dos meses anteriores
+    const prevTwoMonthsStartDate = subMonths(startDate, 2);
+    const prevTwoMonthsEndDate = subMonths(endDate, 2);
 
     const days = eachDayOfInterval({
-      start: firstDayOfStartMonth,
-      end: lastDayOfCurrentMonth,
-    }).filter((day) => isSameDay(day, currentDate) || day < currentDate);
+      start: prevTwoMonthsStartDate,
+      end: endDate,
+    }).filter(
+      (day) =>
+        isSameMonth(day, prevTwoMonthsStartDate) ||
+        isSameMonth(day, prevTwoMonthsEndDate) ||
+        isSameMonth(day, startDate) ||
+        isSameMonth(day, endDate)
+    );
 
     setDaysOfMonth(days);
   };
@@ -160,6 +164,7 @@ const CheckHoursComponent = () => {
     const checkTime = {
       id: currentTime.getTime().toString(),
       timestamp: currentTime.getTime(), // Guarda la fecha completa en milisegundos
+      timestamp: currentTime,
       label: isStart ? "check-in" : "check-out",
     };
 
@@ -200,10 +205,11 @@ const CheckHoursComponent = () => {
         <SelectDropdown
           data={modifiedMonths}
           onSelect={(selectedItem) => {
-            monthChange(selectedItem);
+            monthChange(selectedItem, selectedYear);
           }}
           defaultValue={selectedMonth}
         />
+
         <SelectDropdown
           data={years}
           onSelect={(selectedItem) => {
@@ -220,6 +226,7 @@ const CheckHoursComponent = () => {
         <View style={styles.contenedorDiasYHoras}>
           <View style={styles.dias}>
             {reversedDaysOfMonth.map((day, index) => {
+              if (day > new Date()) return null;
               const dayChecks = twoChecksList.filter((check) => {
                 const { checkin, checkout } = check;
                 const checkInDate = new Date(checkin.timestamp);
@@ -243,7 +250,7 @@ const CheckHoursComponent = () => {
                       ]}
                       onPress={() => openCalculateHours("prueba 1", "prueba2")}
                     >
-                      {capitalize(format(day, "EEE d", { locale: es }))}
+                      {capitalize(format(day, "EEE d MMMM Y", { locale: es }))}
                     </Text>
                   </View>
                   <View style={styles.dot} />
