@@ -14,7 +14,6 @@ export const login = async (setUser, setUserA, userA, rememberAccount) => {
         pk: response.payload.PK,
         remember: rememberAccount,
       });
-
       if (rememberAccount) {
         await AsyncStorage.setItem("email", userA.email);
         await AsyncStorage.setItem("password", userA.password);
