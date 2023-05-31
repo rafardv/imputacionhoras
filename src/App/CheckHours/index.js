@@ -69,9 +69,9 @@ const CheckHoursComponent = () => {
     const fetchIsStart = async () => {
       try {
         const storageIsStart = await AsyncStorage.getItem("isStart");
+        setLoading(false);
         if (storageIsStart !== null) {
           setIsStart(storageIsStart === "true");
-          setLoading(false);
         }
       } catch (error) {
         console.log("Error al cargar si es checkIn/Out:", error);
