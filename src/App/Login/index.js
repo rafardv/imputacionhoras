@@ -25,7 +25,6 @@ const LoginComponent = () => {
 
   useEffect(() => {
     const loadStoredData = async () => {
-      setLoading(true);
       try {
         const storedEmail = await AsyncStorage.getItem("email");
         const storedPassword = await AsyncStorage.getItem("password");

@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { UserContext } from "../UserContext";
 import { getUserByPK } from "../Service";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./styles";
+import { cerrarSesion } from "./controller";
 
 const ProfileComponent = () => {
   const { user, setUser } = useContext(UserContext);
@@ -35,11 +35,6 @@ const ProfileComponent = () => {
     fetchData();
   }, []);
 
-  const cerrarSesion = async () => {
-    await AsyncStorage.setItem("rememberAccount", "false");
-    setUser(null);
-  };
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -58,7 +53,10 @@ const ProfileComponent = () => {
             style={styles.name}
           >{`${dataUser.name} ${dataUser.surname}`}</Text>
           <Text style={styles.email}>{dataUser?.username}</Text>
-          <TouchableOpacity style={styles.button} onPress={cerrarSesion}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => cerrarSesion(setUser)}
+          >
             <Text style={styles.buttonText}>Cerrar sesión</Text>
           </TouchableOpacity>
         </View>
