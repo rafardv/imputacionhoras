@@ -25,7 +25,6 @@ const LoginComponent = () => {
 
   useEffect(() => {
     const loadStoredData = async () => {
-      setLoading(true);
       try {
         const storedEmail = await AsyncStorage.getItem("email");
         const storedPassword = await AsyncStorage.getItem("password");
@@ -35,6 +34,7 @@ const LoginComponent = () => {
 
         if (storedEmail && storedPassword && storedRememberAccount === "true") {
           if (storedEmail !== "" && storedPassword !== "") {
+            setLoading(true);
             setUserA({ email: storedEmail, password: storedPassword });
             setRememberAccount(true);
             login(setUser, setUserA, userA, rememberAccount);
@@ -46,7 +46,7 @@ const LoginComponent = () => {
     };
 
     loadStoredData();
-  }, [rememberAccount]);
+  }, [rememberAccount === true]);
 
   return (
     <View style={styles.container}>

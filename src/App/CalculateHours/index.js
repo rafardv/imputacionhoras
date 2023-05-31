@@ -18,6 +18,7 @@ import {
 import { UserContext } from "../UserContext";
 import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
+import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
   const { checkin, checkout, updateHoursList } = route.params;
@@ -65,70 +66,8 @@ const ImputationsHoursComponent = ({ route }) => {
       }
 
       setIsTextInputOpen(false);
-      setSearchText(""); // guarar en un usestate
-      setFilteredProjects(projects);
+      setSearchText(""); // guardar en un useState
     } catch (error) {}
-  };
-
-  const showConfirmAlert = () => {
-    return Alert.alert(
-      "¿ Estas seguro ?",
-      selectedProject.title +
-        "\n" +
-        "\n" +
-        format(new Date(checkin.timestamp), "HH:mm") +
-        " - " +
-        format(new Date(checkout.timestamp), "HH:mm"),
-      [
-        {
-          text: "Si",
-          onPress: botonClick, // cambiar modal una vez copletado
-        },
-        {
-          text: "No",
-        },
-      ],
-      {
-        cancelable: true,
-      }
-    );
-  };
-
-  const showNoProjectAlert = () => {
-    return Alert.alert("ERROR", "No has seleccionado ningún proyecto", [], {
-      cancelable: true,
-    });
-  };
-
-  const botonClick = async () => {
-    const userHoras = {
-      userPk: user.pk,
-      horas: {
-        fechaInicial: format(new Date(checkin.timestamp), "HH:mm"),
-        fechaFinal: format(new Date(checkout.timestamp), "HH:mm"),
-      },
-    };
-
-    if (selectedProject) {
-      const updatedProject = await updateProjectByPropertyCall({
-        PK: selectedProject.PK,
-        workspacePK: selectedProject.workspacePK,
-        jwtToken: user.jwtToken,
-        userHoras: userHoras,
-        imputationList: selectedProject.imputationList,
-      });
-      console.log(updatedProject);
-      const imputedCheckIn = { ...checkin, isAssigned: true };
-      const imputedCheckOut = { ...checkout, isAssigned: true };
-      updateHoursList(imputedCheckIn, imputedCheckOut);
-    }
-  };
-
-  const shortenName = (name) => {
-    if (name.length > 14) {
-      return name.substring(0, 14) + "...";
-    }
-    return name;
   };
 
   // el filtro buscar
@@ -138,6 +77,13 @@ const ImputationsHoursComponent = ({ route }) => {
     );
     setFilteredProjects(filtered);
   }, [searchText, projects]);
+
+  const shortenName = (name) => {
+    if (name.length > 14) {
+      return name.substring(0, 14) + "...";
+    }
+    return name;
+  };
 
   return (
     <View style={styles.container}>
@@ -190,7 +136,18 @@ const ImputationsHoursComponent = ({ route }) => {
         {format(new Date(checkout.timestamp), "HH:mm")}
       </Text>
       <Pressable
-        onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
+        onPress={
+          selectedProject
+            ? () =>
+                showConfirmAlert(
+                  selectedProject,
+                  checkin,
+                  checkout,
+                  botonClick,
+                  user
+                )
+            : showNoProjectAlert
+        }
         style={styles.btnImputar}
         title="IMPUTAR"
         accessibilityLabel="boton confirmar"
