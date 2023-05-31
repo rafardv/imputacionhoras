@@ -99,10 +99,6 @@ const CheckHoursComponent = () => {
     collectchecks(hoursList);
   }, [hoursList]);
 
-  useEffect(() => {
-    console.log(twoChecksList);
-  });
-
   const fetchData = async () => {
     try {
       const storageHoursList = await AsyncStorage.getItem("checkHoursList");
