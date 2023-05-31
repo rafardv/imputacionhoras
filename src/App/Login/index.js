@@ -10,12 +10,12 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserContext } from "../UserContext";
-import { accessBilldinCall } from "../Service";
 import styles from "./styles";
 import image from "../assets/billdIN-logo-1.png";
+import { login } from "./controller";
 
 const LoginComponent = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [rememberAccount, setRememberAccount] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userA, setUserA] = useState({
@@ -23,10 +23,9 @@ const LoginComponent = () => {
     password: "",
   });
 
-  //#82C1C6
-
   useEffect(() => {
     const loadStoredData = async () => {
+      setLoading(true);
       try {
         const storedEmail = await AsyncStorage.getItem("email");
         const storedPassword = await AsyncStorage.getItem("password");
@@ -38,7 +37,7 @@ const LoginComponent = () => {
           if (storedEmail !== "" && storedPassword !== "") {
             setUserA({ email: storedEmail, password: storedPassword });
             setRememberAccount(true);
-            login(); // Lanzar la petición automáticamente al cargar el componente
+            login(setUser, setUserA, userA, rememberAccount);
           }
         }
       } catch (error) {
@@ -48,52 +47,6 @@ const LoginComponent = () => {
 
     loadStoredData();
   }, [rememberAccount]);
-
-  const login = async () => {
-    setLoading(true);
-
-    if (!userA.email || !userA.password) {
-      console.log("Por favor, ingresa un correo y una contraseña válidos");
-      return;
-    }
-
-    try {
-      const response = await accessBilldinCall({
-        username: userA.email,
-        password: userA.password,
-      });
-
-      if (response.jwtToken && response.payload.PK) {
-        setUser({
-          email: userA.email,
-          jwtToken: response.jwtToken,
-          pk: response.payload.PK,
-          remember: rememberAccount,
-        });
-
-        if (rememberAccount) {
-          await AsyncStorage.setItem("email", userA.email);
-          await AsyncStorage.setItem("password", userA.password);
-          await AsyncStorage.setItem("rememberAccount", "true");
-        } else {
-          await AsyncStorage.removeItem("email");
-          await AsyncStorage.removeItem("password");
-          await AsyncStorage.removeItem("rememberAccount");
-        }
-
-        setUserA({
-          email: "",
-          password: "",
-        });
-      } else {
-        console.log("Error de inicio de sesión:", response.error);
-      }
-    } catch (error) {
-      console.log("Error de inicio de sesión:", error);
-    }
-
-    setLoading(false);
-  };
 
   return (
     <View style={styles.container}>
@@ -128,7 +81,10 @@ const LoginComponent = () => {
             />
             <Text style={styles.rememberText}>Recordar cuenta</Text>
           </View>
-          <TouchableOpacity style={styles.btn} onPress={login}>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => login(setUser, setUserA, userA, rememberAccount)}
+          >
             <Text>Entrar</Text>
           </TouchableOpacity>
         </View>
