@@ -96,6 +96,17 @@ const CheckHoursComponent = () => {
         });
         console.log(updatedHoursListConst);
         setHoursList(updatedHoursListConst);
+        const convertedHoursList = JSON.stringify(updatedHoursListConst);
+        AsyncStorage.setItem("checkHoursList", convertedHoursList)
+          .then(() => {
+            console.log("Lista de horas actualizada en AsyncStorage");
+          })
+          .catch((error) => {
+            console.log(
+              "Error al guardar la lista de horas en AsyncStorage:",
+              error
+            );
+          });
       },
     });
   };
