@@ -18,10 +18,11 @@ import {
 import { UserContext } from "../UserContext";
 import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
+import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
   const { checkin, checkout } = route.params;
-  console.log(checkin);
+
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -65,72 +66,18 @@ const ImputationsHoursComponent = ({ route }) => {
       }
 
       setIsTextInputOpen(false);
-      setSearchText("");                        // guarar en un usestate
-      setFilteredProjects(projects);
-     
+      setSearchText(""); // guardar en un useState
+
     } catch (error) {}
   };
 
-  const showConfirmAlert = () => {
-    
-
-       
-
-    return Alert.alert(
-      
-      "¿ Estas seguro ?",
-      selectedProject.title+"\n"+"\n"+format(new Date(checkin.timestamp), "HH:mm")+" - "+format(new Date(checkout.timestamp), "HH:mm"),
-      [
-        {
-          text: "Si",
-          onPress: botonClick,   // cambiar modal una vez copletado
-          
-        },
-        {
-          text: "No",
-        }
-      ],
-      {
-        cancelable: true
-      }
-    )
-  }
-
-
-  const showNoProjectAlert = () => {
-    return Alert.alert(
-      "ERROR",
-      "No has seleccionado ningún proyecto",
-      [
-        
-      ],
-      {
-        cancelable: true
-      }
-    
-    )
-  }
-
-  const botonClick = async () => {
-    const userHoras = {
-      userPk: user.pk,
-      horas: {
-        fechaInicial: format(new Date(checkin.timestamp), "HH:mm"),
-        fechaFinal: format(new Date(checkout.timestamp), "HH:mm"),
-      },
-    };
-
-    if (selectedProject) {
-      const updatedProject = await updateProjectByPropertyCall({
-        PK: selectedProject.PK,
-        workspacePK: selectedProject.workspacePK,
-        jwtToken: user.jwtToken,
-        userHoras: userHoras,
-        imputationList: selectedProject.imputationList,
-      });
-      console.log(updatedProject);
-    }
-  };
+  // el filtro buscar
+  useEffect(() => {
+    const filtered = projects.filter((project) =>
+      project.title.toLowerCase().startsWith(searchText.toLowerCase())
+    );
+    setFilteredProjects(filtered);
+  }, [searchText, projects]);
 
   const shortenName = (name) => {
     if (name.length > 14) {
@@ -139,20 +86,9 @@ const ImputationsHoursComponent = ({ route }) => {
     return name;
   };
 
-
-
-   // el filtro buscar
-  useEffect(() => {
-    const filtered = projects.filter((project) =>
-      project.title.toLowerCase().startsWith(searchText.toLowerCase())
-    );
-    setFilteredProjects(filtered);
-  }, [searchText, projects]);
-
   return (
     <View style={styles.container}>
       <Pressable>
-      
         <Text style={styles.title}>
           {selectedProject ? selectedProject.title : "¿Buscas Algo?"}
         </Text>
@@ -196,16 +132,15 @@ const ImputationsHoursComponent = ({ route }) => {
         ))}
       </ScrollView>
 
-      
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-      {format(new Date(checkin.timestamp), "HH:mm")} || {format(new Date(checkout.timestamp), "HH:mm")}
+        {format(new Date(checkin.timestamp), "HH:mm")} || {format(new Date(checkout.timestamp), "HH:mm")}
       </Text>
       <Pressable
-        onPress={selectedProject ? showConfirmAlert : showNoProjectAlert}
-        style={styles.btnImputar}
-        title="IMPUTAR"
-        accessibilityLabel="boton confirmar"
-      >
+      onPress={selectedProject ? () => showConfirmAlert(selectedProject, checkin, checkout, botonClick, user) : showNoProjectAlert}
+      style={styles.btnImputar}
+      title="IMPUTAR"
+      accessibilityLabel="boton confirmar"
+    >
         <Text style={styles.btnText}>CONFIRMAR</Text>
       </Pressable>
     </View>
@@ -213,3 +148,4 @@ const ImputationsHoursComponent = ({ route }) => {
 };
 
 export default ImputationsHoursComponent;
+
