@@ -5,8 +5,7 @@ export const styles = {
     justifyContent: "center",
     height: "90%",
     width: "100%",
-    marginTop: "20%"
-   
+    marginTop: "20%",
   },
   btnImputar: {
     alignItems: "center",
@@ -26,7 +25,6 @@ export const styles = {
     marginTop: 0,
     fontSize: 26,
     fontWeight: "bold",
-    
   },
 
   defaultImage: {
@@ -37,7 +35,7 @@ export const styles = {
   },
   selectedItemContainer: {
     borderWidth: 6,
-    borderColor: "#fcca79",
+    borderColor: "#82C1C6",
     borderRadius: 30,
   },
   sliderContent: {},
