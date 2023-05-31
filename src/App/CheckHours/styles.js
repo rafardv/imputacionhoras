@@ -75,6 +75,13 @@ const styles = {
     alignContent: "center",
     width: "30%",
   },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    width: "100%",
+  },
 };
 
 export default styles;
