@@ -1,39 +1,31 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  format,
-  eachDayOfInterval,
-  getMonth,
-  isSameDay,
-  startOfMonth,
-  endOfMonth,
-  isSameMonth,
-  subMonths,
-} from "date-fns";
+import { format, getMonth, isSameDay } from "date-fns";
 import { es } from "date-fns/locale";
 import styles from "./styles";
 import SelectDropdown from "react-native-select-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  capitalize,
+  collectchecks,
+  checkClick,
+  fetchData,
+  yearChange,
+  monthChange,
+} from "./controller";
 
 const CheckHoursComponent = () => {
   const navigation = useNavigation();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState();
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
   const [currentDay, setCurrentDay] = useState(null);
-  const scrollViewRef = useRef(null);
   const reversedDaysOfMonth = [...daysOfMonth].reverse();
   const [twoChecksList, setTwoChecksList] = useState([]);
-
-  const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
   const currentMonthIndex = new Date().getMonth();
-
   const months = [
     "Enero",
     "Febrero",
@@ -52,100 +44,35 @@ const CheckHoursComponent = () => {
   const modifiedMonths = months.slice(0, currentMonthIndex + 1);
 
   useEffect(() => {
-    if (currentDay && scrollViewRef.current) {
-      const dayWidth = 80;
-      const scrollOffset = (currentDay - 1) * dayWidth;
-      scrollViewRef.current.scrollTo({ animated: true });
-    }
-  }, [currentDay]);
-
-  useEffect(() => {
     const currentMonth = months[getMonth(new Date())];
-    monthChange(currentMonth);
+    monthChange(
+      currentMonth,
+      selectedYear,
+      months,
+      setSelectedMonth,
+      setDaysOfMonth
+    );
     setCurrentDay(new Date().getDate());
-    fetchData();
+    fetchData(setHoursList);
   }, []);
 
-  const collectchecks = (checkList) => {
-    const list = [];
-    let currentCheckIn = null;
-    for (const check of checkList) {
-      if (check.label === "check-in") {
-        // Si hay un check-in pendiente sin check-out correspondiente, se descarta
-        if (currentCheckIn && !currentCheckIn.checkout) {
-          continue;
-        }
-        currentCheckIn = { checkin: check, checkout: null };
-        list.push(currentCheckIn);
-      } else if (check.label === "check-out") {
-        // Si no hay un check-in pendiente, se descarta el check-out
-        if (!currentCheckIn) {
-          continue;
-        }
-        currentCheckIn.checkout = check;
-        currentCheckIn = null;
-      }
-    }
-
-    // Si hay un check-in pendiente sin check-out correspondiente al final, se descarta
-    if (currentCheckIn && !currentCheckIn.checkout) {
-      currentCheckIn = null;
-    }
-
-    setTwoChecksList(list);
-  };
-
   useEffect(() => {
-    collectchecks(hoursList);
+    collectchecks(hoursList, setTwoChecksList);
   }, [hoursList]);
 
   useEffect(() => {
-    console.log(twoChecksList);
-  });
-
-  const fetchData = async () => {
-    try {
-      const storageHoursList = await AsyncStorage.getItem("checkHoursList");
-      if (storageHoursList !== null) {
-        const parsedHoursList = JSON.parse(storageHoursList);
-        setHoursList(parsedHoursList);
-        console.log("Lista cargada");
+    const fetchIsStart = async () => {
+      try {
+        const storageIsStart = await AsyncStorage.getItem("isStart");
+        if (storageIsStart !== null) {
+          setIsStart(storageIsStart === "true");
+        }
+      } catch (error) {
+        console.log("Error al cargar si es checkIn/Out:", error);
       }
-    } catch (error) {
-      console.log("Error al cargar la lista:", error);
-    }
-  };
-
-  const yearChange = (year) => {
-    setSelectedYear(year);
-    const currentMonth = months[getMonth(new Date())];
-    monthChange(currentMonth, year);
-  };
-
-  const monthChange = (month, year = selectedYear) => {
-    setSelectedMonth(month);
-    const yearValue = parseInt(year, 10);
-    const monthIndex = months.indexOf(month);
-    const startDate = startOfMonth(new Date(yearValue, monthIndex));
-    const endDate = endOfMonth(new Date(yearValue, monthIndex));
-
-    // Obtener los dos meses anteriores
-    const prevTwoMonthsStartDate = subMonths(startDate, 2);
-    const prevTwoMonthsEndDate = subMonths(endDate, 2);
-
-    const days = eachDayOfInterval({
-      start: prevTwoMonthsStartDate,
-      end: endDate,
-    }).filter(
-      (day) =>
-        isSameMonth(day, prevTwoMonthsStartDate) ||
-        isSameMonth(day, prevTwoMonthsEndDate) ||
-        isSameMonth(day, startDate) ||
-        isSameMonth(day, endDate)
-    );
-
-    setDaysOfMonth(days);
-  };
+    };
+    fetchIsStart();
+  }, []);
 
   const openCalculateHours = (checkin, checkout) => {
     console.log(checkin);
@@ -159,53 +86,19 @@ const CheckHoursComponent = () => {
     (new Date().getFullYear() - 1 + index).toString()
   );
 
-  const checkClick = async () => {
-    const currentTime = new Date();
-    const checkTime = {
-      id: currentTime.getTime().toString(),
-      timestamp: currentTime.getTime(), // Guarda la fecha completa en milisegundos
-      timestamp: currentTime,
-      label: isStart ? "check-in" : "check-out",
-    };
-
-    const updatedHoursList = [...hoursList, checkTime];
-    setHoursList(updatedHoursList);
-    setIsStart(!isStart);
-
-    try {
-      const convertedHoursList = JSON.stringify(updatedHoursList);
-      await AsyncStorage.setItem("checkHoursList", convertedHoursList);
-      await AsyncStorage.setItem("isStart", String(!isStart));
-      console.log("Check hours saved successfully.");
-    } catch (error) {
-      console.log("Error saving check hours:", error);
-    }
-
-    collectchecks(updatedHoursList);
-  };
-
-  useEffect(() => {
-    const fetchIsStart = async () => {
-      try {
-        const storageIsStart = await AsyncStorage.getItem("isStart");
-        if (storageIsStart !== null) {
-          setIsStart(storageIsStart === "true");
-        }
-      } catch (error) {
-        console.log("Error al cargar si es checkIn/Out:", error);
-      }
-    };
-
-    fetchIsStart();
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.pickerContainer}>
         <SelectDropdown
           data={modifiedMonths}
           onSelect={(selectedItem) => {
-            monthChange(selectedItem, selectedYear);
+            monthChange(
+              selectedItem,
+              selectedYear,
+              months,
+              setSelectedMonth,
+              setDaysOfMonth
+            );
           }}
           defaultValue={selectedMonth}
         />
@@ -213,13 +106,18 @@ const CheckHoursComponent = () => {
         <SelectDropdown
           data={years}
           onSelect={(selectedItem) => {
-            yearChange(selectedItem);
+            yearChange(
+              selectedItem,
+              setSelectedYear,
+              months,
+              setSelectedMonth,
+              setDaysOfMonth
+            );
           }}
           defaultValue={selectedYear.toString()}
         />
       </View>
       <ScrollView
-        ref={scrollViewRef}
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
@@ -317,7 +215,18 @@ const CheckHoursComponent = () => {
           </View>
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={checkClick} style={styles.btn}>
+      <TouchableOpacity
+        onPress={() =>
+          checkClick(
+            isStart,
+            setIsStart,
+            hoursList,
+            setHoursList,
+            setTwoChecksList
+          )
+        }
+        style={styles.btn}
+      >
         <Text>{isStart ? "Check in" : "Check out"}</Text>
       </TouchableOpacity>
     </View>
