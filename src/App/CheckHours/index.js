@@ -200,7 +200,9 @@ const CheckHoursComponent = () => {
                                   <Text
                                     style={[
                                       styles.hourText,
-                                      { backgroundColor: "#c0f5b8" },
+                                      checkin.isAssigned
+                                        ? { backgroundColor: "#75e065" }
+                                        : { backgroundColor: "#c0f5b8" },
                                     ]}
                                   >
                                     <Text style={styles.hourText}>
@@ -213,7 +215,9 @@ const CheckHoursComponent = () => {
                                   <Text
                                     style={[
                                       styles.hourText,
-                                      { backgroundColor: "#f5b9b8" },
+                                      checkout.isAssigned
+                                        ? { backgroundColor: "#e06965" }
+                                        : { backgroundColor: "#f5b9b8" },
                                     ]}
                                   >
                                     <Text style={styles.hourText}>
