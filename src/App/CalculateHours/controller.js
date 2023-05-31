@@ -1,10 +1,6 @@
 import { Alert } from "react-native";
-import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
-import {
-  getProjectCall,
-  getProjectsCall,
-  updateProjectByPropertyCall,
-} from "../Service";
+import { format } from "date-fns";
+import { updateProjectByPropertyCall } from "../Service";
 
 export const botonClick = async (
   selectedProject,

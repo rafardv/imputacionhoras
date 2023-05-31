@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   Pressable,
   Text,
@@ -7,7 +6,6 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -16,7 +14,7 @@ import {
   updateProjectByPropertyCall,
 } from "../Service";
 import { UserContext } from "../UserContext";
-import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
+import { format } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
 import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
