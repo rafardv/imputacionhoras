@@ -75,14 +75,21 @@ const CheckHoursComponent = () => {
   }, []);
 
   const openCalculateHours = (checkin, checkout) => {
-    console.log(checkin);
     navigation.navigate("ImputationsHoursComponent", {
       checkin,
       checkout,
       updateHoursList: (imputedCheckIn, imputedCheckOut) => {
-        console.log(imputedCheckIn);
-        const updatedList = [...hoursList, imputedCheckIn, imputedCheckOut];
-        setHoursList(updatedList);
+        const updatedHoursListConst = hoursList.map((check) => {
+          if (check.id === imputedCheckIn.id) {
+            return imputedCheckIn;
+          }
+          if (check.id === imputedCheckOut.id) {
+            return imputedCheckOut;
+          }
+          return check;
+        });
+        console.log(updatedHoursListConst);
+        setHoursList(updatedHoursListConst);
       },
     });
   };
@@ -177,7 +184,9 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "#c0f5b8" },
+                                  checkin.isAssigned
+                                    ? { backgroundColor: "#75e065" }
+                                    : { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
                                 <Text style={styles.hourText}>
@@ -187,7 +196,9 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "#f5b9b8" },
+                                  checkout.isAssigned
+                                    ? { backgroundColor: "#ed7d7b" }
+                                    : { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
                                 <Text style={styles.hourText}>

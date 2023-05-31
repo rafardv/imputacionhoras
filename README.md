@@ -36,3 +36,7 @@
 
 
 poner de atributo en el objeto de los check un isImputado que sea bool. cuando le imputemos un proyecto en la ventana calculatehours tenemos que actualizar ese objeto poniendo el atributo de isImutado en true. Retornamos ese objeto modificado al componente check y sustiruir ese objeto por el mismo pero desactualizado. tenemos que mapear hourslist para encontrar los checks que han sido actualizados y meterlo en una lista const y esa lista despues meterla en sethourslist.Una vez actualizado, mostrar de alguna forma que han sido imputadas. (podemos ponerle un verde y rojo un poco mas fuertes).
+
+ const imputedCheckIn = { ...checkin, isAssigned: true };
+      const imputedCheckOut = { ...checkout, isAssigned: true };
+      updateHoursList(imputedCheckIn, imputedCheckOut);

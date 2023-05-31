@@ -6,7 +6,13 @@ import {
   updateProjectByPropertyCall,
 } from "../Service";
 
-export const botonClick = async (selectedProject, checkin, checkout, user) => {
+export const botonClick = async (
+  selectedProject,
+  checkin,
+  checkout,
+  user,
+  updateHoursList
+) => {
   const userHoras = {
     userPk: user.pk,
     horas: {
@@ -24,17 +30,33 @@ export const botonClick = async (selectedProject, checkin, checkout, user) => {
       imputationList: selectedProject.imputationList,
     });
     console.log(updatedProject);
+    const imputedCheckIn = { ...checkin, isAssigned: true };
+    const imputedCheckOut = { ...checkout, isAssigned: true };
+    updateHoursList(imputedCheckIn, imputedCheckOut);
   }
 };
 
-export const showConfirmAlert = (selectedProject, checkin, checkout, botonClick, user) => {
+export const showConfirmAlert = (
+  selectedProject,
+  checkin,
+  checkout,
+  botonClick,
+  user,
+  updateHoursList
+) => {
   return Alert.alert(
     "¿Estás seguro?",
-    selectedProject.title + "\n" + "\n" + format(new Date(checkin.timestamp), "HH:mm") + " - " + format(new Date(checkout.timestamp), "HH:mm"),
+    selectedProject.title +
+      "\n" +
+      "\n" +
+      format(new Date(checkin.timestamp), "HH:mm") +
+      " - " +
+      format(new Date(checkout.timestamp), "HH:mm"),
     [
       {
         text: "Si",
-        onPress: () => botonClick(selectedProject, checkin, checkout, user),
+        onPress: () =>
+          botonClick(selectedProject, checkin, checkout, user, updateHoursList),
       },
       {
         text: "No",
