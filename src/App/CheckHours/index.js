@@ -79,6 +79,11 @@ const CheckHoursComponent = () => {
     navigation.navigate("ImputationsHoursComponent", {
       checkin,
       checkout,
+      updateHoursList: (imputedCheckIn, imputedCheckOut) => {
+        console.log(imputedCheckIn);
+        const updatedList = [...hoursList, imputedCheckIn, imputedCheckOut];
+        setHoursList(updatedList);
+      },
     });
   };
 

@@ -52,8 +52,8 @@ export const checkClick = async (
   const checkTime = {
     id: currentTime.getTime().toString(),
     timestamp: currentTime.getTime(), // Guarda la fecha completa en milisegundos
-    timestamp: currentTime,
     label: isStart ? "check-in" : "check-out",
+    isAssigned: false,
   };
 
   const updatedHoursList = [...hoursList, checkTime];

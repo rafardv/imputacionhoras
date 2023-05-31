@@ -20,7 +20,7 @@ import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { checkin, checkout } = route.params;
+  const { checkin, checkout, updateHoursList } = route.params;
   console.log(checkin);
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
@@ -118,6 +118,9 @@ const ImputationsHoursComponent = ({ route }) => {
         imputationList: selectedProject.imputationList,
       });
       console.log(updatedProject);
+      const imputedCheckIn = { ...checkin, isAssigned: true };
+      const imputedCheckOut = { ...checkout, isAssigned: true };
+      updateHoursList(imputedCheckIn, imputedCheckOut);
     }
   };
 
