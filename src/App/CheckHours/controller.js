@@ -128,7 +128,22 @@ export const monthChange = (
   setDaysOfMonth(days);
 };
 
-export const updateHoursList = (hoursList, imputedCheckIn, imputedCheckOut) => {
+export const updateHoursList = (
+  imputedCheckIn,
+  imputedCheckOut,
+  updateDayChecks
+) => {
+  /*if (!imputedCheckIn || !imputedCheckOut) {
+    return hoursList.map((check) => {
+      const updatedCheck = updateDayChecks.find(
+        (updatedCheck) => updatedCheck.id === check.id
+      );
+      if (updatedCheck) {
+        return updatedCheck;
+      }
+      return check;
+    });
+  } else {*/
   return hoursList.map((check) => {
     if (check.id === imputedCheckIn.id) {
       return imputedCheckIn;
@@ -138,6 +153,7 @@ export const updateHoursList = (hoursList, imputedCheckIn, imputedCheckOut) => {
     }
     return check;
   });
+  //}
 };
 
 export const saveIsImputed = (updatedHoursListConst, setHoursList) => {

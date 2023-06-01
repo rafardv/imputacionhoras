@@ -80,11 +80,12 @@ const CheckHoursComponent = () => {
     navigation.navigate("ImputationsHoursComponent", {
       checkin,
       checkout,
-      updateHoursList: (imputedCheckIn, imputedCheckOut) => {
+      updateHoursList: (imputedCheckIn, imputedCheckOut, updateDayChecks) => {
         const updatedHoursList = updateHoursList(
           hoursList,
           imputedCheckIn,
-          imputedCheckOut
+          imputedCheckOut,
+          updateDayChecks
         );
         saveIsImputed(updatedHoursList, setHoursList);
       },

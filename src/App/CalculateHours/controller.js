@@ -34,6 +34,8 @@ export const botonClick = async (
     /*const updateDayChecks = dayChecks.map((check) => {
       return { ...check, isAssigned: true };
     });
+    updateHoursList({updateDayChecks});
+    HABRIA QUE PONERLE LLAVES A TODAS
     console.log(updateDayChecks);*/
   }
 };
