@@ -127,3 +127,27 @@ export const monthChange = (
 
   setDaysOfMonth(days);
 };
+
+export const updateHoursList = (hoursList, imputedCheckIn, imputedCheckOut) => {
+  return hoursList.map((check) => {
+    if (check.id === imputedCheckIn.id) {
+      return imputedCheckIn;
+    }
+    if (check.id === imputedCheckOut.id) {
+      return imputedCheckOut;
+    }
+    return check;
+  });
+};
+
+export const saveIsImputed = (updatedHoursListConst, setHoursList) => {
+  setHoursList(updatedHoursListConst);
+  const convertedHoursList = JSON.stringify(updatedHoursListConst);
+  AsyncStorage.setItem("checkHoursList", convertedHoursList)
+    .then(() => {
+      console.log("Lista de horas actualizada en AsyncStorage");
+    })
+    .catch((error) => {
+      console.log("Error al guardar la lista de horas en AsyncStorage:", error);
+    });
+};
