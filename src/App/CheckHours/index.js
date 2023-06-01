@@ -79,30 +79,44 @@ const CheckHoursComponent = () => {
       checkin,
       checkout,
       updateHoursList: (imputedCheckIn, imputedCheckOut) => {
-        const updatedHoursListConst = hoursList.map((check) => {
-          if (check.id === imputedCheckIn.id) {
-            return imputedCheckIn;
-          }
-          if (check.id === imputedCheckOut.id) {
-            return imputedCheckOut;
-          }
-          return check;
-        });
-        setHoursList(updatedHoursListConst);
-        const convertedHoursList = JSON.stringify(updatedHoursListConst);
-        AsyncStorage.setItem("checkHoursList", convertedHoursList)
-          .then(() => {
-            console.log("Lista de horas actualizada en AsyncStorage");
-          })
-          .catch((error) => {
-            console.log(
-              "Error al guardar la lista de horas en AsyncStorage:",
-              error
-            );
-          });
+        const updatedHoursList = updateHoursList(
+          hoursList,
+          imputedCheckIn,
+          imputedCheckOut
+        );
+        saveIsImputed(updatedHoursList);
       },
       dayChecks,
     });
+  };
+
+  const updateHoursList = (hoursList, imputedCheckIn, imputedCheckOut) => {
+    return hoursList.map((check) => {
+      if (check.id === imputedCheckIn.id) {
+        return imputedCheckIn;
+      }
+      if (check.id === imputedCheckOut.id) {
+        return imputedCheckOut;
+      }
+      return check;
+    });
+  };
+
+  //const updateHoursList = (imputedCheckIn, imputedCheckOut) => {};
+
+  const saveIsImputed = (updatedHoursListConst) => {
+    setHoursList(updatedHoursListConst);
+    const convertedHoursList = JSON.stringify(updatedHoursListConst);
+    AsyncStorage.setItem("checkHoursList", convertedHoursList)
+      .then(() => {
+        console.log("Lista de horas actualizada en AsyncStorage");
+      })
+      .catch((error) => {
+        console.log(
+          "Error al guardar la lista de horas en AsyncStorage:",
+          error
+        );
+      });
   };
 
   const years = Array.from({ length: 2 }, (_, index) =>
