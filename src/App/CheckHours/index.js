@@ -74,7 +74,7 @@ const CheckHoursComponent = () => {
     fetchIsStart();
   }, []);
 
-  const openCalculateHours = (checkin, checkout) => {
+  const openCalculateHours = ({ checkin, checkout, dayChecks }) => {
     navigation.navigate("ImputationsHoursComponent", {
       checkin,
       checkout,
@@ -88,7 +88,6 @@ const CheckHoursComponent = () => {
           }
           return check;
         });
-        console.log(updatedHoursListConst);
         setHoursList(updatedHoursListConst);
         const convertedHoursList = JSON.stringify(updatedHoursListConst);
         AsyncStorage.setItem("checkHoursList", convertedHoursList)
@@ -102,6 +101,7 @@ const CheckHoursComponent = () => {
             );
           });
       },
+      dayChecks,
     });
   };
 
@@ -169,7 +169,7 @@ const CheckHoursComponent = () => {
                         styles.dayText,
                         isSameDay(day, new Date()) && styles.currentDayText,
                       ]}
-                      onPress={() => openCalculateHours()}
+                      onPress={() => openCalculateHours({ dayChecks })}
                     >
                       {capitalize(format(day, "EEE d", { locale: es }))}
                     </Text>
@@ -187,7 +187,9 @@ const CheckHoursComponent = () => {
                         <TouchableOpacity
                           key={hourIndex}
                           style={styles.hourContainer}
-                          onPress={() => openCalculateHours(checkin, checkout)}
+                          onPress={() =>
+                            openCalculateHours({ checkin, checkout })
+                          }
                           disabled={checkout === null}
                         >
                           {hasCheckOut ? (

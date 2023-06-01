@@ -19,8 +19,8 @@ import { useNavigation } from "@react-navigation/native";
 import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { checkin, checkout, updateHoursList } = route.params;
-  console.log(checkin);
+  const { checkin, checkout, updateHoursList, dayChecks } = route.params;
+  console.log(dayChecks);
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -130,8 +130,12 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {format(new Date(checkin.timestamp), "HH:mm")} ||{" "}
-        {format(new Date(checkout.timestamp), "HH:mm")}
+        {checkin && checkout
+          ? `${format(new Date(checkin.timestamp), "HH:mm")} || ${format(
+              new Date(checkout.timestamp),
+              "HH:mm"
+            )}`
+          : "Todas las horas seleccionadas!"}
       </Text>
       <Pressable
         onPress={

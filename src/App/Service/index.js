@@ -67,6 +67,8 @@ export const updateProjectByPropertyCall = async ({
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
+  console.log(userHoras.horas);
+
   try {
     const objectHours = {
       horaInicial: userHoras.horas.fechaInicial,
