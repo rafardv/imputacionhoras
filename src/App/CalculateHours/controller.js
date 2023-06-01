@@ -32,6 +32,7 @@ export const botonClick = async (
           workspacePK: selectedProject.workspacePK,
           jwtToken: user.jwtToken,
           userHoras: userHoras,
+          userHorasArray: userHorasArray,
           imputationList: selectedProject.imputationList,
         });
         console.log(updatedProject);
@@ -57,21 +58,20 @@ export const botonClick = async (
     const userHorasArray = {
       userPk: user.pk,
       horas: {
-        fechaInicial: dayChecks.find(obj => {
-          return obj.checkin.label === "check-in"
-        } ),     // filtr<r
-        fechaFinal: dayChecks.find(obj => {
+        horas: dayChecks.filter(obj => {
           return obj.checkout.label === "check-out"
         } ),     
       },
     };
     
     if (selectedProject) {
+      console.log("wwwwwwwwwww",userHorasArray)
       const updatedProject = await updateProjectByPropertyCall({
         PK: selectedProject.PK,
         workspacePK: selectedProject.workspacePK,
         jwtToken: user.jwtToken,
-        userHoras: userHorasArray,
+        userHoras: {horas: {fechaInicial: "", fechaFinal: ""}},
+        userHorasArray:  userHorasArray,
         imputationList: selectedProject.imputationList,
       });
       console.log(updatedProject);
