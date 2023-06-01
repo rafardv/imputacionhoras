@@ -49,16 +49,20 @@ export const botonClick = async (
       break;
     case true:
       
-    var result = dayChecks.filter(obj => {
-      return obj.checkin.label === "check-in"
-    })
-    console.log("result ",result)
+    
+   
+
+    
 
     const userHorasArray = {
       userPk: user.pk,
       horas: {
-        fechaInicial: result,
-        fechaFinal: result
+        fechaInicial: dayChecks.find(obj => {
+          return obj.checkin.label === "check-in"
+        } ),     // filtr<r
+        fechaFinal: dayChecks.find(obj => {
+          return obj.checkout.label === "check-out"
+        } ),     
       },
     };
     

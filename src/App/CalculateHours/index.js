@@ -20,7 +20,7 @@ import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
   const { checkin, checkout, updateHoursList, dayChecks } = route.params;
-  console.log(dayChecks);
+  
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
