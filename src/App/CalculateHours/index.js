@@ -24,7 +24,7 @@ const ImputationsHoursComponent = ({ route }) => {
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-
+  const [imputandoArray, setImputandoArray] = useState(false)
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
@@ -43,6 +43,11 @@ const ImputationsHoursComponent = ({ route }) => {
       } catch (error) {}
     };
     fetchData();
+
+    if(dayChecks){
+      setImputandoArray(true)
+    }
+
   }, []);
 
   const [selectedProject, setSelectedProject] = useState(null);
@@ -148,7 +153,8 @@ const ImputationsHoursComponent = ({ route }) => {
                   botonClick,
                   user,
                   updateHoursList,
-                  dayChecks
+                  dayChecks,
+                  imputandoArray
                 )
             : showNoProjectAlert
         }
