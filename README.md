@@ -18,9 +18,9 @@
 ## Tareas  Javi:
 - [x] Diseño ventana imputar
 - [x] Funcionalidad llamadas API
-- [ ] Imputacion proyecto
+- [x] Imputacion proyecto
 - [x] Buscador de proyectos
-- [ ] Modal preview confirmar
+- [x] Modal preview confirmar
 
 ## Tareas Victor:
 - [x] Diseño de la ventana cerrar ses.
