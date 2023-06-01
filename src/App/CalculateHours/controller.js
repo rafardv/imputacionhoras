@@ -7,7 +7,8 @@ export const botonClick = async (
   checkin,
   checkout,
   user,
-  updateHoursList
+  updateHoursList,
+  dayChecks
 ) => {
   const userHoras = {
     userPk: user.pk,
@@ -29,6 +30,11 @@ export const botonClick = async (
     const imputedCheckIn = { ...checkin, isAssigned: true };
     const imputedCheckOut = { ...checkout, isAssigned: true };
     updateHoursList(imputedCheckIn, imputedCheckOut);
+
+    /*const updateDayChecks = dayChecks.map((check) => {
+      return { ...check, isAssigned: true };
+    });
+    console.log(updateDayChecks);*/
   }
 };
 
@@ -38,7 +44,8 @@ export const showConfirmAlert = (
   checkout,
   botonClick,
   user,
-  updateHoursList
+  updateHoursList,
+  dayChecks
 ) => {
   return Alert.alert(
     "¿Estás seguro?",
@@ -52,7 +59,14 @@ export const showConfirmAlert = (
       {
         text: "Si",
         onPress: () =>
-          botonClick(selectedProject, checkin, checkout, user, updateHoursList),
+          botonClick(
+            selectedProject,
+            checkin,
+            checkout,
+            user,
+            updateHoursList,
+            dayChecks
+          ),
       },
       {
         text: "No",

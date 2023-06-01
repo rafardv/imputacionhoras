@@ -147,7 +147,8 @@ const ImputationsHoursComponent = ({ route }) => {
                   checkout,
                   botonClick,
                   user,
-                  updateHoursList
+                  updateHoursList,
+                  dayChecks
                 )
             : showNoProjectAlert
         }

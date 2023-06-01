@@ -102,8 +102,6 @@ const CheckHoursComponent = () => {
     });
   };
 
-  //const updateHoursList = (imputedCheckIn, imputedCheckOut) => {};
-
   const saveIsImputed = (updatedHoursListConst) => {
     setHoursList(updatedHoursListConst);
     const convertedHoursList = JSON.stringify(updatedHoursListConst);
