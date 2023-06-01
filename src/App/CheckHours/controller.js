@@ -111,16 +111,16 @@ export const monthChange = (
   const endDate = endOfMonth(new Date(yearValue, monthIndex));
 
   // Obtener los dos meses anteriores
-  const prevTwoMonthsStartDate = subMonths(startDate, 2);
-  const prevTwoMonthsEndDate = subMonths(endDate, 2);
+  const prevMonthStartDate = subMonths(startDate, 1);
+  const prevMonthEndDate = subMonths(endDate, 1);
 
   const days = eachDayOfInterval({
-    start: prevTwoMonthsStartDate,
+    start: prevMonthStartDate,
     end: endDate,
   }).filter(
     (day) =>
-      isSameMonth(day, prevTwoMonthsStartDate) ||
-      isSameMonth(day, prevTwoMonthsEndDate) ||
+      isSameMonth(day, prevMonthStartDate) ||
+      isSameMonth(day, prevMonthEndDate) ||
       isSameMonth(day, startDate) ||
       isSameMonth(day, endDate)
   );
