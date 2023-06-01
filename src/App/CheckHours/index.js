@@ -13,6 +13,8 @@ import {
   fetchData,
   yearChange,
   monthChange,
+  updateHoursList,
+  saveIsImputed,
 } from "./controller";
 
 const CheckHoursComponent = () => {
@@ -84,37 +86,10 @@ const CheckHoursComponent = () => {
           imputedCheckIn,
           imputedCheckOut
         );
-        saveIsImputed(updatedHoursList);
+        saveIsImputed(updatedHoursList, setHoursList);
       },
       dayChecks,
     });
-  };
-
-  const updateHoursList = (hoursList, imputedCheckIn, imputedCheckOut) => {
-    return hoursList.map((check) => {
-      if (check.id === imputedCheckIn.id) {
-        return imputedCheckIn;
-      }
-      if (check.id === imputedCheckOut.id) {
-        return imputedCheckOut;
-      }
-      return check;
-    });
-  };
-
-  const saveIsImputed = (updatedHoursListConst) => {
-    setHoursList(updatedHoursListConst);
-    const convertedHoursList = JSON.stringify(updatedHoursListConst);
-    AsyncStorage.setItem("checkHoursList", convertedHoursList)
-      .then(() => {
-        console.log("Lista de horas actualizada en AsyncStorage");
-      })
-      .catch((error) => {
-        console.log(
-          "Error al guardar la lista de horas en AsyncStorage:",
-          error
-        );
-      });
   };
 
   const years = Array.from({ length: 2 }, (_, index) =>
