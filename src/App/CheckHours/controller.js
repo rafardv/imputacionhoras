@@ -64,9 +64,9 @@ export const checkClick = async (
     const convertedHoursList = JSON.stringify(updatedHoursList);
     await AsyncStorage.setItem("checkHoursList", convertedHoursList);
     await AsyncStorage.setItem("isStart", String(!isStart));
-    console.log("Check hours saved successfully.");
+    console.log("Las horas se han guardado correctamente");
   } catch (error) {
-    console.log("Error saving check hours:", error);
+    console.log("Error al guardar las horas:", error);
   }
 
   collectchecks(updatedHoursList, setTwoChecksList);
