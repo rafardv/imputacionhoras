@@ -13,16 +13,18 @@ import {
   fetchData,
   yearChange,
   monthChange,
+  updateHoursList,
+  saveIsImputed,
 } from "./controller";
 
 const CheckHoursComponent = () => {
   const navigation = useNavigation();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [daysOfMonth, setDaysOfMonth] = useState([]);
   const [hoursList, setHoursList] = useState([]);
   const [isStart, setIsStart] = useState(true);
-  const [currentDay, setCurrentDay] = useState(null);
   const reversedDaysOfMonth = [...daysOfMonth].reverse();
   const [twoChecksList, setTwoChecksList] = useState([]);
   const currentMonthIndex = new Date().getMonth();
@@ -52,7 +54,6 @@ const CheckHoursComponent = () => {
       setSelectedMonth,
       setDaysOfMonth
     );
-    setCurrentDay(new Date().getDate());
     fetchData(setHoursList);
   }, []);
 
@@ -64,6 +65,7 @@ const CheckHoursComponent = () => {
     const fetchIsStart = async () => {
       try {
         const storageIsStart = await AsyncStorage.getItem("isStart");
+        setLoading(false);
         if (storageIsStart !== null) {
           setIsStart(storageIsStart === "true");
         }
@@ -74,11 +76,20 @@ const CheckHoursComponent = () => {
     fetchIsStart();
   }, []);
 
-  const openCalculateHours = (checkin, checkout) => {
-    console.log(checkin);
+  const openCalculateHours = ({ checkin, checkout, dayChecks }) => {
     navigation.navigate("ImputationsHoursComponent", {
       checkin,
       checkout,
+      updateHoursList: (imputedCheckIn, imputedCheckOut, updateDayChecks) => {
+        const updatedHoursList = updateHoursList(
+          hoursList,
+          imputedCheckIn,
+          imputedCheckOut,
+          updateDayChecks
+        );
+        saveIsImputed(updatedHoursList, setHoursList);
+      },
+      dayChecks,
     });
   };
 
@@ -146,7 +157,7 @@ const CheckHoursComponent = () => {
                         styles.dayText,
                         isSameDay(day, new Date()) && styles.currentDayText,
                       ]}
-                      onPress={() => openCalculateHours("prueba 1", "prueba2")}
+                      onPress={() => openCalculateHours({ dayChecks })}
                     >
                       {capitalize(format(day, "EEE d", { locale: es }))}
                     </Text>
@@ -164,7 +175,9 @@ const CheckHoursComponent = () => {
                         <TouchableOpacity
                           key={hourIndex}
                           style={styles.hourContainer}
-                          onPress={() => openCalculateHours(checkin, checkout)}
+                          onPress={() =>
+                            openCalculateHours({ checkin, checkout })
+                          }
                           disabled={checkout === null}
                         >
                           {hasCheckOut ? (
@@ -172,7 +185,9 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "#c0f5b8" },
+                                  checkin.isAssigned
+                                    ? { backgroundColor: "#75e065" }
+                                    : { backgroundColor: "#c0f5b8" },
                                 ]}
                               >
                                 <Text style={styles.hourText}>
@@ -182,7 +197,9 @@ const CheckHoursComponent = () => {
                               <Text
                                 style={[
                                   styles.hourText,
-                                  { backgroundColor: "#f5b9b8" },
+                                  checkout.isAssigned
+                                    ? { backgroundColor: "#e06965" }
+                                    : { backgroundColor: "#f5b9b8" },
                                 ]}
                               >
                                 <Text style={styles.hourText}>

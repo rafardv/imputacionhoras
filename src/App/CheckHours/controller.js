@@ -52,8 +52,8 @@ export const checkClick = async (
   const checkTime = {
     id: currentTime.getTime().toString(),
     timestamp: currentTime.getTime(), // Guarda la fecha completa en milisegundos
-    timestamp: currentTime,
     label: isStart ? "check-in" : "check-out",
+    isAssigned: false,
   };
 
   const updatedHoursList = [...hoursList, checkTime];
@@ -64,9 +64,9 @@ export const checkClick = async (
     const convertedHoursList = JSON.stringify(updatedHoursList);
     await AsyncStorage.setItem("checkHoursList", convertedHoursList);
     await AsyncStorage.setItem("isStart", String(!isStart));
-    console.log("Check hours saved successfully.");
+    console.log("Las horas se han guardado correctamente");
   } catch (error) {
-    console.log("Error saving check hours:", error);
+    console.log("Error al guardar las horas:", error);
   }
 
   collectchecks(updatedHoursList, setTwoChecksList);
@@ -111,19 +111,59 @@ export const monthChange = (
   const endDate = endOfMonth(new Date(yearValue, monthIndex));
 
   // Obtener los dos meses anteriores
-  const prevTwoMonthsStartDate = subMonths(startDate, 2);
-  const prevTwoMonthsEndDate = subMonths(endDate, 2);
+  const prevMonthStartDate = subMonths(startDate, 1);
+  const prevMonthEndDate = subMonths(endDate, 1);
 
   const days = eachDayOfInterval({
-    start: prevTwoMonthsStartDate,
+    start: prevMonthStartDate,
     end: endDate,
   }).filter(
     (day) =>
-      isSameMonth(day, prevTwoMonthsStartDate) ||
-      isSameMonth(day, prevTwoMonthsEndDate) ||
+      isSameMonth(day, prevMonthStartDate) ||
+      isSameMonth(day, prevMonthEndDate) ||
       isSameMonth(day, startDate) ||
       isSameMonth(day, endDate)
   );
 
   setDaysOfMonth(days);
+};
+
+export const updateHoursList = (
+  imputedCheckIn,
+  imputedCheckOut,
+  updateDayChecks
+) => {
+  /*if (!imputedCheckIn || !imputedCheckOut) {
+    return hoursList.map((check) => {
+      const updatedCheck = updateDayChecks.find(
+        (updatedCheck) => updatedCheck.id === check.id
+      );
+      if (updatedCheck) {
+        return updatedCheck;
+      }
+      return check;
+    });
+  } else {*/
+  return hoursList.map((check) => {
+    if (check.id === imputedCheckIn.id) {
+      return imputedCheckIn;
+    }
+    if (check.id === imputedCheckOut.id) {
+      return imputedCheckOut;
+    }
+    return check;
+  });
+  //}
+};
+
+export const saveIsImputed = (updatedHoursListConst, setHoursList) => {
+  setHoursList(updatedHoursListConst);
+  const convertedHoursList = JSON.stringify(updatedHoursListConst);
+  AsyncStorage.setItem("checkHoursList", convertedHoursList)
+    .then(() => {
+      console.log("Lista de horas actualizada en AsyncStorage");
+    })
+    .catch((error) => {
+      console.log("Error al guardar la lista de horas en AsyncStorage:", error);
+    });
 };

@@ -67,18 +67,16 @@ export const updateProjectByPropertyCall = async ({
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
-  console.log(userHoras.horas)
+  console.log(userHoras.horas);
 
   try {
-    
     const objectHours = {
       horaInicial: userHoras.horas.fechaInicial,
       horaFinal: userHoras.horas.fechaFinal,
-      userPk: userHoras.userPk
-    }
+      userPk: userHoras.userPk,
+    };
 
-    console.log("copia : ",objectHours)
-
+    console.log("copia : ", objectHours);
 
     const response = await fetch(updateProjectUrl, {
       headers: {
@@ -90,36 +88,23 @@ export const updateProjectByPropertyCall = async ({
         PK,
         workspacePK,
         propertyToUpdate: {
-          name: "imputationList",      
-          value: imputationList ? [...imputationList, objectHours] : [imputationList, objectHours]
+          name: "imputationList",
+          value: imputationList
+            ? [...imputationList, objectHours]
+            : [imputationList, objectHours],
         },
       }),
-      
-    }
-    
-    );
-  
-    
-
+    });
 
     if (!response.ok) {
       throw new Error("Failed to update project");
     }
 
     return response.json();
-    
   } catch (error) {
     return { error: error.message };
   }
 };
-
-
-
-
-
-
-
-
 
 export const getUserByPK = async ({ userPK, jwtToken }) => {
   const userUrl = `${baseUrl}users/by-pk?userPK=${userPK}`;

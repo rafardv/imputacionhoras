@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   Pressable,
   Text,
@@ -7,7 +6,6 @@ import {
   ScrollView,
   Image,
   TextInput,
-  Alert,
 } from "react-native";
 import { styles } from "./styles";
 import {
@@ -16,13 +14,13 @@ import {
   updateProjectByPropertyCall,
 } from "../Service";
 import { UserContext } from "../UserContext";
-import { format, eachDayOfInterval, getMonth, isSameDay } from "date-fns";
+import { format } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
 import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
-  const { checkin, checkout } = route.params;
-
+  const { checkin, checkout, updateHoursList, dayChecks } = route.params;
+  console.log(dayChecks);
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
@@ -67,7 +65,6 @@ const ImputationsHoursComponent = ({ route }) => {
 
       setIsTextInputOpen(false);
       setSearchText(""); // guardar en un useState
-
     } catch (error) {}
   };
 
@@ -133,14 +130,32 @@ const ImputationsHoursComponent = ({ route }) => {
       </ScrollView>
 
       <Text style={[styles.selectedItemText, styles.fechasItem]}>
-        {format(new Date(checkin.timestamp), "HH:mm")} || {format(new Date(checkout.timestamp), "HH:mm")}
+        {checkin && checkout
+          ? `${format(new Date(checkin.timestamp), "HH:mm")} || ${format(
+              new Date(checkout.timestamp),
+              "HH:mm"
+            )}`
+          : "Todas las horas seleccionadas!"}
       </Text>
       <Pressable
-      onPress={selectedProject ? () => showConfirmAlert(selectedProject, checkin, checkout, botonClick, user) : showNoProjectAlert}
-      style={styles.btnImputar}
-      title="IMPUTAR"
-      accessibilityLabel="boton confirmar"
-    >
+        onPress={
+          selectedProject
+            ? () =>
+                showConfirmAlert(
+                  selectedProject,
+                  checkin,
+                  checkout,
+                  botonClick,
+                  user,
+                  updateHoursList,
+                  dayChecks
+                )
+            : showNoProjectAlert
+        }
+        style={styles.btnImputar}
+        title="IMPUTAR"
+        accessibilityLabel="boton confirmar"
+      >
         <Text style={styles.btnText}>CONFIRMAR</Text>
       </Pressable>
     </View>
@@ -148,4 +163,3 @@ const ImputationsHoursComponent = ({ route }) => {
 };
 
 export default ImputationsHoursComponent;
-
