@@ -69,16 +69,24 @@ export const updateProjectByPropertyCall = async ({
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
   console.log(userHoras.horas);
-  console.log("wwwwwwww", userHorasArray)
+  console.log("wwwwwwww", userHorasArray);
 
   try {
     const objectHours = {
-      horaInicial: userHoras.horas.fechaInicial,
-      horaFinal: userHoras.horas.fechaFinal,
+      horaInicial: userHoras.horas.fechaInicial || "",
+      horaFinal: userHoras.horas.fechaFinal || "",
       userPk: userHoras.userPk,
     };
 
     console.log("copia : ", objectHours);
+
+    let updatedImputationList = imputationList ? [...imputationList] : [];
+    if (userHorasArray && userHorasArray.length > 0) {
+      userHorasArray.forEach((item) => {
+        updatedImputationList.push(item.checkin, item.checkout);
+      });
+    }
+    updatedImputationList.push(objectHours);
 
     const response = await fetch(updateProjectUrl, {
       headers: {
@@ -91,9 +99,7 @@ export const updateProjectByPropertyCall = async ({
         workspacePK,
         propertyToUpdate: {
           name: "imputationList",
-          value: imputationList
-            ? [...imputationList, objectHours, userHorasArray]
-            : [imputationList, objectHours, userHorasArray],
+          value: updatedImputationList,
         },
       }),
     });
@@ -107,6 +113,8 @@ export const updateProjectByPropertyCall = async ({
     return { error: error.message };
   }
 };
+
+
 
 export const getUserByPK = async ({ userPK, jwtToken }) => {
   const userUrl = `${baseUrl}users/by-pk?userPK=${userPK}`;

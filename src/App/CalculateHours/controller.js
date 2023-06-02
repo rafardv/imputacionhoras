@@ -12,10 +12,6 @@ export const botonClick = async (
   dayChecks,
   imputandoArray
 ) => {
-
- 
-
-
   switch (imputandoArray) {
     case false:
       const userHoras = {
@@ -32,58 +28,42 @@ export const botonClick = async (
           workspacePK: selectedProject.workspacePK,
           jwtToken: user.jwtToken,
           userHoras: userHoras,
-          userHorasArray: userHorasArray,
+          userHorasArray: null, // Set to null when not adding the full array
           imputationList: selectedProject.imputationList,
         });
         console.log(updatedProject);
         const imputedCheckIn = { ...checkin, isAssigned: true };
         const imputedCheckOut = { ...checkout, isAssigned: true };
         updateHoursList(imputedCheckIn, imputedCheckOut);
-
-        /*const updateDayChecks = dayChecks.map((check) => {
-      return { ...check, isAssigned: true };
-    });
-    updateHoursList({updateDayChecks});
-    HABRIA QUE PONERLE LLAVES A TODAS
-    console.log(updateDayChecks);*/
       }
       break;
     case true:
-      
-    
-   
+      const userHorasArray = dayChecks
+        .filter((obj) => obj.checkout.label === "check-out")
+        .map((obj) => ({
+          checkin: obj.checkin,
+          checkout: obj.checkout,
+        }));
 
-    
-
-    const userHorasArray = {
-      userPk: user.pk,
-      horas: {
-        horas: dayChecks.filter(obj => {
-          return obj.checkout.label === "check-out"
-        } ),     
-      },
-    };
-    
-    if (selectedProject) {
-      console.log("wwwwwwwwwww",userHorasArray)
-      const updatedProject = await updateProjectByPropertyCall({
-        PK: selectedProject.PK,
-        workspacePK: selectedProject.workspacePK,
-        jwtToken: user.jwtToken,
-        userHoras: {horas: {fechaInicial: "", fechaFinal: ""}},
-        userHorasArray:  userHorasArray,
-        imputationList: selectedProject.imputationList,
-      });
-      console.log(updatedProject);
-      const imputedCheckIn = { ...checkin, isAssigned: true };
-      const imputedCheckOut = { ...checkout, isAssigned: true };
-      
-
-     
-    }
-    
+      if (selectedProject) {
+        console.log("wwwwwwwwwww", userHorasArray);
+        const updatedProject = await updateProjectByPropertyCall({
+          PK: selectedProject.PK,
+          workspacePK: selectedProject.workspacePK,
+          jwtToken: user.jwtToken,
+          userHoras: { horas: { fechaInicial: "", fechaFinal: "" } },
+          userHorasArray: userHorasArray,
+          imputationList: selectedProject.imputationList,
+        });
+        console.log(updatedProject);
+        const imputedCheckIn = { ...checkin, isAssigned: true };
+        const imputedCheckOut = { ...checkout, isAssigned: true };
+      }
+      break;
   }
 };
+
+
 
 export const showConfirmAlert = (
   selectedProject,
