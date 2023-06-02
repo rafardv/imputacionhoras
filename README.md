@@ -17,10 +17,17 @@
   
 ## Tareas  Javi:
 - [x] Diseño ventana imputar
+- [x] Funcionalidad elementos ventana
 - [x] Funcionalidad llamadas API
+- [x] Funcionalidad traer proyectos
+- [x] Funcionalidad escoger proyecto
+- [x] Llamada getProject
 - [x] Imputacion proyecto
 - [x] Buscador de proyectos
 - [x] Modal preview confirmar
+- [x] Modal alerta
+- [x] Imputar array horas
+ 
 
 ## Tareas Victor:
 - [x] Diseño de la ventana cerrar ses.
