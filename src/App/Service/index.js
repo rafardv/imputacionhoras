@@ -83,7 +83,7 @@ export const updateProjectByPropertyCall = async ({
     let updatedImputationList = imputationList ? [...imputationList] : [];
     if (userHorasArray && userHorasArray.length > 0) {
       userHorasArray.forEach((item) => {
-        updatedImputationList.push(item.checkin, item.checkout);
+        updatedImputationList.push(item);  
       });
     }
     updatedImputationList.push(objectHours);

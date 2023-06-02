@@ -28,19 +28,21 @@ export const botonClick = async (
           workspacePK: selectedProject.workspacePK,
           jwtToken: user.jwtToken,
           userHoras: userHoras,
-          userHorasArray: null, // Set to null when not adding the full array
+          userHorasArray: null, 
           imputationList: selectedProject.imputationList,
         });
         console.log(updatedProject);
         const imputedCheckIn = { ...checkin, isAssigned: true };
         const imputedCheckOut = { ...checkout, isAssigned: true };
         updateHoursList(imputedCheckIn, imputedCheckOut);
+        
       }
       break;
     case true:
       const userHorasArray = dayChecks
         .filter((obj) => obj.checkout.label === "check-out")
         .map((obj) => ({
+          userPk: user.pk,
           checkin: obj.checkin,
           checkout: obj.checkout,
         }));
