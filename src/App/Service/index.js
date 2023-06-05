@@ -68,9 +68,6 @@ export const updateProjectByPropertyCall = async ({
 }) => {
   const updateProjectUrl = `${baseUrl}projects/updateByProperty`;
 
-  console.log(userHoras.horas);
-  console.log("wwwwwwww", userHorasArray);
-
   try {
     const objectHours = {
       horaInicial: userHoras.horas.fechaInicial || "",
@@ -78,12 +75,10 @@ export const updateProjectByPropertyCall = async ({
       userPk: userHoras.userPk,
     };
 
-    console.log("copia : ", objectHours);
-
     let updatedImputationList = imputationList ? [...imputationList] : [];
     if (userHorasArray && userHorasArray.length > 0) {
       userHorasArray.forEach((item) => {
-        updatedImputationList.push(item);  
+        updatedImputationList.push(item);
       });
     }
     updatedImputationList.push(objectHours);
@@ -113,8 +108,6 @@ export const updateProjectByPropertyCall = async ({
     return { error: error.message };
   }
 };
-
-
 
 export const getUserByPK = async ({ userPK, jwtToken }) => {
   const userUrl = `${baseUrl}users/by-pk?userPK=${userPK}`;

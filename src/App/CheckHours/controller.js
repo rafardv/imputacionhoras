@@ -129,34 +129,33 @@ export const monthChange = (
 };
 
 export const updateHoursList = (
+  hoursList,
   imputedCheckIn,
   imputedCheckOut,
   updateDayChecks
 ) => {
-  /*if (!imputedCheckIn || !imputedCheckOut) {
-    return hoursList.map((check) => {
-      const updatedCheck = updateDayChecks.find(
+  return hoursList.map((check) => {
+    let updatedCheck = check;
+
+    if (imputedCheckIn && check.id === imputedCheckIn.id) {
+      updatedCheck = imputedCheckIn;
+    } else if (imputedCheckOut && check.id === imputedCheckOut.id) {
+      updatedCheck = imputedCheckOut;
+    } else if (updateDayChecks && updateDayChecks.find) {
+      const updatedCheckFromUpdateDayChecks = updateDayChecks.find(
         (updatedCheck) => updatedCheck.id === check.id
       );
-      if (updatedCheck) {
-        return updatedCheck;
+      if (updatedCheckFromUpdateDayChecks) {
+        updatedCheck = updatedCheckFromUpdateDayChecks;
       }
-      return check;
-    });
-  } else {*/
-  return hoursList.map((check) => {
-    if (check.id === imputedCheckIn.id) {
-      return imputedCheckIn;
     }
-    if (check.id === imputedCheckOut.id) {
-      return imputedCheckOut;
-    }
-    return check;
+
+    return updatedCheck;
   });
-  //}
 };
 
 export const saveIsImputed = (updatedHoursListConst, setHoursList) => {
+  console.log("lista en save: ", updatedHoursListConst);
   setHoursList(updatedHoursListConst);
   const convertedHoursList = JSON.stringify(updatedHoursListConst);
   AsyncStorage.setItem("checkHoursList", convertedHoursList)

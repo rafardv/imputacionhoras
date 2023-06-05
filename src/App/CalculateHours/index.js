@@ -20,11 +20,11 @@ import { botonClick, showConfirmAlert, showNoProjectAlert } from "./controller";
 
 const ImputationsHoursComponent = ({ route }) => {
   const { checkin, checkout, updateHoursList, dayChecks } = route.params;
-  
+
   const [projects, setProjects] = useState([]);
   const { user, setUser } = useContext(UserContext);
   const navigation = useNavigation();
-  const [imputandoArray, setImputandoArray] = useState(false)
+  const [imputandoArray, setImputandoArray] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredProjects, setFilteredProjects] = useState([]);
 
@@ -44,10 +44,9 @@ const ImputationsHoursComponent = ({ route }) => {
     };
     fetchData();
 
-    if(dayChecks){
-      setImputandoArray(true)
+    if (dayChecks) {
+      setImputandoArray(true);
     }
-
   }, []);
 
   const [selectedProject, setSelectedProject] = useState(null);
@@ -61,11 +60,9 @@ const ImputationsHoursComponent = ({ route }) => {
       });
 
       if (selectedProject && selectedProject.PK == project.PK) {
-        console.log("es el mismo");
         setSelectedProject(null);
       } else {
         setSelectedProject(fetchedProject);
-        console.log(fetchedProject);
       }
 
       setIsTextInputOpen(false);

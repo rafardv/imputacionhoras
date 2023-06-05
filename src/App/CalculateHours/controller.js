@@ -28,14 +28,13 @@ export const botonClick = async (
           workspacePK: selectedProject.workspacePK,
           jwtToken: user.jwtToken,
           userHoras: userHoras,
-          userHorasArray: null, 
+          userHorasArray: null,
           imputationList: selectedProject.imputationList,
         });
-        console.log(updatedProject);
+
         const imputedCheckIn = { ...checkin, isAssigned: true };
         const imputedCheckOut = { ...checkout, isAssigned: true };
         updateHoursList(imputedCheckIn, imputedCheckOut);
-        
       }
       break;
     case true:
@@ -48,7 +47,6 @@ export const botonClick = async (
         }));
 
       if (selectedProject) {
-        console.log("wwwwwwwwwww", userHorasArray);
         const updatedProject = await updateProjectByPropertyCall({
           PK: selectedProject.PK,
           workspacePK: selectedProject.workspacePK,
@@ -57,15 +55,22 @@ export const botonClick = async (
           userHorasArray: userHorasArray,
           imputationList: selectedProject.imputationList,
         });
-        console.log(updatedProject);
-        const imputedCheckIn = { ...checkin, isAssigned: true };
-        const imputedCheckOut = { ...checkout, isAssigned: true };
+
+        const updateDayChecks = dayChecks.map((check) => {
+          return {
+            ...check,
+            checkin: { ...check.checkin, isAssigned: true },
+            checkout: { ...check.checkout, isAssigned: true },
+            isAssigned: true,
+          };
+        });
+
+        console.log("lista de checks: ", updateDayChecks);
+        updateHoursList(null, null, updateDayChecks);
       }
       break;
   }
 };
-
-
 
 export const showConfirmAlert = (
   selectedProject,
@@ -77,8 +82,6 @@ export const showConfirmAlert = (
   dayChecks,
   imputandoArray
 ) => {
-  
-
   if (!dayChecks) {
     return Alert.alert(
       "¿Estás seguro?",

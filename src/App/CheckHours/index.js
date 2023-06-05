@@ -81,13 +81,15 @@ const CheckHoursComponent = () => {
       checkin,
       checkout,
       updateHoursList: (imputedCheckIn, imputedCheckOut, updateDayChecks) => {
-        const updatedHoursList = updateHoursList(
+        //console.log("updateDayChecks: ", updateDayChecks);
+        console.log(imputedCheckIn);
+        const updatedHoursListConst = updateHoursList(
           hoursList,
           imputedCheckIn,
           imputedCheckOut,
           updateDayChecks
         );
-        saveIsImputed(updatedHoursList, setHoursList);
+        saveIsImputed(updatedHoursListConst, setHoursList);
       },
       dayChecks,
     });
